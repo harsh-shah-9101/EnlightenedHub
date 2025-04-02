@@ -211,15 +211,7 @@ function Home() {
                             description="Get 24/7 support from our intelligent AI assistant to answer questions and provide guidance on your learning journey."
                         />
                     </div>
-                </div>
-            </div>
-        </div>
-        
-        {/* Third Page */}
-        <div className="min-h-screen w-[100vw] flex flex-col bg-black">
-            <div className="flex-1 flex justify-center px-4 py-13 ">
-                <div className="w-full max-w-6xl">
-                    <div className="text-center">
+                    <div className="text-center mt-35">
                         <h2 className="text-4xl md:text-6xl font-light mb-4 ">
                             <span className="text-white">Ready to start your </span>
                             <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">journey?</span>
@@ -227,6 +219,188 @@ function Home() {
                         <p className="text-white/70 max-w-2xl mx-auto">
                             Join thousands of students who have already transformed their careers through our comprehensive learning programs.
                         </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+        {/* Third Page */}
+        <div className="min-h-screen w-[100vw] flex flex-col bg-black">
+            <div className="flex-1 flex items-center justify-center px-4 py-20">
+                <div className="w-full max-w-6xl">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl md:text-6xl font-light mb-4">
+                            <span className="text-white">Our Featured </span>
+                            <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">Courses</span>
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {/* Course Card 1 */}
+                        <div className="bg-neutral-900 rounded-3xl p-4 border border-neutral-800 hover:border-neutral-700 transition-all">
+                            <div className="aspect-video rounded-2xl overflow-hidden mb-4">
+                                <img src="https://images.unsplash.com/photo-1581287053822-fd7bf4f4bfec?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dWl8ZW58MHx8MHx8fDA%3D" alt="UI/UX Course" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="px-2">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="text-xs bg-neutral-800 text-white/70 px-2 py-1 rounded-full">Beginner</span>
+                                </div>
+                                <h3 className="text-lg font-medium text-white mb-2">Fundamentals of UI/UX Design</h3>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2187&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Livia Donin" className="w-6 h-6 rounded-full" />
+                                    <span className="text-sm text-white/70">Livia Donin</span>
+                                    <div className="flex items-center gap-1 ml-auto">
+                                        <span className="text-sm text-white/70">4.0</span>
+                                        <span className="text-yellow-400">★</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Course Card 2 */}
+                        <div className="bg-neutral-900 rounded-3xl p-4 border border-neutral-800 hover:border-neutral-700 transition-all">
+                            <div className="aspect-video rounded-2xl overflow-hidden mb-4">
+                                <img src="https://plus.unsplash.com/premium_photo-1661770132071-026114fffb61?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D" alt="User-Centered Design" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="px-2">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="text-xs bg-neutral-800 text-white/70 px-2 py-1 rounded-full">Master</span>
+                                </div>
+                                <h3 className="text-lg font-medium text-white mb-2">Creating User-Centered Design</h3>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2264&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Anika Vetrovs" className="w-6 h-6 rounded-full" />
+                                    <span className="text-sm text-white/70">Anika Vetrovs</span>
+                                    <div className="flex items-center gap-1 ml-auto">
+                                        <span className="text-sm text-white/70">4.5</span>
+                                        <span className="text-yellow-400">★</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Course Card 3 */}
+                        <div className="bg-neutral-900 rounded-3xl p-4 border border-neutral-800 hover:border-neutral-700 transition-all">
+                            <div className="aspect-video rounded-2xl overflow-hidden mb-4">
+                                <img src="https://images.unsplash.com/photo-1541462608143-67571c6738dd?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D" alt="Interaction Design" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="px-2">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="text-xs bg-neutral-800 text-white/70 px-2 py-1 rounded-full">Intermediate</span>
+                                </div>
+                                <h3 className="text-lg font-medium text-white mb-2">Introduction to Interaction Design</h3>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Ym95cyUyMHBvcnRyYWl0fGVufDB8fDB8fHww" alt="Jaylon Saris" className="w-6 h-6 rounded-full" />
+                                    <span className="text-sm text-white/70">Jaylon Saris</span>
+                                    <div className="flex items-center gap-1 ml-auto">
+                                        <span className="text-sm text-white/70">4.8</span>
+                                        <span className="text-yellow-400">★</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Course Card 4 */}
+                        <div className="bg-neutral-900 rounded-3xl p-4 border border-neutral-800 hover:border-neutral-700 transition-all">
+                            <div className="aspect-video rounded-2xl overflow-hidden mb-4">
+                                <img src="https://images.unsplash.com/photo-1658299669911-85eced808868?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHByaW5jaXBsZXxlbnwwfHwwfHx8MA%3D%3D" alt="UI Design Principles" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="px-2">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="text-xs bg-neutral-800 text-white/70 px-2 py-1 rounded-full">Beginner</span>
+                                </div>
+                                <h3 className="text-lg font-medium text-white mb-2">UI Design Principles and Best Practices</h3>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <img src="https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGJveXMlMjBwb3J0cmFpdHxlbnwwfHwwfHx8MA%3D%3D" alt="Cristofer Philips" className="w-6 h-6 rounded-full" />
+                                    <span className="text-sm text-white/70">Cristofer Philips</span>
+                                    <div className="flex items-center gap-1 ml-auto">
+                                        <span className="text-sm text-white/70">4.3</span>
+                                        <span className="text-yellow-400">★</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         {/* Course Card 5 */}
+                         <div className="bg-neutral-900 rounded-3xl p-4 border border-neutral-800 hover:border-neutral-700 transition-all">
+                            <div className="aspect-video rounded-2xl overflow-hidden mb-4">
+                                <img src="https://media.istockphoto.com/id/1552875565/photo/programming-coding-and-man-with-focus-hologram-and-trading-with-cyber-security-futuristic-and.webp?a=1&b=1&s=612x612&w=0&k=20&c=kDl6LkUcVrUP3MJwv17F2jsAndTroskw-ulbWDBI17E=" alt="UI Design Principles" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="px-2">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="text-xs bg-neutral-800 text-white/70 px-2 py-1 rounded-full">Master</span>
+                                </div>
+                                <h3 className="text-lg font-medium text-white mb-2">Java and DSA Domination</h3>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <img src="https://images.unsplash.com/photo-1542441518-f24c42938dc1?w=700&auto=for" alt="Cristofer Philips" className="w-6 h-6 rounded-full" />
+                                    <span className="text-sm text-white/70">Cristofer Philips</span>
+                                    <div className="flex items-center gap-1 ml-auto">
+                                        <span className="text-sm text-white/70">4.3</span>
+                                        <span className="text-yellow-400">★</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         {/* Course Card 6 */}
+                         <div className="bg-neutral-900 rounded-3xl p-4 border border-neutral-800 hover:border-neutral-700 transition-all">
+                            <div className="aspect-video rounded-2xl overflow-hidden mb-4">
+                                <img src="https://plus.unsplash.com/premium_photo-1720287601920-ee8c503af775?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y29kZXxlbnwwfHwwfHx8MA%3D%3D" alt="UI Design Principles" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="px-2">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="text-xs bg-neutral-800 text-white/70 px-2 py-1 rounded-full">Intermediate</span>
+                                </div>
+                                <h3 className="text-lg font-medium text-white mb-2">Three.js Domination</h3>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <img src="/instructor4.jpg" alt="Cristofer Philips" className="w-6 h-6 rounded-full" />
+                                    <span className="text-sm text-white/70">sam karan</span>
+                                    <div className="flex items-center gap-1 ml-auto">
+                                        <span className="text-sm text-white/70">4.3</span>
+                                        <span className="text-yellow-400">★</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         {/* Course Card 7 */}
+                         <div className="bg-neutral-900 rounded-3xl p-4 border border-neutral-800 hover:border-neutral-700 transition-all">
+                            <div className="aspect-video rounded-2xl overflow-hidden mb-4">
+                                <img src="https://images.unsplash.com/photo-1565687981296-535f09db714e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YmFjayUyMGVuZCUyMGRldmVsb3BlcnxlbnwwfHwwfHx8MA%3D%3D" alt="UI Design Principles" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="px-2">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="text-xs bg-neutral-800 text-white/70 px-2 py-1 rounded-full">Intermidiate</span>
+                                </div>
+                                <h3 className="text-lg font-medium text-white mb-2">Back-End Domination:Create Efficient Back-End</h3>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <img src="/instructor4.jpg" alt="Cristofer Philips" className="w-6 h-6 rounded-full" />
+                                    <span className="text-sm text-white/70">Cristofer Philips</span>
+                                    <div className="flex items-center gap-1 ml-auto">
+                                        <span className="text-sm text-white/70">4.3</span>
+                                        <span className="text-yellow-400">★</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         {/* Course Card 8 */}
+                         <div className="bg-neutral-900 rounded-3xl p-4 border border-neutral-800 hover:border-neutral-700 transition-all">
+                            <div className="aspect-video rounded-2xl overflow-hidden mb-4">
+                                <img src="https://images.unsplash.com/photo-1555963153-11ff60182d08?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGJhY2slMjBlbmQlMjBkZXZlbG9wZXJ8ZW58MHx8MHx8fDA%3D" alt="UI Design Principles" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="px-2">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="text-xs bg-neutral-800 text-white/70 px-2 py-1 rounded-full">Master</span>
+                                </div>
+                                <h3 className="text-lg font-medium text-white mb-2">Front-End Domination : Create Anythin With Code</h3>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2264&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cristofer Philips" className="w-6 h-6 rounded-full" />
+                                    <span className="text-sm text-white/70">Cristofer Philips</span>
+                                    <div className="flex items-center gap-1 ml-auto">
+                                        <span className="text-sm text-white/70">4.3</span>
+                                        <span className="text-yellow-400">★</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
