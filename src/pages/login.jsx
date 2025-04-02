@@ -1,0 +1,174 @@
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { 
+    signInWithEmailAndPassword, 
+    signInWithPopup, 
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword 
+} from "firebase/auth";
+import { auth } from "../firebase/config";
+
+function Login() {
+    console.log("Auth instance:", auth);
+    console.log("Auth current user:", auth.currentUser);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [isSignUp, setIsSignUp] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
+        setIsLoading(true);
+        
+        try {
+            if (isSignUp) {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                console.log("New user created:", userCredential.user);
+            } else {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log("User signed in:", userCredential.user);
+            }
+            navigate("/dashboard");
+        } catch (error) {
+            console.error("Auth error:", error);
+            switch (error.code) {
+                case 'auth/email-already-in-use':
+                    setError('This email is already registered. Please sign in instead.');
+                    break;
+                case 'auth/invalid-email':
+                    setError('Invalid email address.');
+                    break;
+                case 'auth/weak-password':
+                    setError('Password should be at least 6 characters.');
+                    break;
+                case 'auth/user-not-found':
+                    setError('No account found with this email.');
+                    break;
+                case 'auth/wrong-password':
+                    setError('Incorrect password.');
+                    break;
+                default:
+                    setError(error.message);
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleGoogleSignIn = async () => {
+        setError("");
+        setIsLoading(true);
+        
+        try {
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            console.log("Google sign in successful:", result.user);
+            navigate("/dashboard");
+        } catch (error) {
+            console.error("Google sign in error:", error);
+            setError("Failed to sign in with Google. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Update button text based on loading state
+    const buttonText = isLoading 
+        ? "Loading..." 
+        : (isSignUp ? "Create Account" : "Sign In");
+
+    return (
+        <div className="min-h-screen w-full bg-black flex items-center justify-center">
+            <div className="w-full max-w-md p-8 bg-black rounded-xl">
+                <div className="mb-8">
+                    <h2 className="text-3xl font-bold text-white mb-2">Welcome to EnlightenedHub</h2>
+                    <p className="text-gray-400">
+                        {isSignUp ? "Create your account" : "Sign in to your account"}
+                    </p>
+                </div>
+
+                {error && (
+                    <p className="text-red-500 mb-4 p-3 bg-red-100/10 rounded">
+                        {error}
+                    </p>
+                )}
+
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                    <div className="space-y-2">
+                        <Label htmlFor="email">Email Address</Label>
+                        <Input
+                            id="email"
+                            type="email"
+                            placeholder="projectmayhem@fc.com"
+                            className="bg-zinc-900 border-none text-white h-12"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="password">Password</Label>
+                        <Input
+                            id="password"
+                            type="password"
+                            placeholder="••••••••"
+                            className="bg-zinc-900 border-none text-white h-12"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            minLength={6}
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className={`w-full py-3 px-4 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors flex items-center justify-center ${
+                            isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                    >
+                        {buttonText} {!isLoading && "→"}
+                    </button>
+
+                    <p className="text-center text-gray-400 my-4">
+                        {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+                        <button
+                            type="button"
+                            onClick={() => setIsSignUp(!isSignUp)}
+                            className="text-white hover:underline"
+                        >
+                            {isSignUp ? "Sign in" : "Sign up"}
+                        </button>
+                    </p>
+
+                    <div className="my-8 border-t border-zinc-800"></div>
+
+                    <button
+                        type="button"
+                        onClick={handleGoogleSignIn}
+                        disabled={isLoading}
+                        className={`w-full py-3 px-4 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2 ${
+                            isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                    >
+                        <svg className="w-5 h-5" viewBox="0 0 24 24">
+                            <path
+                                fill="currentColor"
+                                d="M21.35,11.1H12.18V13.83H18.69C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5,16.25 5,12C5,7.9 8.2,4.73 12.2,4.73C15.29,4.73 17.1,6.7 17.1,6.7L19,4.72C19,4.72 16.56,2 12.1,2C6.42,2 2.03,6.8 2.03,12C2.03,17.05 6.16,22 12.25,22C17.6,22 21.5,18.33 21.5,12.91C21.5,11.76 21.35,11.1 21.35,11.1Z"
+                            />
+                        </svg>
+                        {isLoading ? "Loading..." : "Continue with Google"}
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+}
+
+export default Login;
