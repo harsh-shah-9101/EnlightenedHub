@@ -83,10 +83,10 @@ function Login() {
         : (isSignUp ? "Create Account" : "Sign In");
 
     return (
-        <div className="min-h-screen w-full bg-black flex items-center justify-center">
-            <div className="w-full max-w-md p-8 bg-black rounded-xl">
-                <div className="mb-8">
-                    <h2 className="text-3xl font-bold text-white mb-2">Welcome to EnlightenedHub</h2>
+        <div className="min-h-screen w-full bg-black flex items-center justify-center p-4">
+            <div className="w-full max-w-md p-4 md:p-8 bg-black rounded-xl">
+                <div className="mb-6 md:mb-8">
+                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Welcome to EnlightenedHub</h2>
                     <p className="text-gray-400">
                         {isSignUp ? "Create your account" : "Sign in to your account"}
                     </p>

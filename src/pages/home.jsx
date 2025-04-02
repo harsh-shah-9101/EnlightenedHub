@@ -21,17 +21,19 @@ function Home() {
     return (
         <>
         <div className="h-screen w-[100vw] flex flex-col bg-black">
-            <nav className={`w-full px-6 py-4 flex items-center justify-between border-b border-white/10 fixed top-0 z-50 bg-black/80 backdrop-blur-sm transition-transform duration-300 ${
+            <nav className={`w-full px-4 md:px-6 py-4 flex flex-col md:flex-row items-center justify-between border-b border-white/10 fixed top-0 z-50 bg-black/80 backdrop-blur-sm transition-transform duration-300 ${
                 visible ? 'translate-y-0' : '-translate-y-full'
             }`}>
-                <div className="text-white font-bold text-xl">logo</div>
+                <div className="text-white font-bold text-xl mb-4 md:mb-0">Enlightenedhub</div>
                 
-                <div className="flex items-center gap-12">
-                    <a href="/" className="text-white/80 hover:text-white transition-colors">Home</a>
-                    <a href="/courses" className="text-white/80 hover:text-white transition-colors">Courses</a>
-                    <a href="/courses" className="text-white/80 hover:text-white transition-colors">Job Portal</a>
-                    <a href="/callback" className="text-white/80 hover:text-white transition-colors">Request Callback</a>
-                    <div className="flex items-center gap-3">
+                <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
+                    <div className="flex flex-col md:flex-row items-center gap-4 md:gap-12">
+                        <a href="/" className="text-white/80 hover:text-white transition-colors">Home</a>
+                        <a href="/courses" className="text-white/80 hover:text-white transition-colors">Courses</a>
+                        <a href="/courses" className="text-white/80 hover:text-white transition-colors">Job Portal</a>
+                        <a href="/callback" className="text-white/80 hover:text-white transition-colors">Request Callback</a>
+                    </div>
+                    <div className="flex items-center gap-3 mt-4 md:mt-0">
                         <button className="group relative dark:bg-neutral-800 bg-neutral-200 rounded-full p-px overflow-hidden">
                             <span className="absolute inset-0 rounded-full overflow-hidden">
                                 <span className="inset-0 absolute pointer-events-none select-none">
