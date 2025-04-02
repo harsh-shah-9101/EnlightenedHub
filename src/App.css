@@ -1,5 +1,14 @@
 @import "tailwindcss";
+@font-face {
+  font-family: 'Neue Machina';
+  src: url(../public/NeueMachina-Regular_DQCmjH1st.ttf);
+  font-weight: normal;
+  font-style: normal;
 
+}
+*{
+  font-family: 'Neue Machina';
+}
 body{
     overflow-x: hidden;
     /* overflow-y: hidden; */

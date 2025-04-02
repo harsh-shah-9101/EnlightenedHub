@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Apply Inter font globally */
+@layer base {
+  html {
+    font-family:Georgia, 'Times New Roman', Times, serif ;
+  }
+}
 
 @theme inline {
   --shadow-input:
