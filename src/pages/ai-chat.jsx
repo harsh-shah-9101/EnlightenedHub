@@ -5,6 +5,8 @@ import { BiPlanet } from 'react-icons/bi';
 import { FaPython } from 'react-icons/fa';
 import { TbMessageChatbot } from 'react-icons/tb';
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { useNavigate } from 'react-router-dom';
+import { IoClose } from 'react-icons/io5';
 
 const AiChat = () => {
   const [message, setMessage] = useState("");
@@ -12,6 +14,7 @@ const AiChat = () => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const navigate = useNavigate();
   const hitRequest = () => {
     if (message) {
       generateResponse(message);
@@ -76,11 +79,30 @@ const AiChat = () => {
     }
   };
 
+  const handleClose = () => {
+    navigate('/dashboard');
+  };
+
   return (
     <>
       <div className="container w-screen h-screen overflow-x-hidden bg-[#000000] text-white">
         <div className="absolute inset-0 bg-black"></div>
         <div className="relative z-10">
+          <div className="absolute top-4 left-4">
+            <button
+              onClick={handleClose}
+              className="relative rounded-full group hover:border-zinc-500 w-12 h-12 duration-500 overflow-hidden"
+              type="button"
+            >
+              <p className="font-Manrope text-3xl h-full w-full flex items-center justify-center text-white duration-500 relative z-10 group-hover:scale-0">
+                ×
+              </p>
+              <span className="absolute w-full h-full bg-zinc-500 rotate-45 group-hover:top-9 duration-500 top-12 left-0"></span>
+              <span className="absolute w-full h-full bg-zinc-500 rotate-45 top-0 group-hover:left-9 duration-500 left-12"></span>
+              <span className="absolute w-full h-full bg-zinc-500 rotate-45 top-0 group-hover:right-9 duration-500 right-12"></span>
+              <span className="absolute w-full h-full bg-zinc-500 rotate-45 group-hover:bottom-9 duration-500 bottom-12 right-0"></span>
+            </button>
+          </div>
           {
             isResponseScreen ?
               <div className='h-[80vh] bg-black'>
@@ -108,9 +130,9 @@ const AiChat = () => {
                 </div>
               </div>
               :
-              <div className="middle h-[80vh] flex items-center flex-col justify-center bg-black">
+              <div className="middle w-screen h-[80vh]  flex  items-center flex-col justify-center">
                 <h1 className='text-4xl'>AssistMe</h1>
-                <div className="boxes mt-[30px] flex items-center gap-2">
+                <div className="boxes mt-[50px] px-[20px]  flex items-center gap-2">
                   <div className="card rounded-lg cursor-pointer transition-all hover:bg-[#201f1f] px-[20px] relative min-h-[20vh] bg-[#181818] p-[10px]">
                     <p className='text-[18px]'>What is coding ? <br />
                       How we can learn it.</p>
@@ -136,11 +158,17 @@ const AiChat = () => {
               </div>
           }
 
-          <div className="bottom w-[100%] flex flex-col items-center bg-black">
+          <div className="bottom w-screen flex flex-col items-center bg-black">
             <div className="inputBox w-[60%] text-[15px] py-[7px] flex items-center bg-[#181818] rounded-[30px]">
               <input 
                 value={message} 
                 onChange={(e) => setMessage(e.target.value)} 
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    hitRequest();
+                  }
+                }}
                 type="text" 
                 className='p-[10px] pl-[15px] bg-transparent flex-1 outline-none border-none' 
                 placeholder='Write your message here...' 
@@ -148,7 +176,7 @@ const AiChat = () => {
               />
               {message && <i className='text-green-500 text-[20px] mr-5 cursor-pointer' onClick={hitRequest}><IoSend /></i>}
             </div>
-            <p className='text-[gray] text-[14px] my-4'>AssistMe is developed by Mo. Mahdi Farooqui. this AI use the gemini API for giving the response</p>
+            <p className='text-[gray] text-[14px] my-4'>AssistMe is developed by EnlightenedHub. this AI use the gemini API for giving the response</p>
           </div>
         </div>
       </div>
