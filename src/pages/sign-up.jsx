@@ -1,16 +1,27 @@
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Add your sign up logic here
+        
+        // After successful sign up, navigate to dashboard
+        navigate('/dashboard');
+    };
+
     return (
-        <div className="min-h-screen w-full bg-black flex items-center justify-center p-4">
-            <div className="w-full max-w-md p-4 md:p-8 bg-black rounded-xl">
-                <div className="mb-6 md:mb-8">
-                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Create Account</h2>
+        <div className="min-h-screen w-full bg-black flex items-center justify-center">
+            <div className="w-full max-w-md p-8 bg-black rounded-xl">
+                <div className="mb-8">
+                    <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
                     <p className="text-gray-400">Join EnlightenedHub and start your journey</p>
                 </div>
 
-                <form className="space-y-4 md:space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                     <div className="space-y-2">
                         <Label htmlFor="username">Username</Label>
                         <Input

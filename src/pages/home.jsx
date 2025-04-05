@@ -115,6 +115,7 @@ function Home() {
                                 </span>
                             </span>
                         </button>
+                        
                         <button className="px-4 py-1.5 bg-white text-black rounded-full hover:bg-white/90 transition-colors">
                             <a href="/login">Sign In</a>
                         </button>

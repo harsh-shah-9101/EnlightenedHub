@@ -48,6 +48,23 @@ html.has-scroll-smooth {
   overflow: hidden;
 }
 
+
+@theme inline {
+  --animate-aurora: aurora 60s linear infinite;
+  @keyframes aurora {
+    from {
+      background-position:
+        50% 50%,
+        50% 50%;
+    }
+    to {
+      background-position:
+        350% 50%,
+        350% 50%;
+    }
+  }
+}
+
 html.has-scroll-dragging {
   -webkit-user-select: none;
   -moz-user-select: none;
