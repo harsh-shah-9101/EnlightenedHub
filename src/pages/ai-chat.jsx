@@ -91,16 +91,29 @@ const AiChat = () => {
           <div className="absolute top-4 left-4">
             <button
               onClick={handleClose}
-              className="relative rounded-full group hover:border-zinc-500 w-12 h-12 duration-500 overflow-hidden"
-              type="button"
+              className="group flex items-center justify-center relative z-10 [transition:all_0.5s_ease] rounded-[0.375rem] p-[5px] cursor-pointer border border-[#999] outline-none focus-visible:outline-0"
             >
-              <p className="font-Manrope text-3xl h-full w-full flex items-center justify-center text-white duration-500 relative z-10 group-hover:scale-0">
-                ×
-              </p>
-              <span className="absolute w-full h-full bg-zinc-500 rotate-45 group-hover:top-9 duration-500 top-12 left-0"></span>
-              <span className="absolute w-full h-full bg-zinc-500 rotate-45 top-0 group-hover:left-9 duration-500 left-12"></span>
-              <span className="absolute w-full h-full bg-zinc-500 rotate-45 top-0 group-hover:right-9 duration-500 right-12"></span>
-              <span className="absolute w-full h-full bg-zinc-500 rotate-45 group-hover:bottom-9 duration-500 bottom-12 right-0"></span>
+              <svg
+                fill="currentColor"
+                stroke="none"
+                strokeWidth="0"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-7 h-7 overflow-visible [transition:transform_.35s_ease] group-hover:[transition-delay:.25s] [&_path]:[transition:transform_.35s_ease] group-hover:rotate-45"
+              >
+                <path
+                  className="group-hover:[transform:rotate(112.5deg)_translate(-27.2%,-80.2%)]"
+                  d="m3.45,8.83c-.39,0-.76-.23-.92-.62-.21-.51.03-1.1.54-1.31L14.71,2.08c.51-.21,1.1.03,1.31.54.21.51-.03,1.1-.54,1.31L3.84,8.75c-.13.05-.25.08-.38.08Z"
+                ></path>
+                <path
+                  className="group-hover:[transform:rotate(22.5deg)_translate(15.5%,-23%)]"
+                  d="m2.02,17.13c-.39,0-.76-.23-.92-.62-.21-.51.03-1.1.54-1.31L21.6,6.94c.51-.21,1.1.03,1.31.54.21.51-.03,1.1-.54,1.31L2.4,17.06c-.13.05-.25.08-.38.08Z"
+                ></path>
+                <path
+                  className="group-hover:[transform:rotate(112.5deg)_translate(-15%,-149.5%)]"
+                  d="m8.91,21.99c-.39,0-.76-.23-.92-.62-.21-.51.03-1.1.54-1.31l11.64-4.82c.51-.21,1.1.03,1.31.54.21.51-.03,1.1-.54,1.31l-11.64,4.82c-.13.05-.25.08-.38.08Z"
+                ></path>
+              </svg>
             </button>
           </div>
           {

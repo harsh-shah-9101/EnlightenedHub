@@ -44,29 +44,59 @@ function Dashboard() {
     ];
 
     return (
-        <>
-            <div className="flex h-screen dark:bg-black">
+        <> 
+            
+            <div className="flex h-screen bg-gradient-to-br from-neutral-900 via-black to-neutral-900 dark:from-black dark:via-neutral-900 dark:to-black animate-gradient bg-[size:200%_200%]">
                 <Sidebar className>
                     <SidebarBody>
                         <div className="flex flex-col h-full justify-between">
                             <div className="space-y-2">
                                 <div className="space-y-1">
                                     {sidebarLinks.map((link, index) => (
-                                        <SidebarLink key={index} link={link} />
+                                        <SidebarLink 
+                                            key={index} 
+                                            link={{
+                                                ...link,
+                                                label: <span className="transition-opacity duration-200 sidebar-expanded:opacity-100 sidebar-collapsed:opacity-0 sidebar-collapsed:hidden overflow-hidden whitespace-nowrap">{link.label}</span>
+                                            }} 
+                                        />
                                     ))}
                                 </div>
                             </div>
 
-                            {/* Logout Button */}
-                            <div className="pb-4">
-                                <SidebarLink
-                                    link={{
-                                        href: "/logout",
-                                        label: "Logout",
-                                        icon: <IconLogout className="w-5 h-5 text-red-500" />
-                                    }}
-                                    className="text-red-500"
-                                />
+                            <div className="mt-auto">
+                                {/* User Profile */}
+                                <div className="px-3 py-4 border-t border-neutral-700">
+                                    <div className="flex items-center gap-3">
+                                        <img 
+                                            src={localStorage.getItem('profilePic') || 'https://via.placeholder.com/40'} 
+                                            alt="Profile" 
+                                            className="w-10 h-10 rounded-full object-cover border-2 border-neutral-700 flex-shrink-0"
+                                        />
+                                        <div className="flex-1 transition-opacity duration-200 sidebar-expanded:opacity-100 sidebar-collapsed:opacity-0 sidebar-collapsed:hidden overflow-hidden">
+                                            <p className="text-sm font-medium text-neutral-200 whitespace-nowrap overflow-hidden text-ellipsis">
+                                                {localStorage.getItem('username') || 'User'}
+                                            </p>
+                                            <p className="text-xs text-neutral-400 whitespace-nowrap overflow-hidden text-ellipsis">Student</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Logout Button */}
+                                <div className="pb-4">
+                                    <SidebarLink
+                                        link={{
+                                            href: "/",
+                                            label: <span className="transition-opacity duration-200 sidebar-expanded:opacity-100 sidebar-collapsed:opacity-0 sidebar-collapsed:hidden">Logout</span>,
+                                            icon: <IconLogout className="w-5 h-5 text-red-500" />,
+                                            onClick: () => {
+                                                localStorage.clear(); // Clear all user data
+                                                navigate('/'); // Navigate to home page
+                                            }
+                                        }}
+                                        className="text-red-500"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </SidebarBody>
@@ -74,8 +104,8 @@ function Dashboard() {
 
                 {/* Main Content */}
 
-
-                <main className="flex-1 overflow-auto  p-6  ">
+              
+                <main className="flex-1 overflow-auto   p-6  ">
                     <div className="max-w-7xl mx-auto">
                         <div className="flex items-center justify-between mb-8">
                             <h1 className="text-2xl font-semibold text-neutral-800 dark:text-white">Dashboard</h1>
@@ -460,7 +490,7 @@ function Dashboard() {
                         </div>
                     </div>
                 </main>
-                {/* </AuroraBackground> */}
+                
             </div>
 
         </>
