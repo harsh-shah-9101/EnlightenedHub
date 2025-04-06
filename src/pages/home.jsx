@@ -28,10 +28,10 @@ function Home() {
                 
                 <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
                     <div className="flex flex-col md:flex-row items-center gap-4 md:gap-12">
-                        <a href="/" className="text-white/80 hover:text-white transition-colors">Home</a>
-                        <a href="/courses" className="text-white/80 hover:text-white transition-colors">Courses</a>
-                        <a href="/courses" className="text-white/80 hover:text-white transition-colors">Job Portal</a>
-                        <a href="/callback" className="text-white/80 hover:text-white transition-colors">Request Callback</a>
+                        <a href="/login" className="text-white/80 hover:text-white transition-colors">Home</a>
+                        <a href="/login" className="text-white/80 hover:text-white transition-colors">Courses</a>
+                        <a href="/login" className="text-white/80 hover:text-white transition-colors">Job Portal</a>
+                        <a href="/login" className="text-white/80 hover:text-white transition-colors">Request Callback</a>
                     </div>
                     <div className="flex items-center gap-3 mt-4 md:mt-0">
                         <button className="group relative dark:bg-neutral-800 bg-neutral-200 rounded-full p-px overflow-hidden">
