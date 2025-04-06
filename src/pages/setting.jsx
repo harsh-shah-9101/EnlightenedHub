@@ -74,9 +74,17 @@ const Settings = () => {
   const [isEditingUsername, setIsEditingUsername] = useState(false);
 
   const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-    localStorage.setItem('username', event.target.value);
-    setIsEditingUsername(false);
+    const newUsername = event.target.value;
+    setUsername(newUsername);
+  };
+
+  const handleUsernameSubmit = (event) => {
+    if (event.key === 'Enter' || event.type === 'blur') {
+      if (username.trim().length >= 2) {
+        localStorage.setItem('username', username);
+        setIsEditingUsername(false);
+      }
+    }
   };
 
   const formatTime = (minutes) => {
@@ -178,7 +186,8 @@ const Settings = () => {
                   label="Username"
                   value={username}
                   onChange={handleUsernameChange}
-                  onBlur={() => setIsEditingUsername(false)}
+                  onKeyDown={handleUsernameSubmit}
+                  onBlur={handleUsernameSubmit}
                   autoFocus
                   sx={{
                     maxWidth: '300px',
