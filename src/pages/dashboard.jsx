@@ -14,7 +14,8 @@ function Dashboard() {
         {
             href: "/dashboard/courses",
             label: "My Courses",
-            icon: <IconBook className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+            icon: <IconBook className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+            onClick: () => navigate('/dashboard/courses')  // Fix the navigation path
         },
         {
             href: "/job",
@@ -28,10 +29,10 @@ function Dashboard() {
             icon: <IconPhone className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />
         },
         {
-            href: "/dashboard/settings",
-            label: "Settings",
+            href: "/dashboard/setting",
+            label: "setting",
             icon: <IconSettings className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
-            onClick: () => navigate('/dashboard/settings')
+            onClick: () => navigate('/dashboard/setting')
         },
         {
             href: "/dashboard/ai-chat",
@@ -122,7 +123,13 @@ function Dashboard() {
                                         </div>
                                     ))}
                                 </div>
-                                <button className="mt-4 text-sm text-emerald-500 hover:text-emerald-600">View All Courses</button>
+                                
+                                <button 
+                                    onClick={() => navigate('/dashboard/courses')} 
+                                    className="mt-4 text-sm text-emerald-500 hover:text-emerald-600"
+                                >
+                                    View All Courses
+                                </button>
                             </div>
 
                             {/* Achievement Card */}
@@ -153,7 +160,12 @@ function Dashboard() {
                             <div className="mb-10">
                                 <div className="flex items-center justify-between mb-6">
                                     <h3 className="text-lg font-medium text-neutral-700 dark:text-neutral-200">Frontend Development</h3>
-                                    <button className="text-sm text-emerald-500 hover:text-emerald-600">View All</button>
+                                    <button 
+                                        onClick={() => navigate('/dashboard/my-courses')} 
+                                        className="text-sm text-emerald-500 hover:text-emerald-600"
+                                    >
+                                        View All
+                                    </button>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                                     {[
@@ -215,7 +227,22 @@ function Dashboard() {
                                                 <h3 className="text-white text-sm font-medium mt-2 line-clamp-2">
                                                     {course.title}
                                                 </h3>
-                                                <button className="inline-block mt-3 text-xs bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-900">
+                                                <button 
+                                                    onClick={() => {
+                                                        // Store the course in localStorage or your preferred storage
+                                                        const existingCourses = JSON.parse(localStorage.getItem('myCourses') || '[]');
+                                                        const isCourseExists = existingCourses.some(c => c.id === course.id);
+                                                        
+                                                        if (!isCourseExists) {
+                                                            existingCourses.push(course);
+                                                            localStorage.setItem('myCourses', JSON.stringify(existingCourses));
+                                                            alert('Course added successfully!');
+                                                        } else {
+                                                            alert('Course already in your list!');
+                                                        }
+                                                    }} 
+                                                    className="inline-block mt-3 text-xs bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-900"
+                                                >
                                                     {course.status}
                                                 </button>
                                             </div>

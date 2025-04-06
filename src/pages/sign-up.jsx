@@ -3,6 +3,8 @@ import { Label } from "../components/ui/label";
 import { useNavigate } from 'react-router-dom';
 import { auth, githubProvider } from "../firebase/config";
 import { signInWithPopup } from "firebase/auth";
+// Remove this import
+// import { AuroraBackground } from "../components/ui/aurora-background";
 
 function SignUp() {
     const navigate = useNavigate();
@@ -34,10 +36,10 @@ function SignUp() {
 
     return (
         <div className="min-h-screen w-full bg-black flex items-center justify-center">
-            <div className="w-full max-w-md p-8 bg-black rounded-xl">
+            <div className="w-full max-w-md p-8 bg-black/80 backdrop-blur-sm rounded-xl">
                 <div className="mb-8">
                     <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
-                    <p className="text-gray-400">Join EnlightenedHub and start your journey</p>
+                    <p className="text-gray-300">Join EnlightenedHub and start your journey</p>
                 </div>
 
                 <form className="space-y-6" onSubmit={handleSubmit}>

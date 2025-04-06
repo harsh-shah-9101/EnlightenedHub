@@ -19,11 +19,7 @@ const Job = () => {
       icon: <IconPhone size={20} stroke={2} color="white" />,
       label: "Messages"
     },
-    {
-      href: "/ai-chat",
-      icon: <IconRobot size={20} stroke={2} color="white" />,
-      label: "AI Assistant"
-    },
+
     {
       href: "/settings",
       icon: <IconSettings size={20} stroke={2} color="white" />,
