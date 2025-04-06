@@ -2,7 +2,7 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { useNavigate } from 'react-router-dom';
 import { auth, githubProvider } from "../firebase/config";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 // Remove this import
 // import { AuroraBackground } from "../components/ui/aurora-background";
 
@@ -10,6 +10,7 @@ function SignUp() {
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const googleProvider = new GoogleAuthProvider();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -17,6 +18,21 @@ function SignUp() {
         
         // After successful sign up, navigate to dashboard
         navigate('/dashboard');
+    };
+
+    const handleGoogleSignIn = async () => {
+        setError("");
+        setIsLoading(true);
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            console.log("Google sign in successful:", result.user);
+            navigate("/dashboard");
+        } catch (error) {
+            console.error("Google sign in error:", error);
+            setError("Failed to sign in with Google. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleGithubSignIn = async () => {
