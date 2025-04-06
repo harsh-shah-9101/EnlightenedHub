@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, Avatar, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { auth } from '../firebase/config';
+import { onAuthStateChanged } from 'firebase/auth';
 import { AuroraBackground } from '../components/ui/aurora-background';
 import { PieChart, Pie, Cell } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import { updateProfile } from 'firebase/auth';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../firebase/config';  // Make sure to export storage from your config
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -22,6 +27,47 @@ const Settings = () => {
   const [username, setUsername] = useState('');
   const [profilePic, setProfilePic] = useState('');
   const [timeSpent, setTimeSpent] = useState(0);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Firebase auth listener
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        setUsername(currentUser.displayName || currentUser.email.split('@')[0]);
+        // Enhanced profile picture handling
+        if (currentUser.photoURL) {
+          const photoURL = currentUser.photoURL;
+          // For Google Auth photos, ensure we get the proper size
+          const updatedPhotoURL = photoURL.includes('googleusercontent.com') 
+            ? photoURL.replace(/=s\d+/, '=s400') // Request a 400px image
+            : photoURL;
+          setProfilePic(updatedPhotoURL);
+          localStorage.setItem('profilePic', updatedPhotoURL);
+        }
+      } else {
+        navigate('/login');
+      }
+    });
+
+    // Load other existing data
+    const savedTimeSpent = parseInt(localStorage.getItem('timeSpent') || '0');
+    setTimeSpent(savedTimeSpent);
+
+    // Start tracking time
+    const interval = setInterval(() => {
+      setTimeSpent(prev => {
+        const newTime = prev + 1;
+        localStorage.setItem('timeSpent', newTime.toString());
+        return newTime;
+      });
+    }, 60000);
+
+    return () => {
+      unsubscribe();
+      clearInterval(interval);
+    };
+  }, [navigate]);
   // Add new state variables
   const [email, setEmail] = useState('');
   const [darkMode, setDarkMode] = useState(false);
@@ -58,15 +104,29 @@ const Settings = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = async (event) => {
     const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePic(reader.result);
-        localStorage.setItem('profilePic', reader.result);
-      };
-      reader.readAsDataURL(file);
+    if (file && user) {
+      try {
+        // Create a storage reference
+        const storageRef = ref(storage, `profile_pictures/${user.uid}`);
+        
+        // Upload file
+        await uploadBytes(storageRef, file);
+        
+        // Get download URL
+        const downloadURL = await getDownloadURL(storageRef);
+        
+        // Update user profile
+        await updateProfile(auth.currentUser, {
+          photoURL: downloadURL
+        });
+        
+        // Update local state
+        setProfilePic(downloadURL);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     }
   };
 
@@ -113,12 +173,15 @@ const Settings = () => {
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
-  const handleLogout = () => {
-    // Clear all localStorage data
-    localStorage.clear();
-    // Navigate to login page
-    navigate('/login');
-  };
+  const handleLogout = async () => {
+      try {
+        await auth.signOut();
+        localStorage.clear();
+        navigate('/login');
+      } catch (error) {
+        console.error('Error signing out:', error);
+      }
+    };
 
   return (
     <AuroraBackground>
@@ -178,8 +241,16 @@ const Settings = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, my: 4 }}>
               <Avatar
                 src={profilePic}
-                sx={{ width: 120, height: 120 }}
-              />
+                alt={username || 'User'}
+                sx={{ 
+                  width: 120, 
+                  height: 120,
+                  bgcolor: '#1976d2', // Default background color if no image
+                  fontSize: '3rem' // Larger font size for initials
+                }}
+              >
+                {username ? username[0].toUpperCase() : 'U'}
+              </Avatar>
               {isEditingUsername ? (
                 <TextField
                   fullWidth
