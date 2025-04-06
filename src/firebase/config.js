@@ -13,8 +13,11 @@ const firebaseConfig = {
     measurementId: "G-5T6XRW0VGP"
 };
 
+// Initialize Firebase before any other Firebase operations
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+auth.useDeviceLanguage(); // Optional: Set language to user's device language
+
 const githubProvider = new GithubAuthProvider();
 
 export { auth, githubProvider };

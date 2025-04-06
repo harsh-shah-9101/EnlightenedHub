@@ -1,5 +1,5 @@
 specVersion: "v1"
-serviceId: "a1"
+serviceId: "enlightenedhub"
 location: "us-central1"
 schema:
   source: "./schema"
@@ -7,6 +7,6 @@ schema:
     postgresql:
       database: "fdcdb"
       cloudSql:
-        instanceId: "a1-fdc"
+        instanceId: "enlightenedhub-fdc"
       # schemaValidation: "COMPATIBLE"
 connectorDirs: ["./connector"]
