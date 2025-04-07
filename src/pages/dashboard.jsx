@@ -48,18 +48,27 @@ function Dashboard() {
         <> 
             
             <div className="flex h-screen ">
-                {/* Video Background */}
-                <video
-                    autoPlay
-                    loop
-                    muted
-                    className="fixed inset-0 w-full h-full object-cover opacity-100 -z-10"
-                >
-                    <source 
-                        src="/videos/vecteezy_abstract-grey-and-black-professional-motion-background_34700930.mp4" 
-                        type="video/mp4" 
+                {/* Video Background - Optimized */}
+                <div className="fixed inset-0 -z-10">
+                    <div 
+                        className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+                        style={{ mixBlendMode: 'multiply' }}
                     />
-                </video>
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                        poster="/images/video-poster.jpg" // Add a placeholder image
+                        className="w-full h-full object-cover"
+                    >
+                        <source 
+                            src="/videos/vecteezy_abstract-grey-and-black-professional-motion-background_34700930.mp4"
+                            type="video/mp4"
+                        />
+                    </video>
+                </div>
 
                 <Sidebar className="z-50">
                     <SidebarBody>
