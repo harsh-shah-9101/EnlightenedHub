@@ -46,8 +46,21 @@ function Dashboard() {
     return (
         <> 
             
-            <div className="flex h-screen bg-gradient-to-br from-neutral-900 via-black to-neutral-900 dark:from-black dark:via-neutral-900 dark:to-black animate-gradient bg-[size:200%_200%]">
-                <Sidebar className>
+            <div className="flex h-screen ">
+                {/* Video Background */}
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    className="fixed inset-0 w-full h-full object-cover opacity-100 -z-10"
+                >
+                    <source 
+                        src="/videos/vecteezy_abstract-grey-and-black-professional-motion-background_34700930.mp4" 
+                        type="video/mp4" 
+                    />
+                </video>
+
+                <Sidebar className="z-50">
                     <SidebarBody>
                         <div className="flex flex-col h-full justify-between">
                             <div className="space-y-2">
@@ -103,9 +116,7 @@ function Dashboard() {
                 </Sidebar>
 
                 {/* Main Content */}
-
-              
-                <main className="flex-1 overflow-auto   p-6  ">
+                <main className="flex-1 overflow-y-auto p-6 relative z-10">
                     <div className="max-w-7xl mx-auto">
                         <div className="flex items-center justify-between mb-8">
                             <h1 className="text-2xl font-semibold text-neutral-800 dark:text-white">Dashboard</h1>
@@ -118,8 +129,13 @@ function Dashboard() {
                         {/* Dashboard Content */}
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
                             {/* Course Progress Card */}
-                            <div className="bg-white dark:bg-neutral-800 rounded-xl p-6 shadow-sm">
+                            <div className="rounded-xl p-6 shadow-sm" style={{
+                                backgroundColor: 'rgba(30, 30, 30, 0.4)',
+                                backdropFilter: 'blur(10px)',
+                                border: '1px solid rgba(255, 255, 255, 0.1)'
+                            }}>
                                 <div className="flex justify-between items-start">
                                     <div>
                                         <h3 className="text-sm font-medium text-neutral-600 dark:text-neutral-400">Current Course</h3>
@@ -143,7 +159,11 @@ function Dashboard() {
                             </div>
 
                             {/* Popular Courses Card */}
-                            <div className="bg-white dark:bg-neutral-800 rounded-xl p-6 shadow-sm">
+                            <div className="rounded-xl p-6 shadow-sm" style={{
+                                backgroundColor: 'rgba(30, 30, 30, 0.4)',
+                                backdropFilter: 'blur(10px)',
+                                border: '1px solid rgba(255, 255, 255, 0.1)'
+                            }}>
                                 <h3 className="text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-4">Popular Courses</h3>
                                 <div className="space-y-3">
                                     {['Node.js Mastery', 'Python for AI', 'Web Security'].map((course, index) => (
@@ -163,7 +183,11 @@ function Dashboard() {
                             </div>
 
                             {/* Achievement Card */}
-                            <div className="bg-white dark:bg-neutral-800 rounded-xl p-6 shadow-sm">
+                            <div className="rounded-xl p-6 shadow-sm" style={{
+                                backgroundColor: 'rgba(30, 30, 30, 0.4)',
+                                backdropFilter: 'blur(10px)',
+                                border: '1px solid rgba(255, 255, 255, 0.1)'
+                            }}>
                                 <h3 className="text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-4">Recent Achievements</h3>
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3">
@@ -236,7 +260,11 @@ function Dashboard() {
                                             price: "FREE"
                                         }
                                     ].map((course) => (
-                                        <div key={course.id} className="group bg-neutral-800 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+                                        <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{
+                                            backgroundColor: 'rgba(30, 30, 30, 0.4)',
+                                            backdropFilter: 'blur(10px)',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)'
+                                        }}>
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img
                                                     src="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg?t=st=1743678912~exp=1743682512~hmac=f83f9a80a29aca93f14eb654d24cc4f6fdc23384eec36138db918796fcf37d23&w=1380"
@@ -326,7 +354,11 @@ function Dashboard() {
                                             price: "FREE"
                                         }
                                     ].map((course) => (
-                                        <div key={course.id} className="group bg-neutral-800 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+                                        <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{
+                                            backgroundColor: 'rgba(30, 30, 30, 0.4)',
+                                            backdropFilter: 'blur(10px)',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)'
+                                        }}>
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img
                                                     src="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg?t=st=1743678912~exp=1743682512~hmac=f83f9a80a29aca93f14eb654d24cc4f6fdc23384eec36138db918796fcf37d23&w=1380"
@@ -401,7 +433,11 @@ function Dashboard() {
                                             price: "FREE"
                                         }
                                     ].map((course) => (
-                                        <div key={course.id} className="group bg-neutral-800 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+                                        <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{
+                                            backgroundColor: 'rgba(30, 30, 30, 0.4)',
+                                            backdropFilter: 'blur(10px)',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)'
+                                        }}>
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img
                                                     src="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg?t=st=1743678912~exp=1743682512~hmac=f83f9a80a29aca93f14eb654d24cc4f6fdc23384eec36138db918796fcf37d23&w=1380"
@@ -458,7 +494,11 @@ function Dashboard() {
                                             price: "FREE"
                                         }
                                     ].map((course) => (
-                                        <div key={course.id} className="group bg-neutral-800 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+                                        <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{
+                                            backgroundColor: 'rgba(30, 30, 30, 0.4)',
+                                            backdropFilter: 'blur(10px)',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)'
+                                        }}>
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img
                                                     src="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg?t=st=1743678912~exp=1743682512~hmac=f83f9a80a29aca93f14eb654d24cc4f6fdc23384eec36138db918796fcf37d23&w=1380"
