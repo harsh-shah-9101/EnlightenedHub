@@ -7,6 +7,7 @@ import Job from './pages/job'
 import Settings from './pages/setting'
 import AiChat from './pages/ai-chat'
 import MyCourses from './pages/my-courses'
+import Support from './pages/support'  // Add this import
 import './App.css'
 import {Routes, Route} from "react-router-dom"
 
@@ -20,7 +21,8 @@ function App() {
       <Route path="/job" element={<Job />} />
       <Route path="/dashboard/ai-chat" element={<AiChat />} />
       <Route path="/dashboard/courses" element={<MyCourses />} />
-      <Route path="/dashboard/setting" element={<Settings />} /> {/* Fixed: Changed <setting /> to <Settings /> */}
+      <Route path="/dashboard/setting" element={<Settings />} />
+      <Route path="/dashboard/support" element={<Support />} />  {/* Add this route */}
     </Routes>
   )
 }

@@ -26,7 +26,8 @@ function Dashboard() {
         {
             href: "/dashboard/support",
             label: "Support",
-            icon: <IconPhone className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+            icon: <IconPhone className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+            onClick: () => navigate('/dashboard/support')  // Add this line to enable navigation
         },
         {
             href: "/dashboard/setting",
