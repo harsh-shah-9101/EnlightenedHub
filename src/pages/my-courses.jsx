@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Grid, Typography, Card, CardContent, CardMedia, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import DarkAnimatedBackground from '../components/DarkAnimatedBackground';
 import '../components/DeleteButton.css';
-
-// Remove the DeleteButton styled component
 
 const MyCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -21,7 +20,7 @@ const MyCourses = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#000000', minHeight: '100vh', color: '#ffffff' }}>
+    <DarkAnimatedBackground>
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#ffffff' }}>
           My Courses
@@ -113,7 +112,7 @@ const MyCourses = () => {
           </Grid>
         )}
       </Container>
-    </div>
+    </DarkAnimatedBackground>
   );
 };
 

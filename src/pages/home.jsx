@@ -2,6 +2,7 @@ import { Spotlight } from "../components/ui/spotlight-new"
 import { CardSpotlight } from "../components/ui/card-spotlight";
 import { FeatureCard } from "../components/ui/feature-card";
 import { useState, useEffect } from "react";
+import CountUp from 'react-countup';
 
 function Home() {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -137,7 +138,7 @@ function Home() {
                             <span className="text-white">what we are really</span>
                             <br />
                             <span className="text-white">really </span>
-                            <span className="font-serif italic text-white">good</span>
+                            <span className="italic text-white">good</span>
                             <span className="text-white"> at.</span>
                         </h1>
 
@@ -154,15 +155,39 @@ function Home() {
                     <div className="mt-24 w-fit">
                         <div className="flex justify-center items-center gap-20">
                             <div className="text-center">
-                                <div className="text-3xl md:text-4xl font-bold text-white">25k+</div>
+                                <div className="text-3xl md:text-4xl font-bold text-white">
+                                    <CountUp
+                                        end={25}
+                                        suffix="k+"
+                                        duration={2.5}
+                                        enableScrollSpy
+                                        scrollSpyOnce
+                                    />
+                                </div>
                                 <div className="text-sm text-white/70">Students taught</div>
                             </div>
                             <div className="text-center">
-                                <div className="text-3xl md:text-4xl font-bold text-white">20+</div>
+                                <div className="text-3xl md:text-4xl font-bold text-white">
+                                    <CountUp
+                                        end={20}
+                                        suffix="+"
+                                        duration={2}
+                                        enableScrollSpy
+                                        scrollSpyOnce
+                                    />
+                                </div>
                                 <div className="text-sm text-white/70">Instructors</div>
                             </div>
                             <div className="text-center">
-                                <div className="text-3xl md:text-4xl font-bold text-white">506K+</div>
+                                <div className="text-3xl md:text-4xl font-bold text-white">
+                                    <CountUp
+                                        end={506}
+                                        suffix="K+"
+                                        duration={3}
+                                        enableScrollSpy
+                                        scrollSpyOnce
+                                    />
+                                </div>
                                 <div className="text-sm text-white/70">Youtube Subs.</div>
                             </div>
                         </div>
