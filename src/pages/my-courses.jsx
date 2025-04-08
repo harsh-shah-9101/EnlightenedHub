@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Grid, Typography, Card, CardContent, CardMedia, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import DarkAnimatedBackground from '../components/DarkAnimatedBackground';
 import '../components/DeleteButton.css';
+import DarkAnimatedBackground from '../components/DarkAnimatedBackground';
 
 const MyCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -20,7 +20,29 @@ const MyCourses = () => {
   };
 
   return (
-    <DarkAnimatedBackground>
+    <>
+      {/* Add Video Background */}
+      <div className="fixed inset-0 -z-10">
+        <div 
+          className="absolute inset-0 bg-black/30"
+          style={{ mixBlendMode: 'multiply' }}
+        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster="/images/video-poster.jpg"
+          className="w-full h-full object-cover"
+        >
+          <source 
+            src="/videos/vecteezy_abstract-grey-and-black-professional-motion-background_34700930.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </div>
+
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#ffffff' }}>
           My Courses
@@ -37,16 +59,30 @@ const MyCourses = () => {
                 <Card sx={{ 
                   maxWidth: 280, 
                   height: '100%', 
-                  backgroundColor: '#1e1e1e',
-                  color: '#ffffff'
+                  margin: '15px 0px',
+                  background: 'rgba(30, 30, 30, 0.4)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#ffffff',
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.02)'
+                  }
                 }}>
                   <CardMedia
                     component="img"
                     height="120"
                     image="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg"
                     alt={course.title}
+                    sx={{
+                      objectFit: 'cover',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}
                   />
-                  <CardContent sx={{ p: 2 }}>
+                  <CardContent sx={{ 
+                    p: 2,
+                    '&:last-child': { pb: 2 }
+                  }}>
                     <Typography gutterBottom variant="subtitle1" component="div" sx={{ color: '#ffffff' }}>
                       {course.title}
                     </Typography>
@@ -63,6 +99,7 @@ const MyCourses = () => {
                         size="small"
                         sx={{ 
                           backgroundColor: '#2196f3',
+                          borderRadius: '20px',
                           flexGrow: 1,
                           '&:hover': {
                             backgroundColor: '#1976d2'
@@ -112,7 +149,7 @@ const MyCourses = () => {
           </Grid>
         )}
       </Container>
-    </DarkAnimatedBackground>
+    </>
   );
 };
 

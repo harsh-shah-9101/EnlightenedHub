@@ -89,8 +89,8 @@ function Dashboard() {
 
                             <div className="mt-auto">
                                 {/* User Profile */}
-                                <div className="px-3 py-4 border-t border-neutral-700">
-                                    <div className="flex items-center gap-3">
+                                <div className="w-10  py-4 border-t border-neutral-700">
+                                    <div className="flex  items-center justify-center gap-3">
                                         <img 
                                             src={localStorage.getItem('profilePic') || 'https://via.placeholder.com/40'} 
                                             alt="Profile" 
@@ -111,7 +111,7 @@ function Dashboard() {
                                         link={{
                                             href: "/",
                                             label: <span className="transition-opacity duration-200 sidebar-expanded:opacity-100 sidebar-collapsed:opacity-0 sidebar-collapsed:hidden">Logout</span>,
-                                            icon: <IconLogout className="w-5 h-5 text-red-500" />,
+                                            icon: <IconLogout className=" w-10 h-5 text-red-500" />,
                                             onClick: () => {
                                                 localStorage.clear(); // Clear all user data
                                                 navigate('/'); // Navigate to home page
