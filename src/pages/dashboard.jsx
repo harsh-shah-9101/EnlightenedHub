@@ -2,6 +2,7 @@ import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import { IconHome, IconBook, IconBriefcase, IconPhone, IconSettings, IconLogout, IconRobot } from "@tabler/icons-react";
 import { AuroraBackground } from "../components/ui/aurora-background";
 import { useNavigate } from 'react-router-dom';
+import { MultiStepLoader } from "../components/ui/multi-step-loader";
 
 function Dashboard() {
     const navigate = useNavigate();
@@ -47,7 +48,7 @@ function Dashboard() {
     return (
         <> 
             
-            <div className="flex h-screen ">
+            <div className="flex h-screen">
                 {/* Video Background - Optimized */}
                 <div className="fixed inset-0 -z-10">
                     <div 
@@ -70,6 +71,28 @@ function Dashboard() {
                     </video>
                 </div>
 
+                <style jsx global>{`
+                    /* Custom Scrollbar Styling */
+                    ::-webkit-scrollbar {
+                        width: 10px;
+                    }
+                    
+                    ::-webkit-scrollbar-track {
+                        background: rgba(15, 15, 15, 0.8);
+                        backdrop-filter: blur(10px);
+                    }
+                    
+                    ::-webkit-scrollbar-thumb {
+                        background: rgba(30, 30, 30, 0.9);
+                        border-radius: 5px;
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                    }
+                    
+                    ::-webkit-scrollbar-thumb:hover {
+                        background: rgba(40, 40, 40, 0.9);
+                    }
+                `}</style>
+
                 <Sidebar className="z-50">
                     <SidebarBody>
                         <div className="flex flex-col h-full justify-between">
@@ -89,8 +112,8 @@ function Dashboard() {
 
                             <div className="mt-auto">
                                 {/* User Profile */}
-                                <div className="w-10  py-4 border-t border-neutral-700">
-                                    <div className="flex  items-center justify-center gap-3">
+                                <div className="px-3 py-4 border-t border-neutral-700">
+                                    <div className="flex items-center gap-3">
                                         <img 
                                             src={localStorage.getItem('profilePic') || 'https://via.placeholder.com/40'} 
                                             alt="Profile" 
@@ -111,7 +134,7 @@ function Dashboard() {
                                         link={{
                                             href: "/",
                                             label: <span className="transition-opacity duration-200 sidebar-expanded:opacity-100 sidebar-collapsed:opacity-0 sidebar-collapsed:hidden">Logout</span>,
-                                            icon: <IconLogout className=" w-10 h-5 text-red-500" />,
+                                            icon: <IconLogout className="w-5 h-5 text-red-500" />,
                                             onClick: () => {
                                                 localStorage.clear(); // Clear all user data
                                                 navigate('/'); // Navigate to home page
@@ -151,7 +174,7 @@ function Dashboard() {
                                         <h3 className="text-sm font-medium text-neutral-600 dark:text-neutral-400">Current Course</h3>
                                         <p className="text-lg font-semibold text-neutral-800 dark:text-white mt-1">React Fundamentals</p>
                                     </div>
-                                    <span className="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded-full">In Progress</span>
+                                    <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">In Progress</span>
                                 </div>
                                 <div className="mt-4">
                                     <div className="flex justify-between text-sm mb-2">
@@ -159,12 +182,12 @@ function Dashboard() {
                                         <span className="text-neutral-800 dark:text-white">65%</span>
                                     </div>
                                     <div className="h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full">
-                                        <div className="h-2 bg-emerald-500 rounded-full" style={{ width: '65%' }}></div>
+                                        <div className="h-2 bg-blue-500 rounded-full" style={{ width: '65%' }}></div>
                                     </div>
                                 </div>
                                 <div className="mt-4 flex justify-between items-center">
                                     <span className="text-xs text-neutral-500 dark:text-neutral-400">Next: Advanced Components</span>
-                                    <button className="text-sm text-emerald-500 hover:text-emerald-600">Continue</button>
+                                    <button className="text-sm text-blue-500 hover:text-blue-600">Continue</button>
                                 </div>
                             </div>
 
@@ -178,7 +201,7 @@ function Dashboard() {
                                 <div className="space-y-3">
                                     {['Node.js Mastery', 'Python for AI', 'Web Security'].map((course, index) => (
                                         <div key={index} className="flex items-center gap-3">
-                                            <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                            <div className="w-2 h-2 rounded-full bg-blue-500"></div>
                                             <span className="text-sm text-neutral-800 dark:text-white">{course}</span>
                                         </div>
                                     ))}
@@ -186,7 +209,7 @@ function Dashboard() {
                                 
                                 <button 
                                     onClick={() => navigate('/dashboard/courses')} 
-                                    className="mt-4 text-sm text-emerald-500 hover:text-emerald-600"
+                                    className="mt-4 text-sm text-blue-500 hover:text-blue-600"
                                 >
                                     View All Courses
                                 </button>
@@ -201,8 +224,8 @@ function Dashboard() {
                                 <h3 className="text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-4">Recent Achievements</h3>
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                                            <IconBook className="w-4 h-4 text-emerald-500" />
+                                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                            <IconBook className="w-4 h-4 text-blue-500" />
                                         </div>
                                         <div>
                                             <p className="text-sm font-medium text-neutral-800 dark:text-white">Course Completed</p>
@@ -297,14 +320,16 @@ function Dashboard() {
                                                 </h3>
                                                 <button 
                                                     onClick={() => {
-                                                        // Store the course in localStorage or your preferred storage
+                                                        // Store the course in localStorage
                                                         const existingCourses = JSON.parse(localStorage.getItem('myCourses') || '[]');
                                                         const isCourseExists = existingCourses.some(c => c.id === course.id);
                                                         
                                                         if (!isCourseExists) {
                                                             existingCourses.push(course);
                                                             localStorage.setItem('myCourses', JSON.stringify(existingCourses));
-                                                            alert('Course added successfully!');
+                                                            if (window.confirm('Course added successfully! Go to My Courses?')) {
+                                                                navigate('/dashboard/courses');
+                                                            }
                                                         } else {
                                                             alert('Course already in your list!');
                                                         }
@@ -389,7 +414,23 @@ function Dashboard() {
                                                 <h3 className="text-white text-sm font-medium mt-2 line-clamp-2">
                                                     {course.title}
                                                 </h3>
-                                                <button className="inline-block mt-3 text-xs bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-900">
+                                                <button 
+                                                    onClick={() => {
+                                                        // Store the course in localStorage
+                                                        const existingCourses = JSON.parse(localStorage.getItem('myCourses') || '[]');
+                                                        const isCourseExists = existingCourses.some(c => c.id === course.id);
+                                                        
+                                                        if (!isCourseExists) {
+                                                            existingCourses.push(course);
+                                                            localStorage.setItem('myCourses', JSON.stringify(existingCourses));
+                                                            alert('Course added successfully!');
+                                                            navigate('/dashboard/courses');
+                                                        } else {
+                                                            alert('Course already in your list!');
+                                                        }
+                                                    }} 
+                                                    className="inline-block mt-3 text-xs bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-900"
+                                                >
                                                     {course.status}
                                                 </button>
                                             </div>
@@ -468,7 +509,23 @@ function Dashboard() {
                                                 <h3 className="text-white text-sm font-medium mt-2 line-clamp-2">
                                                     {course.title}
                                                 </h3>
-                                                <button className="inline-block mt-3 text-xs bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-900">
+                                                <button 
+                                                    onClick={() => {
+                                                        // Store the course in localStorage
+                                                        const existingCourses = JSON.parse(localStorage.getItem('myCourses') || '[]');
+                                                        const isCourseExists = existingCourses.some(c => c.id === course.id);
+                                                        
+                                                        if (!isCourseExists) {
+                                                            existingCourses.push(course);
+                                                            localStorage.setItem('myCourses', JSON.stringify(existingCourses));
+                                                            alert('Course added successfully!');
+                                                            navigate('/dashboard/courses');
+                                                        } else {
+                                                            alert('Course already in your list!');
+                                                        }
+                                                    }} 
+                                                    className="inline-block mt-3 text-xs bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-900"
+                                                >
                                                     {course.status}
                                                 </button>
                                             </div>
