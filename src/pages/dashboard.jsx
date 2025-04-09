@@ -3,52 +3,62 @@ import { IconHome, IconBook, IconBriefcase, IconPhone, IconSettings, IconLogout,
 import { AuroraBackground } from "../components/ui/aurora-background";
 import { useNavigate } from 'react-router-dom';
 import { MultiStepLoader } from "../components/ui/multi-step-loader";
+import { FloatingDock } from "../components/ui/floating-dock";
 
 function Dashboard() {
     const navigate = useNavigate();
-    const sidebarLinks = [
+    // Convert sidebarLinks to dockItems
+    const dockItems = [
         {
             href: "/dashboard",
-            label: "Dashboard",
+            title: "Dashboard",
             icon: <IconHome className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />
         },
         {
             href: "/dashboard/courses",
-            label: "My Courses",
+            title: "My Courses",
             icon: <IconBook className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
-            onClick: () => navigate('/dashboard/courses')  // Fix the navigation path
+            onClick: () => navigate('/dashboard/courses')
         },
         {
             href: "/job",
-            label: "Job Portal",
+            title: "Job Portal",
             icon: <IconBriefcase className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
             onClick: () => navigate('/job')
         },
         {
             href: "/dashboard/support",
-            label: "Support",
+            title: "Support",
             icon: <IconPhone className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
-            onClick: () => navigate('/dashboard/support')  // Add this line to enable navigation
+            onClick: () => navigate('/dashboard/support')
         },
         {
             href: "/dashboard/setting",
-            label: "setting",
+            title: "Settings",
             icon: <IconSettings className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
             onClick: () => navigate('/dashboard/setting')
         },
         {
             href: "/dashboard/ai-chat",
-            label: "AI Chat",
+            title: "AI Chat",
             icon: <IconRobot className="w-5 h-5 text-emerald-500" />,
-            onClick: () => navigate('/dashboard/ai-chat'),
-            className: "text-emerald-500"
+            onClick: () => navigate('/dashboard/ai-chat')
+        },
+        {
+            href: "/",
+            title: "Logout",
+            icon: <IconLogout className="w-5 h-5 text-red-500" />,
+            onClick: () => {
+                localStorage.clear();
+                navigate('/');
+            }
         }
     ];
 
     return (
         <> 
             
-            <div className="flex h-screen">
+            <div className="flex h-screen overflow-hidden">
                 {/* Video Background - Optimized */}
                 <div className="fixed inset-0 -z-10">
                     <div 
@@ -93,69 +103,33 @@ function Dashboard() {
                     }
                 `}</style>
 
-                <Sidebar className="z-50">
-                    <SidebarBody>
-                        <div className="flex flex-col h-full justify-between">
-                            <div className="space-y-2">
-                                <div className="space-y-1">
-                                    {sidebarLinks.map((link, index) => (
-                                        <SidebarLink 
-                                            key={index} 
-                                            link={{
-                                                ...link,
-                                                label: <span className="transition-opacity duration-200 sidebar-expanded:opacity-100 sidebar-collapsed:opacity-0 sidebar-collapsed:hidden overflow-hidden whitespace-nowrap">{link.label}</span>
-                                            }} 
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="mt-auto">
-                                {/* User Profile */}
-                                <div className="px-3 py-4 border-t border-neutral-700">
-                                    <div className="flex items-center gap-3">
-                                        <img 
-                                            src={localStorage.getItem('profilePic') || 'https://via.placeholder.com/40'} 
-                                            alt="Profile" 
-                                            className="w-10 h-10 rounded-full object-cover border-2 border-neutral-700 flex-shrink-0"
-                                        />
-                                        <div className="flex-1 transition-opacity duration-200 sidebar-expanded:opacity-100 sidebar-collapsed:opacity-0 sidebar-collapsed:hidden overflow-hidden">
-                                            <p className="text-sm font-medium text-neutral-200 whitespace-nowrap overflow-hidden text-ellipsis">
-                                                {localStorage.getItem('username') || 'User'}
-                                            </p>
-                                            <p className="text-xs text-neutral-400 whitespace-nowrap overflow-hidden text-ellipsis">Student</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Logout Button */}
-                                <div className="pb-4">
-                                    <SidebarLink
-                                        link={{
-                                            href: "/",
-                                            label: <span className="transition-opacity duration-200 sidebar-expanded:opacity-100 sidebar-collapsed:opacity-0 sidebar-collapsed:hidden">Logout</span>,
-                                            icon: <IconLogout className="w-5 h-5 text-red-500" />,
-                                            onClick: () => {
-                                                localStorage.clear(); // Clear all user data
-                                                navigate('/'); // Navigate to home page
-                                            }
-                                        }}
-                                        className="text-red-500"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </SidebarBody>
-                </Sidebar>
+                {/* Replace entire Sidebar section with FloatingDock */}
+                <FloatingDock 
+                    items={dockItems}
+                    desktopClassName="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
+                    mobileClassName="fixed bottom-8 right-8 z-50"
+                />
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto p-6 relative z-10">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="flex items-center justify-between mb-8">
+                <main className="flex-1 overflow-y-auto relative">
+                    <div className="max-w-7xl mx-auto p-6 pb-32">
+                        {/* Make the header sticky with blur effect and top margin */}
+                        <div className="flex items-center justify-between rounded-full mb-8 sticky top-4 py-4 z-40" style={{
+                            backgroundColor: 'rgba(30, 30, 30, 0.4)',
+                            backdropFilter: 'blur(10px)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            marginLeft: '-1.5rem',
+                            marginRight: '-1.5rem',
+                            paddingLeft: '1.5rem',
+                            paddingRight: '1.5rem',
+                        }}>
                             <h1 className="text-2xl font-semibold text-neutral-800 dark:text-white">Dashboard</h1>
                             <div className="flex items-center gap-4">
-                                {/* User Profile */}
-
+                                <img 
+                                    src={localStorage.getItem('profilePic') || 'https://via.placeholder.com/40'} 
+                                    alt="Profile" 
+                                    className="w-10 h-10 rounded-full object-cover border-2 border-neutral-700 flex-shrink-0"
+                                />
                             </div>
                         </div>
 
