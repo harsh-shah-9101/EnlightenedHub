@@ -28,21 +28,18 @@ function Login() {
         setError("");
         setIsLoading(true);
         
-        // Admin credentials check
-        if (email === "admin@enlightenedhub.com" && password === "admin@123") {
-            navigate("/admin");
-            return;
-        }
-        
         try {
-            if (isSignUp) {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                console.log("New user created:", userCredential.user);
-            } else {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                console.log("User signed in:", userCredential.user);
+            if (email === "admin@enlightenedhub.com" && password === "admin@123") {
+                navigate("/loading", { state: { targetPath: "/admin" } });
+                return;
             }
-            navigate("/dashboard");
+
+            if (isSignUp) {
+                await createUserWithEmailAndPassword(auth, email, password);
+            } else {
+                await signInWithEmailAndPassword(auth, email, password);
+            }
+            navigate("/loading");
         } catch (error) {
             console.error("Auth error:", error);
             switch (error.code) {
@@ -75,9 +72,8 @@ function Login() {
         
         try {
             const provider = new GoogleAuthProvider();
-            const result = await signInWithPopup(auth, provider);
-            console.log("Google sign in successful:", result.user);
-            navigate("/dashboard");
+            await signInWithPopup(auth, provider);
+            navigate("/loading");
         } catch (error) {
             console.error("Google sign in error:", error);
             setError("Failed to sign in with Google. Please try again.");

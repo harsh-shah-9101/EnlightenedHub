@@ -106,21 +106,27 @@ const Settings = () => {
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
-    if (!file || !user) return;
-
-    try {
-      const storageRef = ref(storage, `profile_pictures/${user.uid}`);
-      await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(storageRef);
-      
-      await updateProfile(auth.currentUser, { photoURL: downloadURL });
-      
-      // Update all states and storage at once
-      setProfilePic(downloadURL);
-      localStorage.setItem('profilePic', downloadURL);
-      setUser(prev => ({ ...prev, photoURL: downloadURL }));
-    } catch (error) {
-      console.error('Error uploading image:', error);
+    if (file && user) {
+      try {
+        // Create a storage reference
+        const storageRef = ref(storage, `profile_pictures/${user.uid}`);
+        
+        // Upload file
+        await uploadBytes(storageRef, file);
+        
+        // Get download URL
+        const downloadURL = await getDownloadURL(storageRef);
+        
+        // Update user profile
+        await updateProfile(auth.currentUser, {
+          photoURL: downloadURL
+        });
+        
+        // Update local state
+        setProfilePic(downloadURL);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     }
   };
 

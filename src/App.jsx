@@ -9,6 +9,7 @@ import Settings from './pages/setting'
 import AiChat from './pages/ai-chat'
 import MyCourses from './pages/my-courses'
 import Support from './pages/support'
+import LoadingTransition from './pages/loading-transition'
 import './App.css'
 import { Routes, Route } from "react-router-dom"
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/dashboard/courses" element={<MyCourses />} />
         <Route path="/dashboard/setting" element={<Settings />} />
         <Route path="/dashboard/support" element={<Support />} />
+        <Route path="/loading" element={<LoadingTransition />} />
       </Routes>
       <Analytics />
     </>

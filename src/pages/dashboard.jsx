@@ -114,9 +114,9 @@ function Dashboard() {
                 <main className="flex-1 overflow-y-auto relative">
                     <div className="max-w-7xl mx-auto p-6 pb-32">
                         {/* Make the header sticky with blur effect and top margin */}
-                        <div className="flex items-center justify-between rounded-full mb-8 sticky top-4 py-4 z-40" style={{
+                        <div className="flex items-center justify-between rounded-full mb-8 sticky top-4 py-3 z-40" style={{
                             backgroundColor: 'rgba(30, 30, 30, 0.4)',
-                            backdropFilter: 'blur(10px)',
+                            backdropFilter: 'blur(20px)',
                             border: '1px solid rgba(255, 255, 255, 0.1)',
                             marginLeft: '-1.5rem',
                             marginRight: '-1.5rem',
