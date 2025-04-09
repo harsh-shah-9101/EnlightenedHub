@@ -28,6 +28,12 @@ function Login() {
         setError("");
         setIsLoading(true);
         
+        // Admin credentials check
+        if (email === "admin@enlightenedhub.com" && password === "admin@123") {
+            navigate("/admin");
+            return;
+        }
+        
         try {
             if (isSignUp) {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
