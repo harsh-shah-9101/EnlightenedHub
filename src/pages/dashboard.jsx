@@ -59,10 +59,10 @@ function Dashboard() {
         <> 
             
             <div className="flex h-screen overflow-hidden">
-                {/* Video Background - Optimized */}
-                <div className="fixed inset-0 -z-10">
+                {/* Video Background - Optimized with Loading States */}
+                <div className="fixed inset-0 -z-10 bg-neutral-900">
                     <div 
-                        className="absolute inset-0 bg-black/30 "
+                        className="absolute inset-0 bg-black/50"
                         style={{ mixBlendMode: 'multiply' }}
                     />
                     <video
@@ -70,9 +70,13 @@ function Dashboard() {
                         loop
                         muted
                         playsInline
-                        preload="auto"
-                        poster="/images/video-poster.jpg" // Add a placeholder image
-                        className="w-full h-full object-cover"
+                        preload="metadata"
+                        poster="/images/video-poster.jpg"
+                        className="w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+                        onLoadedData={(e) => {
+                            e.target.classList.remove('opacity-0');
+                            e.target.classList.add('opacity-100');
+                        }}
                     >
                         <source 
                             src="/videos/vecteezy_abstract-grey-and-black-professional-motion-background_34700930.mp4"
