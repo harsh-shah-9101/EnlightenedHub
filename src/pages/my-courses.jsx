@@ -10,7 +10,19 @@ const MyCourses = () => {
 
   useEffect(() => {
     const storedCourses = JSON.parse(localStorage.getItem('myCourses') || '[]');
-    setCourses(storedCourses);
+    // Modify YouTube URLs to disable tracking
+    const modifiedCourses = storedCourses.map(course => {
+      if (course.videoUrl && course.videoUrl.includes('youtube.com')) {
+        const videoId = course.videoUrl.match(
+          /(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=))([^?&]+)/
+        );
+        if (videoId) {
+          course.videoUrl = `https://www.youtube-nocookie.com/embed/${videoId[1]}?modestbranding=1&rel=0`;
+        }
+      }
+      return course;
+    });
+    setCourses(modifiedCourses);
   }, []);
 
   const handleDeleteCourse = (courseId) => {
