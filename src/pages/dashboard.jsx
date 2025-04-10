@@ -230,7 +230,7 @@ function Dashboard() {
                                     <h3 className="text-lg font-medium text-neutral-700 dark:text-neutral-200">Frontend Development</h3>
                                     <button 
                                         onClick={() => navigate('/dashboard/my-courses')} 
-                                        className="text-sm text-emerald-500 hover:text-emerald-600"
+                                        className="text-sm text-blue-500 hover:text-blue-600"
                                     >
                                         View All
                                     </button>
@@ -333,7 +333,7 @@ function Dashboard() {
                             <div className="mb-10">
                                 <div className="flex items-center justify-between mb-6">
                                     <h3 className="text-lg font-medium text-neutral-700 dark:text-neutral-200">Backend Development</h3>
-                                    <button className="text-sm text-emerald-500 hover:text-emerald-600">View All</button>
+                                    <button className="text-sm text-blue-500 hover:text-blue-600">View All</button>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                                     {[
@@ -432,7 +432,7 @@ function Dashboard() {
                             <div className="mb-10">
                                 <div className="flex items-center justify-between mb-6">
                                     <h3 className="text-lg font-medium text-neutral-700 dark:text-neutral-200">Full Stack Development</h3>
-                                    <button className="text-sm text-emerald-500 hover:text-emerald-600">View All</button>
+                                    <button className="text-sm text-blue-500 hover:text-blue-600">View All</button>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                                     {[
@@ -531,7 +531,7 @@ function Dashboard() {
                             <div className="mb-10">
                                 <div className="flex items-center justify-between mb-6">
                                     <h3 className="text-lg font-medium text-neutral-700 dark:text-neutral-200">Cyber Security</h3>
-                                    <button className="text-sm text-emerald-500 hover:text-emerald-600">View All</button>
+                                    <button className="text-sm text-blue-500 hover:text-blue-600">View All</button>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                                     {[
