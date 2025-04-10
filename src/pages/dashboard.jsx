@@ -4,9 +4,12 @@ import { AuroraBackground } from "../components/ui/aurora-background";
 import { useNavigate } from 'react-router-dom';
 import { MultiStepLoader } from "../components/ui/multi-step-loader";
 import { FloatingDock } from "../components/ui/floating-dock";
+import { useState, useEffect } from 'react';
+import LoadingTransition from './loading-transition';
 
 function Dashboard() {
     const navigate = useNavigate();
+
     // Convert sidebarLinks to dockItems
     const dockItems = [
         {
