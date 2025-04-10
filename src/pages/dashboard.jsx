@@ -244,7 +244,8 @@ function Dashboard() {
                                             imageName: "react",
                                             status: "Add to My course",
                                             instructor: "Sarah Miller",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         },
                                         {
                                             id: "fe2",
@@ -253,7 +254,8 @@ function Dashboard() {
                                             imageName: "vue",
                                             status: "Add to My course",
                                             instructor: "John Chen",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         },
                                         {
                                             id: "fe3",
@@ -262,7 +264,8 @@ function Dashboard() {
                                             imageName: "angular",
                                             status: "Add to My course",
                                             instructor: "Emma Thompson",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         },
                                         {
                                             id: "fe4",
@@ -271,7 +274,8 @@ function Dashboard() {
                                             imageName: "css",
                                             status: "Add to My course",
                                             instructor: "Mark Wilson",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         }
                                     ].map((course) => (
                                         <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{
@@ -340,7 +344,8 @@ function Dashboard() {
                                             imageName: "nodejs-express",
                                             status: "Add to My course",
                                             instructor: "Mike Ross",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         },
                                         {
                                             id: "be2",
@@ -349,7 +354,8 @@ function Dashboard() {
                                             imageName: "django",
                                             status: "Add to My course",
                                             instructor: "Lisa Wang",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         },
                                         {
                                             id: "be3",
@@ -358,7 +364,8 @@ function Dashboard() {
                                             imageName: "rails",
                                             status: "Add to My course",
                                             instructor: "David Smith",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         },
                                         {
                                             id: "be4",
@@ -367,7 +374,8 @@ function Dashboard() {
                                             imageName: "laravel",
                                             status: "Add to My course",
                                             instructor: "Anna Brown",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         }
                                     ].map((course) => (
                                         <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{
@@ -435,7 +443,8 @@ function Dashboard() {
                                             imageName: "mern",
                                             status: "Add to My course",
                                             instructor: "David Kumar",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         },
                                         {
                                             id: "fs2",
@@ -444,7 +453,8 @@ function Dashboard() {
                                             imageName: "spring",
                                             status: "Add to My course",
                                             instructor: "Emma Clark",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         },
                                         {
                                             id: "fs3",
@@ -453,7 +463,8 @@ function Dashboard() {
                                             imageName: "python-flask",
                                             status: "Add to My course",
                                             instructor: "Tom Anderson",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         },
                                         {
                                             id: "fs4",
@@ -462,7 +473,8 @@ function Dashboard() {
                                             imageName: "dotnet",
                                             status: "Add to My course",
                                             instructor: "Jessica Lee",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         }
                                     ].map((course) => (
                                         <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{
@@ -530,7 +542,8 @@ function Dashboard() {
                                             imageName: "ethical-hacking",
                                             status: "Add to My course",
                                             instructor: "Alex Security",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         },
                                         {
                                             id: "cs2",
@@ -539,7 +552,8 @@ function Dashboard() {
                                             imageName: "network-security",
                                             status: "Add to My course",
                                             instructor: "Rachel Shield",
-                                            price: "FREE"
+                                            price: "FREE",
+                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
                                         }
                                     ].map((course) => (
                                         <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{

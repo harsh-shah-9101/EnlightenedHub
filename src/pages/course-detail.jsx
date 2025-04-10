@@ -32,8 +32,32 @@ const CourseDetail = () => {
   useEffect(() => {
     // Load course data from localStorage
     const storedCourses = JSON.parse(localStorage.getItem('myCourses') || '[]');
+    console.log('Stored courses:', storedCourses); // Debug log
+
     const currentCourse = storedCourses.find(c => c.id === courseId);
-    setCourse(currentCourse);
+    console.log('Current course:', currentCourse); // Debug log
+    
+    if (currentCourse) {
+      // Ensure videoUrl exists and is properly formatted
+      if (currentCourse.videoUrl) {
+        console.log('Original video URL:', currentCourse.videoUrl); // Debug log
+        
+        // Handle both YouTube and direct video URLs
+        if (currentCourse.videoUrl.includes('youtube.com') || currentCourse.videoUrl.includes('youtu.be')) {
+          const videoId = currentCourse.videoUrl.match(
+            /(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=))([^?&]+)/
+          );
+          
+          if (videoId) {
+            currentCourse.videoUrl = `https://www.youtube.com/embed/${videoId[1]}`;
+            console.log('Converted YouTube URL:', currentCourse.videoUrl); // Debug log
+          }
+        }
+      } else {
+        console.warn('No video URL found for course:', currentCourse);
+      }
+      setCourse(currentCourse);
+    }
 
     // Load queries from localStorage
     const storedQueries = JSON.parse(localStorage.getItem(`queries_${courseId}`) || '[]');
@@ -198,96 +222,19 @@ const CourseDetail = () => {
               border: '1px solid rgba(255, 255, 255, 0.1)',
               overflow: 'hidden',
               borderRadius: '16px',
+              aspectRatio: '16/9',
             }}
           >
-            <video
-              ref={videoRef}
-              style={{ width: '100%', display: 'block' }}
-              poster={course.thumbnail}
-              onClick={handlePlayPause}
-            >
-              <source src={course.videoUrl} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            
-            {/* Custom Video Controls */}
-            <Box sx={{ 
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              padding: '16px',
-              background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)',
-              opacity: 1,
-              transition: 'opacity 0.3s ease',
-              '&:hover': { opacity: 1 }
-            }}>
-              <Stack spacing={1}>
-                <Slider
-                  value={currentTime}
-                  max={duration}
-                  onChange={handleTimeChange}
-                  sx={{
-                    color: '#2196f3',
-                    height: 4,
-                    '& .MuiSlider-thumb': {
-                      width: 8,
-                      height: 8,
-                      transition: '0.3s cubic-bezier(.47,1.64,.41,.8)',
-                      '&:hover, &.Mui-focusVisible': {
-                        boxShadow: '0px 0px 0px 8px rgba(33, 150, 243, 0.16)'
-                      },
-                      '&.Mui-active': {
-                        width: 12,
-                        height: 12,
-                      },
-                    },
-                    '& .MuiSlider-rail': {
-                      opacity: 0.28,
-                    },
-                  }}
-                />
-                <Stack direction="row" spacing={2} alignItems="center">
-                  <IconButton
-                    onClick={handlePlayPause}
-                    sx={{ color: 'white' }}
-                  >
-                    {isPlaying ? <Pause /> : <PlayArrow />}
-                  </IconButton>
-                  
-                  <Typography variant="body2" sx={{ color: 'white', minWidth: 65 }}>
-                    {formatTime(currentTime)} / {formatTime(duration)}
-                  </Typography>
-
-                  <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 150 }}>
-                    <IconButton onClick={handleMuteToggle} sx={{ color: 'white' }}>
-                      {isMuted ? <VolumeOff /> : <VolumeUp />}
-                    </IconButton>
-                    <Slider
-                      value={isMuted ? 0 : volume}
-                      onChange={handleVolumeChange}
-                      min={0}
-                      max={1}
-                      step={0.1}
-                      sx={{
-                        color: '#2196f3',
-                        width: 100,
-                        '& .MuiSlider-rail': { opacity: 0.28 },
-                      }}
-                    />
-                  </Stack>
-
-                  <Box sx={{ flexGrow: 1 }} />
-
-                  <IconButton
-                    onClick={handleFullscreen}
-                    sx={{ color: 'white' }}
-                  >
-                    <Fullscreen />
-                  </IconButton>
-                </Stack>
-              </Stack>
-            </Box>
+            <iframe
+              width="100%"
+              height="100%"
+              src={course.videoUrl}
+              title={course.title}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              style={{ position: 'absolute', top: 0, left: 0 }}
+            />
           </Paper>
         </Box>
 
