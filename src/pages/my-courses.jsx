@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Grid, Typography, Card, CardContent, CardMedia, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../components/DeleteButton.css';
-import DarkAnimatedBackground from '../components/DarkAnimatedBackground';
+// Remove DarkAnimatedBackground import
 
 const MyCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -32,33 +32,11 @@ const MyCourses = () => {
   };
 
   return (
-    <>
-      {/* Add Video Background */}
-      <div className="fixed inset-0 -z-10">
-        <div 
-          className="absolute inset-0 bg-black/30"
-          style={{ mixBlendMode: 'multiply' }}
-        />
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          poster="/images/video-poster.jpg"
-          className="w-full h-full object-cover"
-        >
-          <source 
-            src="/videos/vecteezy_abstract-grey-and-black-professional-motion-background_34700930.mp4"
-            type="video/mp4"
-          />
-        </video>
-      </div>
-
-      {/* Add Close Button */}
+    <div className="min-h-screen bg-gray-50"> {/* Light background container */}
+      {/* Close Button - updated for light mode */}
       <button
         onClick={() => navigate('/dashboard')}
-        className="group fixed top-4 left-4 flex items-center justify-center relative z-50 [transition:all_0.5s_ease] rounded-[0.375rem] p-[5px] cursor-pointer border border-[#999] outline-none focus-visible:outline-0 hover:border-white"
+        className="group fixed top-4 left-4 flex items-center justify-center relative z-50 [transition:all_0.5s_ease] rounded-[0.375rem] p-[5px] cursor-pointer border border-gray-300 outline-none focus-visible:outline-0 hover:border-gray-500"
       >
         <svg
           fill="currentColor"
@@ -66,7 +44,7 @@ const MyCourses = () => {
           strokeWidth="0"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-7 h-7 text-white overflow-visible [transition:transform_.35s_ease] group-hover:[transition-delay:.25s] [&_path]:[transition:transform_.35s_ease] group-hover:rotate-45"
+          className="w-7 h-7 text-gray-700 overflow-visible [transition:transform_.35s_ease] group-hover:[transition-delay:.25s] [&_path]:[transition:transform_.35s_ease] group-hover:rotate-45"
         >
           <path
             className="group-hover:[transform:rotate(112.5deg)_translate(-27.2%,-80.2%)]"
@@ -84,12 +62,12 @@ const MyCourses = () => {
       </button>
 
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#ffffff' }}>
+        <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'text.primary' }}>
           My Courses
         </Typography>
         
         {courses.length === 0 ? (
-          <Typography variant="body1" sx={{ color: '#ffffff' }}>
+          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
             You haven't enrolled in any courses yet.
           </Typography>
         ) : (
@@ -100,13 +78,14 @@ const MyCourses = () => {
                   maxWidth: 280, 
                   height: '100%', 
                   margin: '15px 0px',
-                  background: 'rgba(30, 30, 30, 0.4)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  color: '#ffffff',
-                  transition: 'transform 0.3s ease-in-out',
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  color: 'text.primary',
+                  transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
                   '&:hover': {
-                    transform: 'scale(1.02)'
+                    transform: 'scale(1.02)',
+                    boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)'
                   }
                 }}>
                   <CardMedia
@@ -116,20 +95,20 @@ const MyCourses = () => {
                     alt={course.title}
                     sx={{
                       objectFit: 'cover',
-                      borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+                      borderBottom: '1px solid rgba(0, 0, 0, 0.08)'
                     }}
                   />
                   <CardContent sx={{ 
                     p: 2,
                     '&:last-child': { pb: 2 }
                   }}>
-                    <Typography gutterBottom variant="subtitle1" component="div" sx={{ color: '#ffffff' }}>
+                    <Typography gutterBottom variant="subtitle1" component="div" sx={{ color: 'text.primary' }}>
                       {course.title}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#9e9e9e', fontSize: '0.875rem' }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>
                       {course.category}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#9e9e9e', fontSize: '0.875rem' }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>
                       Instructor: {course.instructor}
                     </Typography>
                     <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
@@ -189,7 +168,7 @@ const MyCourses = () => {
           </Grid>
         )}
       </Container>
-    </>
+    </div>
   );
 };
 

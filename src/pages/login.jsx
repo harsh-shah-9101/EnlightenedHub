@@ -133,29 +133,29 @@ function Login() {
         : (isSignUp ? "Create Account" : "Sign In");
 
     return (
-        <AuroraBackground>
-            <div className="w-full max-w-md p-8 bg-black/30 backdrop-blur-md rounded-xl">
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="w-full max-w-md p-8 bg-white/80 backdrop-blur-md rounded-xl shadow-lg">
                 <div className="mb-8">
-                    <h2 className="text-3xl font-bold text-white mb-2">Welcome to EnlightenedHub</h2>
-                    <p className="text-gray-300">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome to EnlightenedHub</h2>
+                    <p className="text-gray-600">
                         {isSignUp ? "Create your account" : "Sign in to your account"}
                     </p>
                 </div>
 
                 {error && (
-                    <p className="text-red-500 mb-4 p-3 bg-red-100/10 rounded">
+                    <p className="text-red-600 mb-4 p-3 bg-red-50 rounded">
                         {error}
                     </p>
                 )}
 
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <div className="space-y-2">
-                        <Label htmlFor="email">Email Address</Label>
+                        <Label htmlFor="email" className="text-gray-700">Email Address</Label>
                         <Input
                             id="email"
                             type="email"
                             placeholder="projectmayhem@fc.com"
-                            className="bg-zinc-900 border-none text-white h-12"
+                            className="bg-white border border-gray-300 text-gray-900 h-12"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -163,12 +163,12 @@ function Login() {
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password" className="text-gray-700">Password</Label>
                         <Input
                             id="password"
                             type="password"
                             placeholder="••••••••"
-                            className="bg-zinc-900 border-none text-white h-12"
+                            className="bg-white border border-gray-300 text-gray-900 h-12"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
@@ -179,31 +179,31 @@ function Login() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className={`w-full py-3 px-4 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors flex items-center justify-center ${
+                        className={`w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center ${
                             isLoading ? 'opacity-50 cursor-not-allowed' : ''
                         }`}
                     >
                         {buttonText} {!isLoading && "→"}
                     </button>
 
-                    <p className="text-center text-gray-400 my-4">
+                    <p className="text-center text-gray-600 my-4">
                         {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
                         <button
                             type="button"
                             onClick={() => setIsSignUp(!isSignUp)}
-                            className="text-white hover:underline"
+                            className="text-blue-600 hover:underline"
                         >
                             {isSignUp ? "Sign in" : "Sign up"}
                         </button>
                     </p>
 
-                    <div className="my-8 border-t border-zinc-800"></div>
+                    <div className="my-8 border-t border-gray-200"></div>
 
                     <button
                         type="button"
                         onClick={handleGoogleSignIn}
                         disabled={isLoading}
-                        className={`w-full py-3 px-4 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2 ${
+                        className={`w-full py-3 px-4 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 ${
                             isLoading ? 'opacity-50 cursor-not-allowed' : ''
                         }`}
                     >
@@ -220,7 +220,7 @@ function Login() {
                         type="button"
                         onClick={handleGithubSignIn}
                         disabled={isLoading}
-                        className="w-full py-3 px-4 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2"
+                        className="w-full py-3 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
                     >
                         <svg className="w-5 h-5" viewBox="0 0 24 24">
                             <path
@@ -232,7 +232,7 @@ function Login() {
                     </button>
                 </form>
             </div>
-        </AuroraBackground>
+        </div>
     );
 }
 

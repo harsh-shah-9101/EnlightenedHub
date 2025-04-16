@@ -1,0 +1,40 @@
+.scrolling-wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.animate-scroll {
+  display: flex;
+  animation: scroll 20s linear infinite;
+  width: fit-content;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.logo-container img {
+  height: 2rem;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.logo-container img:hover {
+  opacity: 1;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% / 2));
+  }
+}
+
+.scrolling-wrapper:hover .animate-scroll {
+  animation-play-state: paused;
+}

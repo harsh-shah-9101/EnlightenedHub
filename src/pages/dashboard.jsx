@@ -6,9 +6,179 @@ import { MultiStepLoader } from "../components/ui/multi-step-loader";
 import { FloatingDock } from "../components/ui/floating-dock";
 import { useState, useEffect } from 'react';
 import LoadingTransition from './loading-transition';
+import { PlaceholdersAndVanishInput } from "../components/ui/placeholders-and-vanish-input";
+import styled from 'styled-components';
+import { AiIcon } from "../components/ui/ai-icon";
 
 function Dashboard() {
     const navigate = useNavigate();
+    // Add state for search query and all courses
+    const [searchQuery, setSearchQuery] = useState('');
+    const [allCourses, setAllCourses] = useState([]);
+    const [filteredCourses, setFilteredCourses] = useState([]);
+
+    // Define all courses data
+    useEffect(() => {
+        // Combine all courses into a single array
+        const courses = [
+            // Frontend courses
+            {
+                id: "fe1",
+                title: "React.js Complete Guide",
+                category: "Frontend",
+                imageName: "react",
+                status: "Add to My course",
+                instructor: "Sarah Miller",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fe2",
+                title: "Vue.js for Beginners",
+                category: "Frontend",
+                imageName: "vue",
+                status: "Add to My course",
+                instructor: "John Chen",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fe3",
+                title: "Angular Essentials",
+                category: "Frontend",
+                imageName: "angular",
+                status: "Add to My course",
+                instructor: "Emma Thompson",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fe4",
+                title: "Modern CSS Techniques",
+                category: "Frontend",
+                imageName: "css",
+                status: "Add to My course",
+                instructor: "Mark Wilson",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            
+            // Backend courses
+            {
+                id: "be1",
+                title: "Node.js & Express Masterclass",
+                category: "Backend",
+                imageName: "nodejs-express",
+                status: "Add to My course",
+                instructor: "Mike Ross",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "be2",
+                title: "Python Django Framework",
+                category: "Backend",
+                imageName: "django",
+                status: "Add to My course",
+                instructor: "Lisa Wang",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "be3",
+                title: "Java Spring Boot",
+                category: "Backend",
+                imageName: "spring-boot",
+                status: "Add to My course",
+                instructor: "Robert Johnson",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "be4",
+                title: "ASP.NET Core API Development",
+                category: "Backend",
+                imageName: "aspnet",
+                status: "Add to My course",
+                instructor: "Jennifer Lee",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            
+            // Full Stack courses
+            {
+                id: "fs1",
+                title: "MERN Stack Development",
+                category: "Full Stack",
+                imageName: "mern",
+                status: "Add to My course",
+                instructor: "David Kumar",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fs2",
+                title: "MEAN Stack Complete Course",
+                category: "Full Stack",
+                imageName: "mean",
+                status: "Add to My course",
+                instructor: "Sophia Martinez",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fs3",
+                title: "Python Full Stack with Flask",
+                category: "Full Stack",
+                imageName: "python-flask",
+                status: "Add to My course",
+                instructor: "Tom Anderson",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fs4",
+                title: "Java Full Stack with Spring & React",
+                category: "Full Stack",
+                imageName: "java-spring-react",
+                status: "Add to My course",
+                instructor: "Jessica Lee",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+        ];
+        
+        setAllCourses(courses);
+        setFilteredCourses(courses);
+    }, []);
+
+    // Filter courses based on search query
+    useEffect(() => {
+        if (!searchQuery.trim()) {
+            setFilteredCourses(allCourses);
+            return;
+        }
+        
+        const filtered = allCourses.filter(course => 
+            course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            course.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            course.instructor.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        
+        setFilteredCourses(filtered);
+    }, [searchQuery, allCourses]);
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const query = e.target.search.value;
+        setSearchQuery(query);
+        console.log("Searching for:", query);
+    };
+
+    // Handle input change for real-time filtering
+    const handleSearchInputChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
 
     // Convert sidebarLinks to dockItems
     const dockItems = [
@@ -44,7 +214,7 @@ function Dashboard() {
         {
             href: "/dashboard/ai-chat",
             title: "AI Chat",
-            icon: <IconRobot className="w-5 h-5 text-emerald-500" />,
+            icon: <AiIcon className="w-5 h-5 text-emerald-500" />,
             onClick: () => navigate('/dashboard/ai-chat')
         },
         {
@@ -63,154 +233,132 @@ function Dashboard() {
             
             <div className="flex h-screen overflow-hidden">
                 {/* Video Background - Optimized with Loading States */}
-                <div className="fixed inset-0 -z-10 bg-neutral-900">
+                <div className="fixed inset-0 -z-10 bg-white">
                     <div 
-                        className="absolute inset-0 bg-black/50"
+                        className="absolute inset-0 "
                         style={{ mixBlendMode: 'multiply' }}
                     />
-                    <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        preload="metadata"
-                        poster="/images/video-poster.jpg"
-                        className="w-full h-full object-cover opacity-0 transition-opacity duration-1000"
-                        onLoadedData={(e) => {
-                            e.target.classList.remove('opacity-0');
-                            e.target.classList.add('opacity-100');
-                        }}
-                    >
-                        <source 
-                            src="/videos/vecteezy_abstract-grey-and-black-professional-motion-background_34700930.mp4"
-                            type="video/mp4"
-                        />
-                    </video>
                 </div>
 
-                <style jsx global>{`
-                    /* Custom Scrollbar Styling */
-                    ::-webkit-scrollbar {
-                        width: 10px;
-                    }
-                    
-                    ::-webkit-scrollbar-track {
-                        background: rgba(15, 15, 15, 0.8);
-                        backdrop-filter: blur(10px);
-                    }
-                    
-                    ::-webkit-scrollbar-thumb {
-                        background: rgba(30, 30, 30, 0.9);
-                        border-radius: 5px;
-                        border: 1px solid rgba(255, 255, 255, 0.1);
-                    }
-                    
-                    ::-webkit-scrollbar-thumb:hover {
-                        background: rgba(40, 40, 40, 0.9);
-                    }
-                `}</style>
+            
 
                 {/* Replace entire Sidebar section with FloatingDock */}
-                <FloatingDock 
-                    items={dockItems}
-                    desktopClassName="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
-                    mobileClassName="fixed bottom-8 right-8 z-50"
-                />
+                <Sidebar>
+                    <SidebarBody>
+                        {dockItems.map((item) => (
+                            <SidebarLink key={item.title} link={item} />
+                        ))}
+                    </SidebarBody>
+                </Sidebar>
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto relative">
-                    <div className="max-w-7xl mx-auto p-6 pb-32">
+                <main className="flex-1 overflow-y-auto max-w-screen relative">
+                    <div className=" mx-auto ">
                         {/* Make the header sticky with blur effect and top margin */}
-                        <div className="flex items-center justify-between rounded-full mb-8 sticky top-4 py-3 z-40" style={{
-                            backgroundColor: 'rgba(30, 30, 30, 0.4)',
+                        <div className="flex items-center justify-between rounded-md mb-8 sticky top-0 py-3 z-40 w-full" style={{
+                            backgroundColor: 'rgba(255, 255, 255, 0.8)',
                             backdropFilter: 'blur(20px)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            marginLeft: '-1.5rem',
-                            marginRight: '-1.5rem',
+                            border: '1px solid rgba(0, 0, 0, 0.1)',
                             paddingLeft: '1.5rem',
                             paddingRight: '1.5rem',
+                            backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.1) 0%, rgba(255, 255, 255, 0) 100%)',
+                            backgroundSize: '200% 200%',
+                            animation: 'gradient-move 10s ease infinite',
+                            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)'
                         }}>
-                            <h1 className="text-2xl font-semibold text-neutral-800 dark:text-white">Dashboard</h1>
-                            <div className="flex items-center gap-4">
-                                <img 
-                                    src={localStorage.getItem('profilePic') || 'https://via.placeholder.com/40'} 
-                                    alt="Profile" 
-                                    className="w-10 h-10 rounded-full object-cover border-2 border-neutral-700 flex-shrink-0"
-                                />
+                            <div className="max-w-7xl mx-auto w-full flex items-center justify-between gap-4">
+                                <h1 className="text-2xl font-semibold text-neutral-800">
+                                    Dashboard
+                                </h1>
+                                <div className="flex items-center gap-4">
+                                    <div className="flex-1 max-w-md">
+                                        {/* Modified search input to handle real-time filtering */}
+                                        <PlaceholdersAndVanishInput
+                                            placeholders={[
+                                                "Search for courses...",
+                                                "Find tutorials...",
+                                                "Explore topics...",
+                                                "Discover new skills..."
+                                            ]}
+                                            onSubmit={handleSearch}
+                                            onChange={handleSearchInputChange}
+                                            value={searchQuery}
+                                        />
+                                    </div>
+                                    <div className="relative group">
+                                        <img 
+                                            src={localStorage.getItem('profilePic') || 'https://via.placeholder.com/40'} 
+                                            alt="Profile" 
+                                            className="w-10 h-10 rounded-full object-cover border-2 border-neutral-700 flex-shrink-0 hover:scale-110 transition-transform duration-300"
+                                        />
+                                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         {/* Dashboard Content */}
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="grid  mx-10 grid-cols-1 md:grid-cols-3 gap-6">
 
                             {/* Course Progress Card */}
-                            <div className="rounded-xl p-6 shadow-sm" style={{
-                                backgroundColor: 'rgba(30, 30, 30, 0.4)',
-                                backdropFilter: 'blur(10px)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)'
-                            }}>
+                            <div className="group rounded-xl p-6 bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all duration-300 border border-gray-200">
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <h3 className="text-sm font-medium text-neutral-600 dark:text-neutral-400">Current Course</h3>
-                                        <p className="text-lg font-semibold text-neutral-800 dark:text-white mt-1">React Fundamentals</p>
+                                        <h3 className="text-sm font-medium text-neutral-600">Current Course</h3>
+                                        <p className="text-lg font-semibold text-neutral-800 mt-1">React Fundamentals</p>
                                     </div>
-                                    <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">In Progress</span>
+                                    <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full animate-pulse">In Progress</span>
                                 </div>
                                 <div className="mt-4">
                                     <div className="flex justify-between text-sm mb-2">
-                                        <span className="text-neutral-600 dark:text-neutral-400">Progress</span>
-                                        <span className="text-neutral-800 dark:text-white">65%</span>
+                                        <span className="text-neutral-600">Progress</span>
+                                        <span className="text-neutral-800">65%</span>
                                     </div>
-                                    <div className="h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full">
-                                        <div className="h-2 bg-blue-500 rounded-full" style={{ width: '65%' }}></div>
+                                    <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
+                                        <div 
+                                            className="h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-progress" 
+                                            style={{ width: '65%' }}
+                                        />
                                     </div>
                                 </div>
                                 <div className="mt-4 flex justify-between items-center">
-                                    <span className="text-xs text-neutral-500 dark:text-neutral-400">Next: Advanced Components</span>
-                                    <button className="text-sm text-blue-500 hover:text-blue-600">Continue</button>
+                                    <span className="text-xs text-neutral-500">Next: Advanced Components</span>
+                                    <button className="text-sm text-blue-600 hover:text-blue-700 transition-colors">Continue</button>
                                 </div>
                             </div>
 
                             {/* Popular Courses Card */}
-                            <div className="rounded-xl p-6 shadow-sm" style={{
-                                backgroundColor: 'rgba(30, 30, 30, 0.4)',
-                                backdropFilter: 'blur(10px)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)'
-                            }}>
-                                <h3 className="text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-4">Popular Courses</h3>
+                            <div className="group rounded-xl p-6 bg-gradient-to-br from-green-50 to-blue-50 hover:shadow-lg transition-all duration-300 border border-gray-200">
+                                <h3 className="text-sm font-medium text-neutral-600 mb-4">Popular Courses</h3>
                                 <div className="space-y-3">
                                     {['Node.js Mastery', 'Python for AI', 'Web Security'].map((course, index) => (
-                                        <div key={index} className="flex items-center gap-3">
-                                            <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                                            <span className="text-sm text-neutral-800 dark:text-white">{course}</span>
+                                        <div key={index} className="flex items-center gap-3 hover:translate-x-2 transition-transform duration-200">
+                                            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-green-400 to-blue-400 animate-pulse"></div>
+                                            <span className="text-sm text-neutral-800">{course}</span>
                                         </div>
                                     ))}
                                 </div>
                                 
                                 <button 
                                     onClick={() => navigate('/dashboard/courses')} 
-                                    className="mt-4 text-sm text-blue-500 hover:text-blue-600"
+                                    className="mt-4 text-sm text-blue-600 hover:text-blue-700 transition-colors"
                                 >
                                     View All Courses
                                 </button>
                             </div>
 
                             {/* Achievement Card */}
-                            <div className="rounded-xl p-6 shadow-sm" style={{
-                                backgroundColor: 'rgba(30, 30, 30, 0.4)',
-                                backdropFilter: 'blur(10px)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)'
-                            }}>
-                                <h3 className="text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-4">Recent Achievements</h3>
+                            <div className="group rounded-xl p-6 bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-lg transition-all duration-300 border border-gray-200">
+                                <h3 className="text-sm font-medium text-neutral-600 mb-4">Recent Achievements</h3>
                                 <div className="space-y-3">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                                            <IconBook className="w-4 h-4 text-blue-500" />
+                                    <div className="flex items-center gap-3 hover:translate-x-2 transition-transform duration-200">
+                                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 flex items-center justify-center animate-bounce">
+                                            <IconBook className="w-4 h-4 text-purple-500" />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-medium text-neutral-800 dark:text-white">Course Completed</p>
-                                            <p className="text-xs text-neutral-500 dark:text-neutral-400">JavaScript Basics</p>
+                                            <p className="text-sm font-medium text-neutral-800">Course Completed</p>
+                                            <p className="text-xs text-neutral-500">JavaScript Basics</p>
                                         </div>
                                     </div>
                                 </div>
@@ -218,71 +366,25 @@ function Dashboard() {
                         </div>
 
                         {/* Categorized Courses */}
-
-                        <div className="mt-12">
-                            <h2 className="text-xl font-semibold text-neutral-800 dark:text-white mb-8">
+                        <div className="  mx-10 mt-12">
+                            <h2 className="text-xl font-semibold text-neutral-800 dark:text-black mb-8">
                                 Explore Our Course Categories
                             </h2>
 
                             {/* Frontend Development */}
                             <div className="mb-10">
                                 <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-lg font-medium text-neutral-700 dark:text-neutral-200">Frontend Development</h3>
+                                    <h3 className="text-lg font-medium text-black">Frontend Development</h3>
                                     <button 
                                         onClick={() => navigate('/dashboard/my-courses')} 
-                                        className="text-sm text-blue-500 hover:text-blue-600"
+                                        className="text-sm text-blue-600 hover:text-blue-700"
                                     >
                                         View All
                                     </button>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                    {[
-                                        {
-                                            id: "fe1",
-                                            title: "React.js Complete Guide",
-                                            category: "Frontend",
-                                            imageName: "react",
-                                            status: "Add to My course",
-                                            instructor: "Sarah Miller",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fe2",
-                                            title: "Vue.js for Beginners",
-                                            category: "Frontend",
-                                            imageName: "vue",
-                                            status: "Add to My course",
-                                            instructor: "John Chen",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fe3",
-                                            title: "Angular Essentials",
-                                            category: "Frontend",
-                                            imageName: "angular",
-                                            status: "Add to My course",
-                                            instructor: "Emma Thompson",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fe4",
-                                            title: "Modern CSS Techniques",
-                                            category: "Frontend",
-                                            imageName: "css",
-                                            status: "Add to My course",
-                                            instructor: "Mark Wilson",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        }
-                                    ].map((course) => (
-                                        <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{
-                                            backgroundColor: 'rgba(30, 30, 30, 0.4)',
-                                            backdropFilter: 'blur(10px)',
-                                            border: '1px solid rgba(255, 255, 255, 0.1)'
-                                        }}>
+                                    {filteredCourses.filter(course => course.category === "Frontend").map((course) => (
+                                        <div key={course.id} className="group rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all duration-300 border border-gray-200">
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img
                                                     src="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg?t=st=1743678912~exp=1743682512~hmac=f83f9a80a29aca93f14eb654d24cc4f6fdc23384eec36138db918796fcf37d23&w=1380"
@@ -290,17 +392,17 @@ function Dashboard() {
                                                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                                                 />
                                                 {course.price === "FREE" && (
-                                                    <span className="absolute top-2 right-2 bg-emerald-500 text-white text-xs px-2 py-1 rounded">
+                                                    <span className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
                                                         {course.price}
                                                     </span>
                                                 )}
                                             </div>
-                                            <div className="p-4">
+                                            <div className="p-4 bg-white/50 backdrop-blur-sm">
                                                 <div className="flex items-center justify-between">
-                                                    <span className="text-sm text-zinc-400">{course.category}</span>
-                                                    <span className="text-xs text-neutral-400">{course.instructor}</span>
+                                                    <span className="text-sm text-blue-600">{course.category}</span>
+                                                    <span className="text-xs text-gray-500">{course.instructor}</span>
                                                 </div>
-                                                <h3 className="text-white text-sm font-medium mt-2 line-clamp-2">
+                                                <h3 className="text-gray-800 text-sm font-semibold mt-2 line-clamp-2">
                                                     {course.title}
                                                 </h3>
                                                 <button 
@@ -319,7 +421,7 @@ function Dashboard() {
                                                             alert('Course already in your list!');
                                                         }
                                                     }} 
-                                                    className="inline-block mt-3 text-xs bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-900"
+                                                    className="inline-block mt-3 text-xs bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700 transition-colors"
                                                 >
                                                     {course.status}
                                                 </button>
@@ -332,57 +434,12 @@ function Dashboard() {
                             {/* Backend Development */}
                             <div className="mb-10">
                                 <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-lg font-medium text-neutral-700 dark:text-neutral-200">Backend Development</h3>
-                                    <button className="text-sm text-blue-500 hover:text-blue-600">View All</button>
+                                    <h3 className="text-lg font-medium text-black">Backend Development</h3>
+                                    <button className="text-sm text-blue-600 hover:text-blue-700">View All</button>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                    {[
-                                        {
-                                            id: "be1",
-                                            title: "Node.js & Express Masterclass",
-                                            category: "Backend",
-                                            imageName: "nodejs-express",
-                                            status: "Add to My course",
-                                            instructor: "Mike Ross",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "be2",
-                                            title: "Python Django Framework",
-                                            category: "Backend",
-                                            imageName: "django",
-                                            status: "Add to My course",
-                                            instructor: "Lisa Wang",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "be3",
-                                            title: "Ruby on Rails Development",
-                                            category: "Backend",
-                                            imageName: "rails",
-                                            status: "Add to My course",
-                                            instructor: "David Smith",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "be4",
-                                            title: "PHP Laravel Framework",
-                                            category: "Backend",
-                                            imageName: "laravel",
-                                            status: "Add to My course",
-                                            instructor: "Anna Brown",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        }
-                                    ].map((course) => (
-                                        <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{
-                                            backgroundColor: 'rgba(30, 30, 30, 0.4)',
-                                            backdropFilter: 'blur(10px)',
-                                            border: '1px solid rgba(255, 255, 255, 0.1)'
-                                        }}>
+                                    {filteredCourses.filter(course => course.category === "Backend").map((course) => (
+                                        <div key={course.id} className="group rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all duration-300 border border-gray-200">
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img
                                                     src="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg?t=st=1743678912~exp=1743682512~hmac=f83f9a80a29aca93f14eb654d24cc4f6fdc23384eec36138db918796fcf37d23&w=1380"
@@ -390,17 +447,17 @@ function Dashboard() {
                                                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                                                 />
                                                 {course.price === "FREE" && (
-                                                    <span className="absolute top-2 right-2 bg-emerald-500 text-white text-xs px-2 py-1 rounded">
+                                                    <span className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
                                                         {course.price}
                                                     </span>
                                                 )}
                                             </div>
-                                            <div className="p-4">
+                                            <div className="p-4 bg-white/50 backdrop-blur-sm">
                                                 <div className="flex items-center justify-between">
-                                                    <span className="text-sm text-zinc-400">{course.category}</span>
-                                                    <span className="text-xs text-neutral-400">{course.instructor}</span>
+                                                    <span className="text-sm  text-blue-600">{course.category}</span>
+                                                    <span className="text-xs  text-gray-500">{course.instructor}</span>
                                                 </div>
-                                                <h3 className="text-white text-sm font-medium mt-2 line-clamp-2">
+                                                <h3 className="text-gray-800 text-sm font-semibold mt-2 line-clamp-2">
                                                     {course.title}
                                                 </h3>
                                                 <button 
@@ -431,57 +488,12 @@ function Dashboard() {
                             {/* Full Stack Development */}
                             <div className="mb-10">
                                 <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-lg font-medium text-neutral-700 dark:text-neutral-200">Full Stack Development</h3>
-                                    <button className="text-sm text-blue-500 hover:text-blue-600">View All</button>
+                                    <h3 className="text-lg font-medium text-black">Full Stack Development</h3>
+                                    <button className="text-sm text-blue-600 hover:text-blue-700">View All</button>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                    {[
-                                        {
-                                            id: "fs1",
-                                            title: "MERN Stack Development",
-                                            category: "Full Stack",
-                                            imageName: "mern",
-                                            status: "Add to My course",
-                                            instructor: "David Kumar",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fs2",
-                                            title: "Java Spring Full Stack",
-                                            category: "Full Stack",
-                                            imageName: "spring",
-                                            status: "Add to My course",
-                                            instructor: "Emma Clark",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fs3",
-                                            title: "Python Full Stack with Flask",
-                                            category: "Full Stack",
-                                            imageName: "python-flask",
-                                            status: "Add to My course",
-                                            instructor: "Tom Anderson",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fs4",
-                                            title: ".NET Core Full Stack",
-                                            category: "Full Stack",
-                                            imageName: "dotnet",
-                                            status: "Add to My course",
-                                            instructor: "Jessica Lee",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        }
-                                    ].map((course) => (
-                                        <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{
-                                            backgroundColor: 'rgba(30, 30, 30, 0.4)',
-                                            backdropFilter: 'blur(10px)',
-                                            border: '1px solid rgba(255, 255, 255, 0.1)'
-                                        }}>
+                                    {filteredCourses.filter(course => course.category === "Full Stack").map((course) => (
+                                        <div key={course.id} className="group rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all duration-300 border border-gray-200">
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img
                                                     src="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg?t=st=1743678912~exp=1743682512~hmac=f83f9a80a29aca93f14eb654d24cc4f6fdc23384eec36138db918796fcf37d23&w=1380"
@@ -489,17 +501,17 @@ function Dashboard() {
                                                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                                                 />
                                                 {course.price === "FREE" && (
-                                                    <span className="absolute top-2 right-2 bg-emerald-500 text-white text-xs px-2 py-1 rounded">
+                                                    <span className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
                                                         {course.price}
                                                     </span>
                                                 )}
                                             </div>
-                                            <div className="p-4">
+                                            <div className="p-4 bg-white/50 backdrop-blur-sm">
                                                 <div className="flex items-center justify-between">
-                                                    <span className="text-sm text-zinc-400">{course.category}</span>
-                                                    <span className="text-xs text-neutral-400">{course.instructor}</span>
+                                                    <span className="text-sm text-blue-600">{course.category}</span>
+                                                    <span className="text-xs text-gray-500">{course.instructor}</span>
                                                 </div>
-                                                <h3 className="text-white text-sm font-medium mt-2 line-clamp-2">
+                                                <h3 className="text-gray-800 text-sm font-semibold mt-2 line-clamp-2">
                                                     {course.title}
                                                 </h3>
                                                 <button 
@@ -526,69 +538,6 @@ function Dashboard() {
                                     ))}
                                 </div>
                             </div>
-
-                            {/* Cyber Security */}
-                            <div className="mb-10">
-                                <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-lg font-medium text-neutral-700 dark:text-neutral-200">Cyber Security</h3>
-                                    <button className="text-sm text-blue-500 hover:text-blue-600">View All</button>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                    {[
-                                        {
-                                            id: "cs1",
-                                            title: "Ethical Hacking Fundamentals",
-                                            category: "Security",
-                                            imageName: "ethical-hacking",
-                                            status: "Add to My course",
-                                            instructor: "Alex Security",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "cs2",
-                                            title: "Network Security Basics",
-                                            category: "Security",
-                                            imageName: "network-security",
-                                            status: "Add to My course",
-                                            instructor: "Rachel Shield",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        }
-                                    ].map((course) => (
-                                        <div key={course.id} className="group rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300" style={{
-                                            backgroundColor: 'rgba(30, 30, 30, 0.4)',
-                                            backdropFilter: 'blur(10px)',
-                                            border: '1px solid rgba(255, 255, 255, 0.1)'
-                                        }}>
-                                            <div className="aspect-video relative overflow-hidden">
-                                                <img
-                                                    src="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg?t=st=1743678912~exp=1743682512~hmac=f83f9a80a29aca93f14eb654d24cc4f6fdc23384eec36138db918796fcf37d23&w=1380"
-                                                    alt={course.title}
-                                                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                                                />
-                                                {course.price === "FREE" && (
-                                                    <span className="absolute top-2 right-2 bg-emerald-500 text-white text-xs px-2 py-1 rounded">
-                                                        {course.price}
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <div className="p-4">
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-sm text-zinc-400">{course.category}</span>
-                                                    <span className="text-xs text-neutral-400">{course.instructor}</span>
-                                                </div>
-                                                <h3 className="text-white text-sm font-medium mt-2 line-clamp-2">
-                                                    {course.title}
-                                                </h3>
-                                                <button className="inline-block mt-3 text-xs bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-900">
-                                                    {course.status}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </main>
@@ -601,3 +550,65 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+const SettingsIcon = () => {
+  return (
+    <StyledWrapper>
+      <button className="setting-btn">
+        <span className="bar bar1" />
+        <span className="bar bar2" />
+        <span className="bar bar1" />
+      </button>
+    </StyledWrapper>
+  );
+}
+
+const StyledWrapper = styled.div`
+  .setting-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background-color: rgb(129, 110, 216);
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0px 0px 0px 2px rgb(212, 209, 255);
+  }
+  .bar {
+    width: 50%;
+    height: 2px;
+    background-color: rgb(229, 229, 229);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 2px;
+  }
+  .bar::before {
+    content: "";
+    width: 2px;
+    height: 2px;
+    background-color: rgb(126, 117, 255);
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid white;
+    transition: all 0.3s;
+    box-shadow: 0px 0px 5px white;
+  }
+  .bar1::before {
+    transform: translateX(-4px);
+  }
+  .bar2::before {
+    transform: translateX(4px);
+  }
+  .setting-btn:hover .bar1::before {
+    transform: translateX(4px);
+  }
+  .setting-btn:hover .bar2::before {
+    transform: translateX(-4px);
+  }
+`;
