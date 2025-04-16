@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Typography, Paper, TextField, Button, Box, Slider, IconButton, Stack, LinearProgress, List, ListItem, ListItemIcon, ListItemText, Divider, Tooltip } from '@mui/material';
 import { PlayArrow, Pause, VolumeUp, VolumeOff, Fullscreen, ArrowBack, PlayCircleOutline, Download, Share, ThumbUp, ThumbUpOutlined, NoteAdd, Description } from '@mui/icons-material';
-import DarkAnimatedBackground from '../components/DarkAnimatedBackground';
+// Replace DarkAnimatedBackground with LightAnimatedBackground
+import LightAnimatedBackground from '../components/LightAnimatedBackground';
 
 const CourseDetail = () => {
   const { courseId } = useParams();
@@ -172,12 +173,12 @@ const CourseDetail = () => {
   }
 
   return (
-    <DarkAnimatedBackground>
+    <LightAnimatedBackground>
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
           <button
             onClick={() => navigate(-1)}
-            className="group flex items-center justify-center relative z-10 [transition:all_0.5s_ease] rounded-[0.375rem] p-[5px] cursor-pointer border border-[#999] outline-none focus-visible:outline-0 mr-4"
+            className="group flex items-center justify-center relative z-10 [transition:all_0.5s_ease] rounded-[0.375rem] p-[5px] cursor-pointer border border-gray-300 outline-none focus-visible:outline-0 hover:border-gray-500"
             style={{ backgroundColor: 'transparent' }}
           >
             <svg
@@ -187,7 +188,7 @@ const CourseDetail = () => {
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
               className="w-7 h-7 overflow-visible [transition:transform_.35s_ease] group-hover:[transition-delay:.25s] [&_path]:[transition:transform_.35s_ease] group-hover:rotate-45"
-              style={{ color: 'white' }}
+              style={{ color: '#1e293b' }}
             >
               <path
                 className="group-hover:[transform:rotate(112.5deg)_translate(-27.2%,-80.2%)]"
@@ -203,7 +204,7 @@ const CourseDetail = () => {
               />
             </svg>
           </button>
-          <Typography variant="h4" component="h1" sx={{ color: '#ffffff', fontSize: { xs: '1.75rem', md: '2.25rem' } }}>
+          <Typography variant="h4" component="h1" sx={{ color: '#1e293b', fontSize: { xs: '1.75rem', md: '2.25rem' } }}>
             {course.title}
           </Typography>
         </Box>
@@ -217,12 +218,13 @@ const CourseDetail = () => {
               width: '100%',
               maxWidth: '1200px',
               margin: '0 auto',
-              backgroundColor: 'rgba(30, 30, 30, 0.6)',
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
               backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(0, 0, 0, 0.1)',
               overflow: 'hidden',
               borderRadius: '16px',
               aspectRatio: '16/9',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)'
             }}
           >
             <iframe
@@ -242,16 +244,17 @@ const CourseDetail = () => {
         <Box sx={{ mb: 4 }}>
           <Paper sx={{
             p: 3,
-            backgroundColor: 'rgba(30, 30, 30, 0.6)',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
             backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(0, 0, 0, 0.1)',
             borderRadius: '16px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)'
           }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-              <Typography variant="h6" sx={{ color: '#ffffff' }}>Course Progress</Typography>
+              <Typography variant="h6" sx={{ color: '#1e293b' }}>Course Progress</Typography>
               <Box sx={{ display: 'flex', gap: 2 }}>
                 <Tooltip title="Share Course">
-                  <IconButton onClick={() => {}} sx={{ color: 'white' }}>
+                  <IconButton onClick={() => {}} sx={{ color: '#1e293b' }}>
                     <Share />
                   </IconButton>
                 </Tooltip>
@@ -262,7 +265,7 @@ const CourseDetail = () => {
                       setLiked(newLiked);
                       localStorage.setItem(`liked_${courseId}`, JSON.stringify(newLiked));
                     }} 
-                    sx={{ color: 'white' }}
+                    sx={{ color: '#1e293b' }}
                   >
                     {liked ? <ThumbUp /> : <ThumbUpOutlined />}
                   </IconButton>
@@ -275,53 +278,52 @@ const CourseDetail = () => {
               sx={{ 
                 height: 8, 
                 borderRadius: 4,
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                backgroundColor: 'rgba(0, 0, 0, 0.1)',
                 '& .MuiLinearProgress-bar': {
                   backgroundColor: '#2196f3'
                 }
               }} 
             />
-            <Typography variant="body2" sx={{ color: '#ffffff', mt: 1 }}>{progress}% Completed</Typography>
+            <Typography variant="body2" sx={{ color: '#64748b', mt: 1 }}>{progress}% Completed</Typography>
           </Paper>
         </Box>
-
-
 
         {/* Course Materials */}
         <Box sx={{ mb: 4 }}>
           <Paper sx={{
             p: 3,
-            backgroundColor: 'rgba(30, 30, 30, 0.6)',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
             backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(0, 0, 0, 0.1)',
             borderRadius: '16px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)'
           }}>
-            <Typography variant="h6" sx={{ color: '#ffffff', mb: 2 }}>Course Materials</Typography>
+            <Typography variant="h6" sx={{ color: '#1e293b', mb: 2 }}>Course Materials</Typography>
             <List>
               {materials.map((material, index) => (
                 <React.Fragment key={material.id}>
                   <ListItem 
                     sx={{ 
                       borderRadius: '8px',
-                      '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.05)' }
+                      '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' }
                     }}
                   >
                     <ListItemIcon>
-                      <Description sx={{ color: 'white' }} />
+                      <Description sx={{ color: '#1e293b' }} />
                     </ListItemIcon>
                     <ListItemText 
                       primary={material.name}
                       secondary={material.type}
                       sx={{ 
-                        '& .MuiListItemText-primary': { color: '#ffffff' },
-                        '& .MuiListItemText-secondary': { color: 'rgba(255, 255, 255, 0.7)' }
+                        '& .MuiListItemText-primary': { color: '#1e293b' },
+                        '& .MuiListItemText-secondary': { color: '#64748b' }
                       }}
                     />
-                    <IconButton sx={{ color: 'white' }}>
+                    <IconButton sx={{ color: '#1e293b' }}>
                       <Download />
                     </IconButton>
                   </ListItem>
-                  {index < materials.length - 1 && <Divider sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />}
+                  {index < materials.length - 1 && <Divider sx={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }} />}
                 </React.Fragment>
               ))}
             </List>
@@ -332,14 +334,15 @@ const CourseDetail = () => {
         <Box sx={{ mb: 4 }}>
           <Paper sx={{
             p: 3,
-            backgroundColor: 'rgba(30, 30, 30, 0.6)',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
             backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(0, 0, 0, 0.1)',
             borderRadius: '16px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)'
           }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-              <NoteAdd sx={{ color: '#ffffff' }} />
-              <Typography variant="h6" sx={{ color: '#ffffff' }}>My Notes</Typography>
+              <NoteAdd sx={{ color: '#1e293b' }} />
+              <Typography variant="h6" sx={{ color: '#1e293b' }}>My Notes</Typography>
             </Box>
             <TextField
               fullWidth
@@ -351,10 +354,10 @@ const CourseDetail = () => {
               sx={{
                 mb: 2,
                 '& .MuiOutlinedInput-root': {
-                  color: 'white',
-                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                  '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                  '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
+                  color: '#1e293b',
+                  backgroundColor: 'rgba(0, 0, 0, 0.02)',
+                  '& fieldset': { borderColor: 'rgba(0, 0, 0, 0.1)' },
+                  '&:hover fieldset': { borderColor: 'rgba(0, 0, 0, 0.2)' },
                   '&.Mui-focused fieldset': { borderColor: '#2196f3' }
                 }
               }}
@@ -388,13 +391,13 @@ const CourseDetail = () => {
                   key={note.id}
                   sx={{
                     p: 2,
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.02)',
+                    border: '1px solid rgba(0, 0, 0, 0.1)',
                     borderRadius: '8px'
                   }}
                 >
-                  <Typography sx={{ color: '#ffffff' }}>{note.text}</Typography>
-                  <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.5)', mt: 1, display: 'block' }}>
+                  <Typography sx={{ color: '#1e293b' }}>{note.text}</Typography>
+                  <Typography variant="caption" sx={{ color: '#64748b', mt: 1, display: 'block' }}>
                     {new Date(note.timestamp).toLocaleString()}
                   </Typography>
                 </Paper>
@@ -404,27 +407,25 @@ const CourseDetail = () => {
         </Box>
 
         {/* Query Section */}
-        <Paper 
-          elevation={0}
-          sx={{ 
-            p: { xs: 3, md: 4 },
-            backgroundColor: 'rgba(30, 30, 30, 0.6)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: '16px',
-            transition: 'transform 0.3s ease-in-out',
-            '&:hover': {
-              transform: 'translateY(-4px)'
-            },
-            maxWidth: '1200px',
-            margin: '0 auto'
-          }}
-        >
+        <Paper elevation={0} sx={{
+          p: { xs: 3, md: 4 },
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(0, 0, 0, 0.1)',
+          borderRadius: '16px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
+          transition: 'transform 0.3s ease-in-out',
+          '&:hover': {
+            transform: 'translateY(-4px)'
+          },
+          maxWidth: '1200px',
+          margin: '0 auto'
+        }}>
           <Typography 
             variant="h5" 
             gutterBottom 
             sx={{ 
-              color: '#ffffff',
+              color: '#1e293b',
               fontWeight: 600,
               mb: 3,
               display: 'flex',
@@ -449,20 +450,20 @@ const CourseDetail = () => {
               sx={{
                 mb: 3,
                 '& .MuiOutlinedInput-root': {
-                  color: 'white',
-                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                  color: '#1e293b',
+                  backgroundColor: 'rgba(0, 0, 0, 0.02)',
                   borderRadius: '12px',
                   transition: 'all 0.3s ease',
                   fontSize: { xs: '0.875rem', md: '1rem' },
                   padding: { xs: '12px', md: '16px' },
                   '& fieldset': {
-                    borderColor: 'rgba(255, 255, 255, 0.1)'
+                    borderColor: 'rgba(0, 0, 0, 0.1)'
                   },
                   '&:hover fieldset': {
-                    borderColor: 'rgba(255, 255, 255, 0.3)'
+                    borderColor: 'rgba(0, 0, 0, 0.2)'
                   },
                   '&.Mui-focused': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.05)',
                     '& fieldset': {
                       borderColor: '#2196f3'
                     }
@@ -470,7 +471,7 @@ const CourseDetail = () => {
                 },
                 '& .MuiInputBase-input': {
                   '&::placeholder': {
-                    color: 'rgba(255, 255, 255, 0.5)',
+                    color: '#64748b',
                     opacity: 1
                   }
                 }
@@ -505,7 +506,7 @@ const CourseDetail = () => {
               variant="h6" 
               gutterBottom 
               sx={{ 
-                color: '#ffffff',
+                color: '#1e293b',
                 fontWeight: 500,
                 mb: 3,
                 display: 'flex',
@@ -524,8 +525,8 @@ const CourseDetail = () => {
                   elevation={0}
                   sx={{
                     p: 3,
-                    backgroundColor: 'rgba(45, 45, 45, 0.6)',
-                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.02)',
+                    border: '1px solid rgba(0, 0, 0, 0.1)',
                     borderRadius: '12px',
                     transition: 'all 0.3s ease',
                     animation: `fadeIn 0.5s ease-out ${index * 0.1}s both`,
@@ -534,14 +535,14 @@ const CourseDetail = () => {
                       to: { opacity: 1, transform: 'translateY(0)' }
                     },
                     '&:hover': {
-                      backgroundColor: 'rgba(55, 55, 55, 0.6)',
+                      backgroundColor: 'rgba(0, 0, 0, 0.05)',
                       transform: 'translateX(8px)'
                     }
                   }}
                 >
                   <Typography 
                     sx={{ 
-                      color: '#ffffff',
+                      color: '#1e293b',
                       fontSize: '1rem',
                       lineHeight: 1.6
                     }}
@@ -551,7 +552,7 @@ const CourseDetail = () => {
                   <Typography 
                     variant="caption" 
                     sx={{ 
-                      color: 'rgba(255, 255, 255, 0.5)',
+                      color: '#64748b',
                       display: 'block',
                       mt: 2,
                       fontSize: '0.85rem'
@@ -565,7 +566,7 @@ const CourseDetail = () => {
           </Box>
         </Paper>
       </Container>
-    </DarkAnimatedBackground>
+    </LightAnimatedBackground>
   );
 };
 
