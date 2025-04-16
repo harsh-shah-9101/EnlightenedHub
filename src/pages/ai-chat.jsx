@@ -7,14 +7,68 @@ import { TbMessageChatbot } from 'react-icons/tb';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useNavigate } from 'react-router-dom';
 import { IoClose } from 'react-icons/io5';
+import NewChatButton from '../components/NewChatButton';
+import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
+import { IconHome, IconBook, IconBriefcase, IconPhone, IconSettings, IconLogout, IconRobot } from "@tabler/icons-react";
 
 const AiChat = () => {
   const [message, setMessage] = useState("");
   const [isResponseScreen, setisResponseScreen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const navigate = useNavigate();
+
+  // Add sidebar items
+  const sidebarItems = [
+    {
+      href: "/dashboard",
+      title: "Dashboard",
+      icon: <IconHome className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+      onClick: () => navigate('/dashboard')
+    },
+    {
+      href: "/dashboard/courses",
+      title: "My Courses",
+      icon: <IconBook className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+      onClick: () => navigate('/dashboard/courses')
+    },
+    {
+      href: "/job",
+      title: "Job Portal",
+      icon: <IconBriefcase className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+      onClick: () => navigate('/job')
+    },
+    {
+      href: "/dashboard/support",
+      title: "Support",
+      icon: <IconPhone className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+      onClick: () => navigate('/dashboard/support')
+    },
+    {
+      href: "/dashboard/setting",
+      title: "Settings",
+      icon: <IconSettings className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+      onClick: () => navigate('/dashboard/setting')
+    },
+    {
+      href: "/dashboard/ai-chat",
+      title: "AI Chat",
+      icon: <IconRobot className="w-5 h-5 text-emerald-500" />,
+      onClick: () => navigate('/dashboard/ai-chat')
+    },
+    {
+      href: "/",
+      title: "Logout",
+      icon: <IconLogout className="w-5 h-5 text-red-500" />,
+      onClick: () => {
+        localStorage.clear();
+        navigate('/');
+      }
+    }
+  ];
+
+  // Remove navigate constant and handleClose function
+  
   const hitRequest = () => {
     if (message) {
       generateResponse(message);
@@ -52,18 +106,19 @@ const AiChat = () => {
     if (!message.trim()) return;
     
     setIsLoading(true);
-    const userMessage = { type: "user", content: message };
+    const userMessage = { type: "userMsg", text: message };
     setMessages(prev => [...prev, userMessage]);
     setMessage("");
 
     try {
       const genAI = new GoogleGenerativeAI("AIzaSyCnW3-ACsuvQMRZkgZxEjIPOvKsS_kImZs");
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const result = await model.generateContent(message);
       const response = await result.response;
       
-      const aiMessage = { type: "ai", content: response.text() };
+      const aiMessage = { type: "responseMsg", text: response.text() };
       setMessages(prev => [...prev, aiMessage]);
+      setisResponseScreen(true);
     } catch (error) {
       console.error("Error:", error);
       setMessages(prev => [...prev, { type: "error", content: "Sorry, I encountered an error. Please try again." }]);
@@ -84,116 +139,141 @@ const AiChat = () => {
   };
 
   return (
-    <>
-      <div className="container w-screen h-screen overflow-x-hidden bg-[#000000] text-white">
-        <div className="absolute inset-0 bg-black"></div>
-        <div className="relative z-10">
-          <div className="absolute top-4 left-4">
-            <button
-              onClick={handleClose}
-              className="group flex items-center justify-center relative z-10 [transition:all_0.5s_ease] rounded-[0.375rem] p-[5px] cursor-pointer border border-[#999] outline-none focus-visible:outline-0"
-            >
-              <svg
-                fill="currentColor"
-                stroke="none"
-                strokeWidth="0"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-7 h-7 overflow-visible [transition:transform_.35s_ease] group-hover:[transition-delay:.25s] [&_path]:[transition:transform_.35s_ease] group-hover:rotate-45"
-              >
-                <path
-                  className="group-hover:[transform:rotate(112.5deg)_translate(-27.2%,-80.2%)]"
-                  d="m3.45,8.83c-.39,0-.76-.23-.92-.62-.21-.51.03-1.1.54-1.31L14.71,2.08c.51-.21,1.1.03,1.31.54.21.51-.03,1.1-.54,1.31L3.84,8.75c-.13.05-.25.08-.38.08Z"
-                ></path>
-                <path
-                  className="group-hover:[transform:rotate(22.5deg)_translate(15.5%,-23%)]"
-                  d="m2.02,17.13c-.39,0-.76-.23-.92-.62-.21-.51.03-1.1.54-1.31L21.6,6.94c.51-.21,1.1.03,1.31.54.21.51-.03,1.1-.54,1.31L2.4,17.06c-.13.05-.25.08-.38.08Z"
-                ></path>
-                <path
-                  className="group-hover:[transform:rotate(112.5deg)_translate(-15%,-149.5%)]"
-                  d="m8.91,21.99c-.39,0-.76-.23-.92-.62-.21-.51.03-1.1.54-1.31l11.64-4.82c.51-.21,1.1.03,1.31.54.21.51-.03,1.1-.54,1.31l-11.64,4.82c-.13.05-.25.08-.38.08Z"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          {
-            isResponseScreen ?
-              <div className='h-[80vh] bg-black'>
-                <div className="header pt-[25px] flex items-center justify-between w-[100vw] px-[300px] bg-black">
-                  <h2 className='text-2xl bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent'>
-                    AssistMe
-                  </h2>
-                  <button id='newChatBtn' className='bg-[#181818] p-[10px] rounded-[30px] cursor-pointer text-[14px] px-[20px] hover:bg-[#202020]' onClick={newChat}>
-                    New Chat
+    <div className="flex h-screen overflow-hidden">
+      {/* Add Sidebar */}
+      <Sidebar>
+        <SidebarBody>
+          {sidebarItems.map((item) => (
+            <SidebarLink key={item.title} link={item} />
+          ))}
+        </SidebarBody>
+      </Sidebar>
+
+      {/* Main Content */}
+      <div className="flex-1 relative">
+        <div className="container h-screen overflow-x-hidden bg-white text-gray-800">
+          <div className="absolute inset-0 bg-white"></div>
+          <div className="relative z-10">
+            {/* Header */}
+            <div className="fixed md:left-[300px] right-0 border-b border-gray-200 bg-white z-20">
+              <div className="flex items-center justify-between px-6 py-3">
+                <h2 className="text-xl font-medium  text-center flex-1">AssistMe</h2>
+                
+                {isResponseScreen && (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setMessages([])}
+                      className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-full transition-colors"
+                    >
+                      Clear chat
+                    </button>
+                    <NewChatButton onClick={newChat} />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="pt-16 ml-[10%] pb-24 flex items-center justify-center">
+              {isResponseScreen ? (
+                <div className="max-w-3xl w-full mx-auto px-4">
+                  <div className="space-y-6 py-4">
+                    {messages?.map((msg, index) => (
+                      <div key={index} className={`flex ${msg.type === 'userMsg' ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`max-w-[85%] px-4 py-3 rounded-2xl ${
+                          msg.type === 'userMsg' 
+                            ? 'bg-blue-600 text-white' 
+                            : 'bg-gray-100 text-gray-800'
+                        }`}>
+                          <p className="whitespace-pre-wrap text-[15px]">{msg.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                    {isLoading && (
+                      <div className="flex justify-start">
+                        <div className="bg-gray-100 rounded-2xl px-4 py-3">
+                          <div className="animate-pulse flex space-x-2">
+                            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-[calc(100vh-8rem)] max-w-4xl mx-auto px-4">
+                  <h1 className="text-4xl font-medium text-gray-800 mb-8">AssistMe</h1>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
+                    {[
+                      { 
+                        icon: <IoCodeSlash />, 
+                        text: "How to get started\nwith software\ndevelopment?",
+                        category: "Programming"
+                      },
+                      { 
+                        icon: <BiPlanet />, 
+                        text: "Explain recent\nadvancements in\nspace technology",
+                        category: "Science"
+                      },
+                      { 
+                        icon: <FaPython />, 
+                        text: "Best practices for\nPython development\nin 2024",
+                        category: "Development"
+                      },
+                      { 
+                        icon: <TbMessageChatbot />, 
+                        text: "How to implement\nAI in business\noperations?",
+                        category: "AI & Business"
+                      }
+                    ].map((item, index) => (
+                      <div 
+                        key={index} 
+                        onClick={() => setMessage(item.text.replace(/\n/g, ' '))}
+                        className="p-6 rounded-xl border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors relative group flex flex-col h-full"
+                      >
+                        <div className="text-xs text-gray-500 mb-2">{item.category}</div>
+                        <p className="text-sm text-gray-800 whitespace-pre-line font-medium flex-grow">{item.text}</p>
+                        <div className="text-gray-600 text-lg group-hover:text-blue-600 transition-colors mt-4">
+                          {item.icon}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Input Area */}
+            <div className="fixed bottom-0 md:left-[300px] right-70 bg-white border-t border-gray-200">
+              <div className="max-w-3xl mx-auto px-4 py-4">
+                <div className="relative flex items-center">
+                  <input 
+                    value={message} 
+                    onChange={(e) => setMessage(e.target.value)} 
+                    onKeyDown={handleKeyPress}
+                    type="text" 
+                    className="w-full px-4 py-3 pr-12 rounded-2xl border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none bg-white text-gray-800" 
+                    placeholder="Message AssistMe..." 
+                  />
+                  <button
+                    onClick={handleSend}
+                    disabled={!message.trim() || isLoading}
+                    className={`absolute right-3 ${message.trim() ? 'text-blue-600 hover:text-blue-700' : 'text-gray-400'}`}
+                  >
+                    <IoSend className="w-5 h-5" />
                   </button>
                 </div>
-
-                <div className="messages px-[300px] py-6 space-y-4 bg-black">
-                  {messages?.map((msg, index) => (
-                    <div key={index} className={`flex ${msg.type === 'userMsg' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-[60%] px-4 py-3 rounded-xl ${
-                        msg.type === 'userMsg' 
-                          ? 'bg-blue-600 text-white ml-auto' 
-                          : 'bg-gray-800 text-gray-100'
-                      }`}>
-                        <p className="whitespace-pre-wrap">{msg.text}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  AssistMe is developed by EnlightenedHub using the Gemini API
+                </p>
               </div>
-              :
-              <div className="middle w-screen h-[80vh]  flex  items-center flex-col justify-center">
-                <h1 className='text-4xl'>AssistMe</h1>
-                <div className="boxes mt-[50px] px-[20px]  flex items-center gap-2">
-                  <div className="card rounded-lg cursor-pointer transition-all hover:bg-[#201f1f] px-[20px] relative min-h-[20vh] bg-[#181818] p-[10px]">
-                    <p className='text-[18px]'>What is coding ? <br />
-                      How we can learn it.</p>
-                    <i className='absolute right-3 bottom-3 text-[18px]'><IoCodeSlash /></i>
-                  </div>
-                  <div className="card rounded-lg cursor-pointer transition-all hover:bg-[#201f1f] px-[20px] relative min-h-[20vh] bg-[#181818] p-[10px]">
-                    <p className='text-[18px]'>Which is the red <br />
-                      planet of solar <br />
-                      system </p>
-                    <i className='absolute right-3 bottom-3 text-[18px]'><BiPlanet /></i>
-                  </div>
-                  <div className="card rounded-lg cursor-pointer transition-all hover:bg-[#201f1f] px-[20px] relative min-h-[20vh] bg-[#181818] p-[10px]">
-                    <p className='text-[18px]'>In which year python <br />
-                      was invented ?</p>
-                    <i className='absolute right-3 bottom-3 text-[18px]'><FaPython /></i>
-                  </div>
-                  <div className="card rounded-lg cursor-pointer transition-all hover:bg-[#201f1f] px-[20px] relative min-h-[20vh] bg-[#181818] p-[10px]">
-                    <p className='text-[18px]'>How we can use <br />
-                      the AI for adopt ?</p>
-                    <i className='absolute right-3 bottom-3 text-[18px]'><TbMessageChatbot /></i>
-                  </div>
-                </div>
-              </div>
-          }
-
-          <div className="bottom w-screen flex flex-col items-center bg-black">
-            <div className="inputBox w-[60%] text-[15px] py-[7px] flex items-center bg-[#181818] rounded-[30px]">
-              <input 
-                value={message} 
-                onChange={(e) => setMessage(e.target.value)} 
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    hitRequest();
-                  }
-                }}
-                type="text" 
-                className='p-[10px] pl-[15px] bg-transparent flex-1 outline-none border-none' 
-                placeholder='Write your message here...' 
-                id='messageBox' 
-              />
-              {message && <i className='text-green-500 text-[20px] mr-5 cursor-pointer' onClick={hitRequest}><IoSend /></i>}
             </div>
-            <p className='text-[gray] text-[14px] my-4'>AssistMe is developed by EnlightenedHub. this AI use the gemini API for giving the response</p>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
