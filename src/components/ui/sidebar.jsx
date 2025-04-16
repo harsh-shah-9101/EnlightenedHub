@@ -1,6 +1,6 @@
-"use client";;
+"use client";
 import { cn } from "../../lib/utils";
-import { Link } from "react-router-dom"; // Changed from next/link
+import { Link } from "react-router-dom";
 import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
@@ -49,8 +49,19 @@ export const Sidebar = ({
 export const SidebarBody = (props) => {
   return (
     <>
-      <DesktopSidebar {...props} />
-      <MobileSidebar {...(props)} />
+      <DesktopSidebar {...props}>
+        <div className="flex-1">
+          {React.Children.map(props.children, (child) => 
+            child.props.link.title !== "Logout" ? child : null
+          )}
+        </div>
+        <div className="mt-auto">
+          {React.Children.map(props.children, (child) => 
+            child.props.link.title === "Logout" ? child : null
+          )}
+        </div>
+      </DesktopSidebar>
+      <MobileSidebar {...props} />
     </>
   );
 };
@@ -65,9 +76,17 @@ export const DesktopSidebar = ({
     <>
       <motion.div
         className={cn(
-          "h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 dark:bg-neutral-900 w-[300px] shrink-0",
+          "h-full px-4 py-4 hidden md:flex md:flex-col w-[300px] shrink-0 backdrop-blur-lg",
           className
         )}
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          borderRight: '1px solid rgba(0, 0, 0, 0.1)',
+          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.1) 0%, rgba(255, 255, 255, 0) 100%)',
+          backgroundSize: '200% 200%',
+          animation: 'gradient-move 10s ease infinite',
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)'
+        }}
         animate={{
           width: animate ? (open ? "300px" : "60px") : "300px",
         }}
@@ -134,17 +153,32 @@ export const SidebarLink = ({
   const { open, animate } = useSidebar();
   return (
     <Link
-      to={link.href} // Changed from href to to
-      className={cn("flex items-center justify-start gap-2  group/sidebar py-2", className)}
+      to={link.href}
+      className={cn(
+        "flex items-center justify-start gap-2 group/sidebar py-2 hover:bg-neutral-100/50 rounded-lg transition-all duration-300",
+        className
+      )}
       {...props}>
-      {link.icon}
+      {React.cloneElement(link.icon, {
+        className: cn(
+          "w-6 h-6 transition-all duration-300 group-hover/sidebar:scale-110",
+          link.title === "AI Chat" 
+            ? "text-emerald-500 group-hover/sidebar:text-emerald-600 group-hover/sidebar:animate-pulse" 
+            : "text-neutral-600 group-hover/sidebar:text-blue-600 group-hover/sidebar:rotate-12"
+        )
+      })}
       <motion.span
         animate={{
           display: animate ? (open ? "inline-block" : "none") : "inline-block",
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
-        className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0">
-        {link.label}
+        className={cn(
+          "text-sm transition-colors duration-150 whitespace-pre inline-block !p-0 !m-0",
+          link.title === "AI Chat" 
+            ? "text-emerald-500 group-hover/sidebar:text-emerald-600" 
+            : "text-neutral-700 group-hover/sidebar:text-blue-600"
+        )}>
+        {link.title}
       </motion.span>
     </Link>
   );

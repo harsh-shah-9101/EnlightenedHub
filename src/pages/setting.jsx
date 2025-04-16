@@ -4,7 +4,7 @@ import { PieChart, Pie, Cell } from 'recharts';
 import { auth, storage } from '../firebase/config';
 import { onAuthStateChanged, updateProfile } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import DarkAnimatedBackground from '../components/DarkAnimatedBackground';
+import LightAnimatedBackground from '../components/LightAnimatedBackground';
 import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
@@ -66,20 +66,22 @@ const Settings = () => {
     ].filter(item => item.value > 0);
   };
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
+  const COLORS = ['#3f51b5', '#4caf50', '#ff9800'];
 
   return (
-    <DarkAnimatedBackground>
+    <LightAnimatedBackground>
       <Container sx={{ py: 4 }}>
         <Paper sx={{ 
           p: 4, 
-          backgroundColor: 'rgba(30, 30, 30, 0.4)', 
+          backgroundColor: 'rgba(255, 255, 255, 0.9)', 
           backdropFilter: 'blur(10px)',
-          color: '#ffffff',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          color: '#333333',
+          border: '1px solid rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+          borderRadius: 2
         }}>
           <Box sx={{ mb: 4 }}>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom color="primary">
               Profile Settings
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
@@ -125,7 +127,7 @@ const Settings = () => {
                   <Button
                     variant="outlined"
                     component="span"
-                    sx={{ mr: 1, color: '#fff', borderColor: 'rgba(255, 255, 255, 0.3)' }}
+                    sx={{ mr: 1, color: 'primary.main', borderColor: 'primary.main' }}
                     disabled={loading}
                   >
                     Upload Photo
@@ -165,17 +167,17 @@ const Settings = () => {
                     fullWidth
                     sx={{
                       '& .MuiOutlinedInput-root': {
-                        color: '#fff',
+                        color: '#333',
                         fontSize: '1.1rem',
                         '& fieldset': {
-                          borderColor: 'rgba(255, 255, 255, 0.3)',
+                          borderColor: 'rgba(0, 0, 0, 0.23)',
                           borderRadius: 2
                         },
                         '&:hover fieldset': {
-                          borderColor: 'rgba(255, 255, 255, 0.5)'
+                          borderColor: 'primary.main'
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: 'rgba(255, 255, 255, 0.7)'
+                          borderColor: 'primary.main'
                         }
                       }
                     }}
@@ -210,12 +212,12 @@ const Settings = () => {
                       setIsEditing(false);
                     }}
                     sx={{ 
-                      color: '#fff', 
-                      borderColor: 'rgba(255, 255, 255, 0.3)',
+                      color: 'primary.main', 
+                      borderColor: 'primary.main',
                       borderRadius: 2,
                       px: 3,
                       '&:hover': {
-                        borderColor: 'rgba(255, 255, 255, 0.8)'
+                        borderColor: 'primary.dark'
                       }
                     }}
                     disabled={loading}
@@ -225,7 +227,7 @@ const Settings = () => {
                 </Box>
               ) : (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
-                  <Typography variant="h6" sx={{ flex: 1, fontSize: '1.2rem' }}>
+                  <Typography variant="h6" sx={{ flex: 1, fontSize: '1.2rem', color: '#333' }}>
                     Username: {username || 'Not set'}
                   </Typography>
                   <Button
@@ -233,12 +235,12 @@ const Settings = () => {
                     size="large"
                     onClick={() => setIsEditing(true)}
                     sx={{ 
-                      color: '#fff', 
-                      borderColor: 'rgba(255, 255, 255, 0.3)',
+                      color: 'primary.main', 
+                      borderColor: 'primary.main',
                       borderRadius: 2,
                       px: 4,
                       '&:hover': {
-                        borderColor: 'rgba(255, 255, 255, 0.8)'
+                        borderColor: 'primary.dark'
                       }
                     }}
                   >
@@ -247,10 +249,9 @@ const Settings = () => {
                 </Box>
               )}
             </Box>
-            {/* Remove the duplicate username section that starts here */}
-            <Divider sx={{ my: 4, bgcolor: 'rgba(255, 255, 255, 0.1)' }} />
+            <Divider sx={{ my: 4, bgcolor: 'rgba(0, 0, 0, 0.1)' }} />
           </Box>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom color="primary">
             Time Spent Statistics
           </Typography>
           <Box sx={{ 
@@ -278,7 +279,7 @@ const Settings = () => {
               </PieChart>
             </Box>
             <Box sx={{ flex: '1 1 auto', minWidth: '300px' }}>
-              <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
+              <Typography variant="h5" gutterBottom sx={{ mb: 3, color: '#333' }}>
                 Total Time: {formatTime(timeSpent)}
               </Typography>
               {getTimeData(timeSpent).map((entry, index) => (
@@ -288,10 +289,11 @@ const Settings = () => {
                   mb: 2,
                   p: 2,
                   borderRadius: 2,
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  backgroundColor: 'rgba(0, 0, 0, 0.05)',
                   transition: 'transform 0.2s ease-in-out',
                   '&:hover': {
-                    transform: 'scale(1.02)'
+                    transform: 'scale(1.02)',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
                   }
                 }}>
                   <Box
@@ -303,10 +305,10 @@ const Settings = () => {
                       borderRadius: '50%'
                     }}
                   />
-                  <Typography sx={{ flex: 1, fontSize: '1.1rem' }}>
+                  <Typography sx={{ flex: 1, fontSize: '1.1rem', color: '#333' }}>
                     {entry.name}
                   </Typography>
-                  <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+                  <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem', color: '#333' }}>
                     {entry.value}
                   </Typography>
                 </Box>
@@ -315,7 +317,7 @@ const Settings = () => {
           </Box>
         </Paper>
       </Container>
-    </DarkAnimatedBackground>
+    </LightAnimatedBackground>
   );
 };
 

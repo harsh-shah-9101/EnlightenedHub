@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 function Support() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -30,8 +32,8 @@ function Support() {
         <>
             {/* Close Button */}
             <button
-                onClick={() => window.history.back()}
-                className="group absolute top-6 left-6 flex items-center justify-center z-50 [transition:all_0.5s_ease] rounded-[0.375rem] p-[5px] cursor-pointer border border-[#999] outline-none focus-visible:outline-0 hover:border-white"
+                onClick={() => navigate('/dashboard')}
+                className="group absolute top-6 left-6 flex items-center justify-center z-50 [transition:all_0.5s_ease] rounded-[0.375rem] p-[5px] cursor-pointer border border-neutral-300 outline-none focus-visible:outline-0 hover:border-blue-500"
             >
                 <svg
                     fill="currentColor"
@@ -39,7 +41,7 @@ function Support() {
                     strokeWidth="0"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-7 h-7 text-white overflow-visible [transition:transform_.35s_ease] group-hover:[transition-delay:.25s] [&_path]:[transition:transform_.35s_ease] group-hover:rotate-45"
+                    className="w-7 h-7 text-neutral-700 overflow-visible [transition:transform_.35s_ease] group-hover:[transition-delay:.25s] [&_path]:[transition:transform_.35s_ease] group-hover:rotate-45"
                 >
                     <path
                         className="group-hover:[transform:rotate(112.5deg)_translate(-27.2%,-80.2%)]"
@@ -56,38 +58,37 @@ function Support() {
                 </svg>
             </button>
         
-            <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-br from-black to-neutral-950">
+            <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-br from-white to-blue-50">
                 <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center px-6">
                     {/* Left Content */}
                     <div className="space-y-6">
-                        <span className="text-blue-400 font-medium">HAVE A PROJECT IN MIND?</span>
-                        <h1 className="text-5xl font-bold text-white leading-tight">
-                            We help you to grow your business faster & easier.
+                        <span className="text-blue-600 font-medium">HAVE A QUESTION?</span>
+                        <h1 className="text-5xl font-bold text-neutral-800 leading-tight">
+                            We're here to help you succeed in your learning journey.
                         </h1>
-                        <p className="text-neutral-400 text-lg">
-                            Let us know about your project and we will help you
-                            take your business to the next level.
+                        <p className="text-neutral-600 text-lg">
+                            Let us know your questions or concerns and our support team will 
+                            get back to you as soon as possible.
                         </p>
                     </div>
 
                     {/* Right Form */}
                     <div className="relative">
-                        <div className="absolute inset-0 bg-blue-500/20 blur-3xl rounded-full"></div>
+                        <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full"></div>
                         <motion.div 
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="relative p-8 rounded-3xl bg-neutral-900/50 backdrop-blur-xl border border-neutral-800"
+                            className="relative p-8 rounded-3xl bg-white shadow-lg border border-neutral-200"
                         >
-                            {/* Inside motion.div, before the form */}
-                            <h2 className="text-xl text-white mb-6">
-                                Let us know about your project & we will help you
-                                grow your business from scratch.
+                            <h2 className="text-xl text-neutral-800 mb-6">
+                                Contact our support team and we'll help you with any questions 
+                                about your courses or account.
                             </h2>
                             {isSubmitted ? (
                                 <motion.div
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
-                                    className="p-4 bg-green-500/20 border border-green-500/50 rounded-xl text-green-400 text-center mb-4"
+                                    className="p-4 bg-green-100 border border-green-300 rounded-xl text-green-700 text-center mb-4"
                                 >
                                     Thank you for your message! We'll get back to you soon.
                                 </motion.div>
@@ -96,36 +97,39 @@ function Support() {
                                 <input
                                     type="text"
                                     placeholder="First & Last name"
-                                    className="w-full p-4 rounded-xl bg-neutral-800/50 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500 transition-all"
+                                    className="w-full p-4 rounded-xl bg-neutral-50 border border-neutral-300 text-neutral-800 placeholder-neutral-500 focus:outline-none focus:border-blue-500 transition-all"
                                     value={formData.name}
                                     onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                    required
                                 />
                                 <input
                                     type="email"
                                     placeholder="Email address"
-                                    className="w-full p-4 rounded-xl bg-neutral-800/50 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500 transition-all"
+                                    className="w-full p-4 rounded-xl bg-neutral-50 border border-neutral-300 text-neutral-800 placeholder-neutral-500 focus:outline-none focus:border-blue-500 transition-all"
                                     value={formData.email}
                                     onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                    required
                                 />
                                 <input
                                     type="tel"
                                     placeholder="Phone number"
-                                    className="w-full p-4 rounded-xl bg-neutral-800/50 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500 transition-all"
+                                    className="w-full p-4 rounded-xl bg-neutral-50 border border-neutral-300 text-neutral-800 placeholder-neutral-500 focus:outline-none focus:border-blue-500 transition-all"
                                     value={formData.phone}
                                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                                 />
                                 <textarea
                                     rows="4"
                                     placeholder="Write your message"
-                                    className="w-full p-4 rounded-xl bg-neutral-800/50 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500 transition-all"
+                                    className="w-full p-4 rounded-xl bg-neutral-50 border border-neutral-300 text-neutral-800 placeholder-neutral-500 focus:outline-none focus:border-blue-500 transition-all"
                                     value={formData.message}
                                     onChange={(e) => setFormData({...formData, message: e.target.value})}
+                                    required
                                 ></textarea>
                                 <motion.button
                                     type="submit"
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
-                                    className="w-full py-4 px-6 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all font-medium"
+                                    className="w-full py-4 px-6 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all font-medium"
                                 >
                                     Send Message
                                 </motion.button>
