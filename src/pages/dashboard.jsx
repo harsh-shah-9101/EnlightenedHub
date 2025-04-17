@@ -142,26 +142,27 @@ function Dashboard() {
                             <div className="group rounded-xl p-6 bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all duration-300 border border-gray-200">
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <h3 className="text-sm font-medium text-neutral-600">Current Course</h3>
-                                        <p className="text-lg font-semibold text-neutral-800 mt-1">React Fundamentals</p>
-                                    </div>
-                                    <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full animate-pulse">In Progress</span>
-                                </div>
-                                <div className="mt-4">
-                                    <div className="flex justify-between text-sm mb-2">
-                                        <span className="text-neutral-600">Progress</span>
-                                        <span className="text-neutral-800">65%</span>
-                                    </div>
-                                    <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
-                                        <div 
-                                            className="h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-progress" 
-                                            style={{ width: '65%' }}
-                                        />
+                                        <h3 className="text-sm font-medium text-neutral-600">My Current Courses</h3>
                                     </div>
                                 </div>
-                                <div className="mt-4 flex justify-between items-center">
-                                    <span className="text-xs text-neutral-500">Next: Advanced Components</span>
-                                    <button className="text-sm text-blue-600 hover:text-blue-700 transition-colors">Continue</button>
+                                <div className="mt-4 space-y-3">
+                                    {JSON.parse(localStorage.getItem('myCourses') || '[]').map((course, index) => (
+                                        <div key={index} className="flex justify-between items-center">
+                                            <div>
+                                                <p className="text-sm font-semibold text-neutral-800">{course.title}</p>
+                                                <span className="text-xs text-neutral-500">{course.instructor}</span>
+                                            </div>
+                                            <button 
+                                                onClick={() => navigate('/dashboard/courses')}
+                                                className="text-sm text-blue-600 hover:text-blue-700 transition-colors"
+                                            >
+                                                Continue
+                                            </button>
+                                        </div>
+                                    ))}
+                                    {JSON.parse(localStorage.getItem('myCourses') || '[]').length === 0 && (
+                                        <p className="text-sm text-neutral-500 text-center">No courses added yet</p>
+                                    )}
                                 </div>
                             </div>
 

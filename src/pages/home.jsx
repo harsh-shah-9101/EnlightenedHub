@@ -75,22 +75,43 @@ function Home() {
                             <a href="/login" className="text-black/80 hover:text-black transition-colors">Request Callback</a>
                         </div>
                         <div className="flex items-center gap-3 mt-4 md:mt-0">
-                            <div className="group relative w-[131px] h-[45px] rounded-[15px] bg-gradient-to-br from-[#2e8eff] via-transparent/30 to-transparent p-px transition-all hover:bg-[#2e8eff]/70 hover:shadow-[0_0_10px_#2e8eff80]">
-                                <div className="w-full h-full bg-gray-900 rounded-[13px] flex items-center justify-center gap-3 px-4 py-2 transition-colors group-hover:bg-opacity-50">
+                            <button
+                                onClick={() => navigate('/login')}
+                                className="cursor-pointer group relative bg-white hover:bg-white text-black font-semibold text-sm px-6 py-3 rounded-full transition-all duration-200 ease-in-out shadow hover:shadow-lg w-40 h-12"
+                            >
+                                <div className="relative flex items-center justify-center gap-2">
+                                    <span className="relative inline-block overflow-hidden">
+                                        <span
+                                            className="block transition-transform duration-300 group-hover:-translate-y-full"
+                                        >
+                                            Get Started
+                                        </span>
+                                        <span
+                                            className="absolute inset-0 transition-transform duration-300 translate-y-full group-hover:translate-y-0"
+                                        >
+                                            Right Now
+                                        </span>
+                                    </span>
+
                                     <svg
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-4 h-4 transition-transform duration-200 group-hover:rotate-45"
                                         viewBox="0 0 24 24"
-                                        className="w-6 h-6 text-white"
                                     >
-                                        <g id="Layer_2">
-                                            <path d="m15.626 11.769a6 6 0 1 0 -7.252 0 9.008 9.008 0 0 0 -5.374 8.231 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 9.008 9.008 0 0 0 -5.374-8.231zm-7.626-4.769a4 4 0 1 1 4 4 4 4 1 -4-4zm10 14h-12a1 1 0 0 1 -1-1 7 7 0 0 1 14 0 1 1 0 0 1 -1 1z"
-                                                fill="currentColor" />
-                                        </g>
+                                        <circle fill="currentColor" r="11" cy="12" cx="12"></circle>
+                                        <path
+                                            strokeLinejoin="round"
+                                            strokeLinecap="round"
+                                            strokeWidth="2"
+                                            stroke="white"
+                                            d="M7.5 16.5L16.5 7.5M16.5 7.5H10.5M16.5 7.5V13.5"
+                                        ></path>
                                     </svg>
-                                    <span className="text-white font-semibold">Log In</span>
                                 </div>
-                            </div>
+                            </button>
+
+
+
+
                         </div>
                     </div>
                 </nav>
@@ -144,7 +165,7 @@ function Home() {
                     <div className="flex items-center gap-2 mt-4">
                         <span className="text-sm text-gray-600">🧠 Cancel or pause anytime. No stress, just progress.</span>
                     </div>
-                    <div className="absolute top-180 w-full overflow-hidden bg-gray-50/50 py-3">
+                    <div className="absolute top-180 w-full overflow-hidden bg-white py-3">
                         <div className="scrolling-wrapper">
                             <div className="animate-scroll">
                                 <div className="logo-container">
@@ -427,62 +448,88 @@ function Home() {
             </div>
 
             {/* Large Logo Section */}
-           
+
 
             {/* Footer Section */}
-            <div className="w-full bg-white py-20">
+            <footer className="bg-white py-12 mt-20">
                 <div className="max-w-7xl mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4">Interested in working together,</h2>
-                        <p className="text-2xl text-gray-600">trying our platform or simply learning more?</p>
-                    </div>
-
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
-                        <div className="flex flex-col gap-2">
-                            <p className="text-gray-600">Contact us at:</p>
-                            <a href="mailto:contact@enlightenedhub.com" className="text-black hover:text-blue-600 transition-colors flex items-center gap-2">
-                                contact@enlightenedhub.com
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </a>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* Brand Section */}
+                        <div className="col-span-1">
+                            <h3 className="text-xl font-bold mb-4">EnlightenedHub</h3>
+                            <p className="text-gray-600 mb-4">Stay organized and productive with  <br />EnlightenedHub's expert-led courses.</p>
                         </div>
 
-                        <div className="flex gap-12">
-                            <a href="#" className="text-black/80 hover:text-black transition-colors">How It Works</a>
-                            <a href="#" className="text-black/80 hover:text-black transition-colors">Benefits</a>
-                            <a href="#" className="text-black/80 hover:text-black transition-colors">Features</a>
-                            <a href="#" className="text-black/80 hover:text-black transition-colors">Team</a>
+                        {/* Explore Section */}
+                        <div className="col-span-1">
+                            <h4 className="font-bold mb-4">Explore</h4>
+                            <ul className="space-y-2">
+                                <li><a href="/pricing" className="text-gray-600 hover:text-gray-900">Pricing</a></li>
+                                <li><a href="/integration" className="text-gray-600 hover:text-gray-900">Integration</a></li>
+                                <li><a href="/download" className="text-gray-600 hover:text-gray-900">Download</a></li>
+                                <li><a href="/blog" className="text-gray-600 hover:text-gray-900">Blog</a></li>
+                                <li>
+                                    <a href="/features" className="text-gray-600 hover:text-gray-900 flex items-center">
+                                        Features
+                                        <span className="ml-2 px-2 py-0.5 bg-red-100 text-red-600 rounded-full text-xs">Soon!</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
 
-                    <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-200">
-                       
-                       
-                        <div className="max-w-5xl mx-auto">
-                    <div className="flex items-center justify-center">
-                        <motion.h1
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{
-                                                duration: 0.8,
-                                                delay: 0.2,
-                                                ease: [0, 0.71, 0.2, 1.01]
-                                            }}
-                                            className="text-[150px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 animate-gradient"
-                                        >
-                                            EnlightenedHub
-                                        </motion.h1>
+                        {/* Follow us and Keep in touch Section */}
+                        <div className="col-span-1">
+                            <h4 className="font-bold mb-4">Follow us</h4>
+                            <div className="flex space-x-4 mb-6">
+                                <a href="#" className="text-gray-600 hover:text-gray-900">
+                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+                                    </svg>
+                                </a>
+                                <a href="#" className="text-gray-600 hover:text-gray-900">
+                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                                    </svg>
+                                </a>
+                                <a href="#" className="text-gray-600 hover:text-gray-900">
+                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.06 1.805.249 2.227.419.562.217.96.477 1.382.896.419.42.679.819.896 1.381.17.422.36 1.057.419 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.06 1.17-.249 1.805-.419 2.227-.217.562-.477.96-.896 1.382-.419.419-.819.679-1.381.896-.422.17-1.057.36-2.227.419-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.06-1.805-.249-2.227-.419-.562-.217-.96-.477-1.382-.896-.419-.419-.679-.819-.896-1.381-.17-.422-.36-1.057-.419-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.06-1.17.249-1.805.419-2.227.217-.562.477-.96.896-1.382.419-.419.819-.679 1.381-.896.422-.17 1.057-.36 2.227-.419 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-1.277.06-2.148.261-2.913.558-.789.306-1.459.717-2.126 1.384s-1.078 1.337-1.384 2.126c-.297.765-.499 1.636-.558 2.913-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.148-.558-2.913-.306-.789-.718-1.459-1.384-2.126-.667-.667-1.335-1.079-2.126-1.384-.765-.297-1.636-.499-2.913-.558-1.28-.058-1.688-.072-4.947-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                                    </svg>
+                                </a>
+                                <a href="#" className="text-gray-600 hover:text-gray-900">
+                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                    </svg>
+                                </a>
+                            </div>
+                            <h4 className="font-bold mb-4">Keep in touch</h4>
+                            <div className="flex items-center">
+                                <input
+                                    type="email"
+                                    placeholder="email address"
+                                    className="px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                                />
+                                <button className="px-6 py-2 bg-purple-600 text-white rounded-r-lg hover:bg-purple-700 transition-colors whitespace-nowrap">
+                                    Subscribe
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-
-                
-                        
+                {/* Copyright section remains the same ... */}
+                <div className="max-w-7xl mx-auto px-4 mt-8 pt-8 border-t border-gray-200">
+                    <div className="flex flex-col md:flex-row justify-between items-center">
+                        <p className="text-gray-600">Copyright © {new Date().getFullYear()} Webuir All Rights Reserved</p>
+                        <div className="flex space-x-6 mt-4 md:mt-0">
+                            <a href="/cookies" className="text-gray-600 hover:text-gray-900">Cookies</a>
+                            <a href="/privacy" className="text-gray-600 hover:text-gray-900">Privacy policy</a>
+                            <a href="/security" className="text-gray-600 hover:text-gray-900">Security</a>
+                            <a href="/legal" className="text-gray-600 hover:text-gray-900">Legal documents</a>
+                        </div>
                     </div>
-                    
                 </div>
-            </div>
+            </footer>
         </>
     );
 }
