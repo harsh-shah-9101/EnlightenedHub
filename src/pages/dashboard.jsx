@@ -287,11 +287,18 @@ function Dashboard() {
                                         />
                                     </div>
                                     <div className="relative group">
-                                        <img 
-                                            src={localStorage.getItem('profilePic') || 'https://via.placeholder.com/40'} 
-                                            alt="Profile" 
-                                            className="w-10 h-10 rounded-full object-cover border-2 border-neutral-700 flex-shrink-0 hover:scale-110 transition-transform duration-300"
-                                        />
+                                        {/* FIX: Ensure profilePic is valid and non-empty */}
+                                        {(() => {
+                                            const profilePic = localStorage.getItem('profilePic');
+                                            const isValidPic = profilePic && profilePic.trim() !== "" && profilePic !== "null" && profilePic !== "undefined";
+                                            return (
+                                                <img 
+                                                    src={isValidPic ? profilePic : 'https://via.placeholder.com/40'} 
+                                                    alt="Profile" 
+                                                    className="w-10 h-10 rounded-full object-cover border-2 border-neutral-700 flex-shrink-0 hover:scale-110 transition-transform duration-300"
+                                                />
+                                            );
+                                        })()}
                                         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
                                     </div>
                                 </div>
