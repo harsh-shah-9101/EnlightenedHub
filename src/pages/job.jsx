@@ -6,9 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import { IconMapPin, IconClock, IconCurrency } from "@tabler/icons-react";
 import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import { AiIcon } from "../components/ui/ai-icon";
+import CustomNotification from '../components/ui/custom-notification';
 
 const Job = () => {
   const navigate = useNavigate();
+  // Add notification state
+  const [notification, setNotification] = useState(null);
+  
+  const [showNotification, setShowNotification] = useState(false);
   // Add searchQuery state near other state declarations
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [searchQuery, setSearchQuery] = useState('');
@@ -260,8 +265,30 @@ const Job = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Add handleApply function
+  const handleApply = (job) => {
+    setNotification({
+      type: 'success',
+      title: 'Application Submitted!',
+      message: `Your application for ${job.title} at ${job.company} has been submitted.`
+    });
+    
+    // Auto-hide notification after 3 seconds
+    setTimeout(() => setNotification(null), 3000);
+  };
+
   return (
     <div className="flex h-screen overflow-hidden">
+      {/* Add notification component at the top level */}
+      {notification && (
+        <CustomNotification
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          onClose={() => setNotification(null)}
+        />
+      )}
+
       {/* Sidebar - Using the same structure as dashboard */}
       <Sidebar>
         <SidebarBody>
@@ -380,7 +407,7 @@ const Job = () => {
                         </div>
 
                         <button
-                          onClick={() => console.log(`Applied to ${job.title}`)}
+                          onClick={() => handleApply(job)}
                           className="w-full py-1.5 px-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm"
                         >
                           Apply Now

@@ -8,15 +8,177 @@ import { useState, useEffect } from 'react';
 import LoadingTransition from './loading-transition';
 import { PlaceholdersAndVanishInput } from "../components/ui/placeholders-and-vanish-input";
 import styled from 'styled-components';
+import { AiIcon } from "../components/ui/ai-icon";
+
 
 function Dashboard() {
     const navigate = useNavigate();
+    // Add state for search query and all courses
+    const [searchQuery, setSearchQuery] = useState('');
+    const [allCourses, setAllCourses] = useState([]);
+    const [filteredCourses, setFilteredCourses] = useState([]);
+
+    // Define all courses data
+    useEffect(() => {
+        // Combine all courses into a single array
+        const courses = [
+            // Frontend courses
+            {
+                id: "fe1",
+                title: "React.js Complete Guide",
+                category: "Frontend",
+                imageName: "react",
+                status: "Add to My course",
+                instructor: "Sarah Miller",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fe2",
+                title: "Vue.js for Beginners",
+                category: "Frontend",
+                imageName: "vue",
+                status: "Add to My course",
+                instructor: "John Chen",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fe3",
+                title: "Angular Essentials",
+                category: "Frontend",
+                imageName: "angular",
+                status: "Add to My course",
+                instructor: "Emma Thompson",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fe4",
+                title: "Modern CSS Techniques",
+                category: "Frontend",
+                imageName: "css",
+                status: "Add to My course",
+                instructor: "Mark Wilson",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            
+            // Backend courses
+            {
+                id: "be1",
+                title: "Node.js & Express Masterclass",
+                category: "Backend",
+                imageName: "nodejs-express",
+                status: "Add to My course",
+                instructor: "Mike Ross",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "be2",
+                title: "Python Django Framework",
+                category: "Backend",
+                imageName: "django",
+                status: "Add to My course",
+                instructor: "Lisa Wang",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "be3",
+                title: "Java Spring Boot",
+                category: "Backend",
+                imageName: "spring-boot",
+                status: "Add to My course",
+                instructor: "Robert Johnson",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "be4",
+                title: "ASP.NET Core API Development",
+                category: "Backend",
+                imageName: "aspnet",
+                status: "Add to My course",
+                instructor: "Jennifer Lee",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            
+            // Full Stack courses
+            {
+                id: "fs1",
+                title: "MERN Stack Development",
+                category: "Full Stack",
+                imageName: "mern",
+                status: "Add to My course",
+                instructor: "David Kumar",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fs2",
+                title: "MEAN Stack Complete Course",
+                category: "Full Stack",
+                imageName: "mean",
+                status: "Add to My course",
+                instructor: "Sophia Martinez",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fs3",
+                title: "Python Full Stack with Flask",
+                category: "Full Stack",
+                imageName: "python-flask",
+                status: "Add to My course",
+                instructor: "Tom Anderson",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+            {
+                id: "fs4",
+                title: "Java Full Stack with Spring & React",
+                category: "Full Stack",
+                imageName: "java-spring-react",
+                status: "Add to My course",
+                instructor: "Jessica Lee",
+                price: "FREE",
+                videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
+            },
+        ];
+        
+        setAllCourses(courses);
+        setFilteredCourses(courses);
+    }, []);
+
+    // Filter courses based on search query
+    useEffect(() => {
+        if (!searchQuery.trim()) {
+            setFilteredCourses(allCourses);
+            return;
+        }
+        
+        const filtered = allCourses.filter(course => 
+            course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            course.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            course.instructor.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        
+        setFilteredCourses(filtered);
+    }, [searchQuery, allCourses]);
 
     const handleSearch = (e) => {
         e.preventDefault();
-        const searchQuery = e.target.search.value;
-        // Add your search logic here
-        console.log("Searching for:", searchQuery);
+        const query = e.target.search.value;
+        setSearchQuery(query);
+        console.log("Searching for:", query);
+    };
+
+    // Handle input change for real-time filtering
+    const handleSearchInputChange = (e) => {
+        setSearchQuery(e.target.value);
     };
 
     // Convert sidebarLinks to dockItems
@@ -77,7 +239,6 @@ function Dashboard() {
                         className="absolute inset-0 "
                         style={{ mixBlendMode: 'multiply' }}
                     />
-                 
                 </div>
 
             
@@ -112,6 +273,7 @@ function Dashboard() {
                                 </h1>
                                 <div className="flex items-center gap-4">
                                     <div className="flex-1 max-w-md">
+                                        {/* Modified search input to handle real-time filtering */}
                                         <PlaceholdersAndVanishInput
                                             placeholders={[
                                                 "Search for courses...",
@@ -120,6 +282,8 @@ function Dashboard() {
                                                 "Discover new skills..."
                                             ]}
                                             onSubmit={handleSearch}
+                                            onChange={handleSearchInputChange}
+                                            value={searchQuery}
                                         />
                                     </div>
                                     <div className="relative group">
@@ -204,7 +368,6 @@ function Dashboard() {
                         </div>
 
                         {/* Categorized Courses */}
-
                         <div className="  mx-10 mt-12">
                             <h2 className="text-xl font-semibold text-neutral-800 dark:text-black mb-8">
                                 Explore Our Course Categories
@@ -222,48 +385,7 @@ function Dashboard() {
                                     </button>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                    {[
-                                        {
-                                            id: "fe1",
-                                            title: "React.js Complete Guide",
-                                            category: "Frontend",
-                                            imageName: "react",
-                                            status: "Add to My course",
-                                            instructor: "Sarah Miller",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fe2",
-                                            title: "Vue.js for Beginners",
-                                            category: "Frontend",
-                                            imageName: "vue",
-                                            status: "Add to My course",
-                                            instructor: "John Chen",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fe3",
-                                            title: "Angular Essentials",
-                                            category: "Frontend",
-                                            imageName: "angular",
-                                            status: "Add to My course",
-                                            instructor: "Emma Thompson",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fe4",
-                                            title: "Modern CSS Techniques",
-                                            category: "Frontend",
-                                            imageName: "css",
-                                            status: "Add to My course",
-                                            instructor: "Mark Wilson",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        }
-                                    ].map((course) => (
+                                    {filteredCourses.filter(course => course.category === "Frontend").map((course) => (
                                         <div key={course.id} className="group rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all duration-300 border border-gray-200">
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img
@@ -315,54 +437,11 @@ function Dashboard() {
                             <div className="mb-10">
                                 <div className="flex items-center justify-between mb-6">
                                     <h3 className="text-lg font-medium text-black">Backend Development</h3>
-                                    <button className="text-sm text-blue-600 hover:text-blue-600">View All</button>
+                                    <button className="text-sm text-blue-600 hover:text-blue-700">View All</button>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                    {[
-                                        {
-                                            id: "be1",
-                                            title: "Node.js & Express Masterclass",
-                                            category: "Backend",
-                                            imageName: "nodejs-express",
-                                            status: "Add to My course",
-                                            instructor: "Mike Ross",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "be2",
-                                            title: "Python Django Framework",
-                                            category: "Backend",
-                                            imageName: "django",
-                                            status: "Add to My course",
-                                            instructor: "Lisa Wang",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "be3",
-                                            title: "Ruby on Rails Development",
-                                            category: "Backend",
-                                            imageName: "rails",
-                                            status: "Add to My course",
-                                            instructor: "David Smith",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "be4",
-                                            title: "PHP Laravel Framework",
-                                            category: "Backend",
-                                            imageName: "laravel",
-                                            status: "Add to My course",
-                                            instructor: "Anna Brown",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        }
-                                    ].map((course) => (
-                                        <div key={course.id} className="group rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all duration-300 border border-gray-200" style={{
-                                           
-                                        }}>
+                                    {filteredCourses.filter(course => course.category === "Backend").map((course) => (
+                                        <div key={course.id} className="group rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all duration-300 border border-gray-200">
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img
                                                     src="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg?t=st=1743678912~exp=1743682512~hmac=f83f9a80a29aca93f14eb654d24cc4f6fdc23384eec36138db918796fcf37d23&w=1380"
@@ -415,53 +494,8 @@ function Dashboard() {
                                     <button className="text-sm text-blue-600 hover:text-blue-700">View All</button>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                    {[
-                                        {
-                                            id: "fs1",
-                                            title: "MERN Stack Development",
-                                            category: "Full Stack",
-                                            imageName: "mern",
-                                            status: "Add to My course",
-                                            instructor: "David Kumar",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fs2",
-                                            title: "Java Spring Full Stack",
-                                            category: "Full Stack",
-                                            imageName: "spring",
-                                            status: "Add to My course",
-                                            instructor: "Emma Clark",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fs3",
-                                            title: "Python Full Stack with Flask",
-                                            category: "Full Stack",
-                                            imageName: "python-flask",
-                                            status: "Add to My course",
-                                            instructor: "Tom Anderson",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        },
-                                        {
-                                            id: "fs4",
-                                            title: ".NET Core Full Stack",
-                                            category: "Full Stack",
-                                            imageName: "dotnet",
-                                            status: "Add to My course",
-                                            instructor: "Jessica Lee",
-                                            price: "FREE",
-                                            videoUrl: "https://youtu.be/E6tAtRi82QY?si=p3K0lhxI2aae4Ctc",
-                                        }
-                                    ].map((course) => (
-                                        <div key={course.id} className="group rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all duration-300 border border-gray-200" style={{
-                                            backgroundColor: 'rgba(30, 30, 30, 0.4)',
-                                            backdropFilter: 'blur(10px)',
-                                            border: '1px solid rgba(255, 255, 255, 0.1)'
-                                        }}>
+                                    {filteredCourses.filter(course => course.category === "Full Stack").map((course) => (
+                                        <div key={course.id} className="group rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all duration-300 border border-gray-200">
                                             <div className="aspect-video relative overflow-hidden">
                                                 <img
                                                     src="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg?t=st=1743678912~exp=1743682512~hmac=f83f9a80a29aca93f14eb654d24cc4f6fdc23384eec36138db918796fcf37d23&w=1380"
@@ -506,9 +540,6 @@ function Dashboard() {
                                     ))}
                                 </div>
                             </div>
-
-                            
-                            
                         </div>
                     </div>
                 </main>
