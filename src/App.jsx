@@ -10,6 +10,7 @@ import AiChat from './pages/ai-chat'
 import MyCourses from './pages/my-courses'
 import Support from './pages/support'
 import LoadingTransition from './pages/loading-transition'
+import Admin from './pages/admin'  // Add this import
 import './App.css'
 import { Routes, Route } from "react-router-dom"
 import CourseDetail from './pages/course-detail'  // Add this import
@@ -23,6 +24,7 @@ function App() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/job" element={<Job />} />
+        <Route path="/admin" element={<Admin />} />  {/* Add this route */}
         <Route path="/dashboard/ai-chat" element={<AiChat />} />
         <Route path="/dashboard/courses" element={<MyCourses />} />
         <Route path="/dashboard/setting" element={<Settings />} />

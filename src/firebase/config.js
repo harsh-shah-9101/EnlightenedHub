@@ -5,7 +5,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GithubAuthProvider } from "firebase/auth";
 import { getStorage } from 'firebase/storage';
-
+import { getFirestore } from 'firebase/firestore'; // Add this import
 
 const firebaseConfig = {
     apiKey: "AIzaSyBGW_3IHUeLe9TBgQgoRg7-KrG1x0AYzQk",
@@ -22,6 +22,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 export const storage = getStorage(app);
+export const db = getFirestore(app); // Add this line
 auth.useDeviceLanguage(); // Optional: Set language to user's device language
 
 const githubProvider = new GithubAuthProvider();

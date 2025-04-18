@@ -30,7 +30,7 @@ function Login() {
         
         try {
             if (email === "admin@enlightenedhub.com" && password === "admin@123") {
-                navigate("/loading", { state: { targetPath: "/admin" } });
+                navigate("/admin");  // Direct navigation to admin page
                 return;
             }
 
@@ -39,7 +39,7 @@ function Login() {
             } else {
                 await signInWithEmailAndPassword(auth, email, password);
             }
-            navigate("/loading");
+            navigate("/dashboard");  // Regular users go to dashboard
         } catch (error) {
             console.error("Auth error:", error);
             switch (error.code) {
