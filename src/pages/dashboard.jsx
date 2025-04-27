@@ -294,7 +294,7 @@ function Dashboard() {
                                      
                                      
                                                 <img
-                                                    src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
+                                                    src="https://i.pinimg.com/736x/3c/2a/b1/3c2ab1ed244abd008a3f012f585c9e60.jpg"
                                                     
                                                     className="w-10 h-10 rounded-full object-cover border-2 border-neutral-700 flex-shrink-0 hover:scale-110 transition-transform duration-300"
                                                 />
