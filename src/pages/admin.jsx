@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../firebase/config'; // Make sure this is your Firestore instance
 import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import { IconHome, IconBook, IconBriefcase, IconPhone, IconSettings, IconLogout, IconRobot } from "@tabler/icons-react";
 import { useNavigate } from 'react-router-dom';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 
 function Admin() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
-  const [loginHistory, setLoginHistory] = useState([]);
+  const [authUsers, setAuthUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [loginHistory, setLoginHistory] = useState([]); // Add this line
 
   // Sidebar items
   const sidebarItems = [
@@ -60,33 +62,41 @@ function Admin() {
     }
   ];
 
-  // Listen for real-time users
+  // Replace Firestore listener with Auth listener
   useEffect(() => {
-    const q = query(collection(db, "users"));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const usersData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setUsers(usersData);
-      // Default select first user for login history
-      if (!selectedUser && usersData.length > 0) setSelectedUser(usersData[0]);
+    const auth = getAuth();
+    
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        try {
+          const functions = getFunctions();
+          const listUsers = httpsCallable(functions, 'listUsers');
+          const result = await listUsers();
+          
+          setUsers(result.data.users);
+          setAuthUsers(result.data.users);
+          if (!selectedUser && result.data.users.length > 0) {
+            setSelectedUser(result.data.users[0]);
+          }
+        } catch (error) {
+          console.error("Error fetching users:", error);
+          // Handle error appropriately
+        }
+      } else {
+        setUsers([]);
+        setAuthUsers([]);
+        setSelectedUser(null);
+        navigate('/');
+      }
     });
-    return () => unsubscribe();
-  }, []);
 
-  // Listen for login history of selected user
-  useEffect(() => {
-    if (!selectedUser) return;
-    const q = query(
-      collection(db, "users", selectedUser.id, "loginHistory"),
-      orderBy("timestamp", "desc")
-    );
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      setLoginHistory(snapshot.docs.map(doc => doc.data()));
-    });
     return () => unsubscribe();
-  }, [selectedUser]);
+  }, [navigate]);
 
-  // Count active users
-  const activeUsers = users.filter(u => u.status === "online").length;
+  // Remove the login history useEffect since it was Firestore-specific
+  
+  // Modify active users count to use auth status
+  const activeUsers = users.filter(u => u.status === "active").length;
 
   return (
     <div className="flex h-screen overflow-hidden bg-gradient-to-br from-white to-blue-50">
@@ -107,6 +117,7 @@ function Admin() {
                 <div className="flex gap-4 mt-2">
                   <span className="bg-gray-100 px-3 py-1 rounded-full text-xs">Total Users: {users.length}</span>
                   <span className="bg-green-100 px-3 py-1 rounded-full text-xs text-green-700">Active Users: {activeUsers}</span>
+                  <span className="bg-blue-100 px-3 py-1 rounded-full text-xs text-blue-700">Auth Users: {authUsers.length}</span>
                 </div>
               </div>
             </div>

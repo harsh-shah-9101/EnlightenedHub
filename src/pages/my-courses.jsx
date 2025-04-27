@@ -123,7 +123,7 @@ const MyCourses = () => {
                       <CardMedia
                         component="img"
                         height="120"
-                        image="https://img.freepik.com/free-vector/brain-with-digital-circuit-programmer-with-laptop-machine-learning-artificial-intelligence-digital-brain-artificial-thinking-process-concept-vector-isolated-illustration_335657-2246.jpg"
+                        image={course.pictureUrl}
                         alt={course.title}
                         sx={{
                           objectFit: 'cover',
