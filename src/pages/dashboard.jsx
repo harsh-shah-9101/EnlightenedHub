@@ -277,7 +277,7 @@ function Dashboard() {
                                 </h1>
                                 <div className="flex items-center gap-4">
                                     <div className="flex-1 max-w-md">
-                                        {/* Modified search input to handle real-time filtering */}w
+                                        {/* Modified search input to handle real-time filtering */}
                                         <PlaceholdersAndVanishInput
                                             placeholders={[
                                                 "Search for courses...",
