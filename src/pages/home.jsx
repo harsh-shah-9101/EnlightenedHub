@@ -47,8 +47,19 @@ const people = [
 
 function Home() {
     const [visible, setVisible] = useState(true);
+    const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
     const prevScrollRef = useRef(0);
+    
+    // Toggle mobile menu
+    const toggleMenu = () => {
+        setMenuOpen(prevState => !prevState);
+    };
+    
+    // Close menu when clicking outside or on a link
+    const closeMenu = () => {
+        setMenuOpen(false);
+    };
     
     // Optimized scroll handler with throttling
     useEffect(() => {
@@ -75,55 +86,104 @@ function Home() {
             <div className="h-screen w-full flex flex-col bg-white relative overflow-hidden">
                 {/* Navigation */}
                 <nav 
-                    className={`w-full px-4 md:px-6 py-2 flex flex-col md:flex-row items-center justify-between 
-                    border-b border-white/10 fixed top-0 z-50 bg-white backdrop-blur-sm transition-transform 
-                    duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}
+                    className={`w-full px-4 md:px-6 py-4 fixed top-0 z-50 bg-white backdrop-blur-sm transition-transform 
+                    duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'} border-b border-gray-200`}
                 >
-                    <div className="text-black font-bold text-xl mb-4 md:mb-0">Enlightenedhub</div>
+                    <div className="max-w-7xl mx-auto flex justify-between items-center">
+                        {/* Logo */}
+                        <div className="text-black font-bold text-xl">Enlightenedhub</div>
+                        
+                        {/* Mobile menu button */}
+                        <button 
+                            className="md:hidden flex items-center p-2 rounded-md hover:bg-gray-100 transition-colors"
+                            onClick={toggleMenu}
+                            aria-label="Toggle menu"
+                        >
+                            {menuOpen ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            )}
+                        </button>
 
-                    <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
-                        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-12 flex-1">
+                        {/* Desktop Navigation */}
+                        <div className="hidden md:flex items-center justify-between gap-12 flex-1 ml-12">
+                            <div className="flex items-center gap-12">
+                                {['Home', 'Courses', 'Job Portal', 'Request Callback'].map((item) => (
+                                    <a 
+                                        key={item}
+                                        href="/login" 
+                                        className="text-black/80 hover:text-black transition-colors font-medium"
+                                    >
+                                        {item}
+                                    </a>
+                                ))}
+                            </div>
+                            
+                            {/* Desktop Get Started Button */}
+                            <div>
+                                <button
+                                    onClick={() => navigate('/login')}
+                                    className="cursor-pointer group relative bg-white hover:bg-white text-black 
+                                    font-semibold text-sm px-6 py-3 rounded-full transition-all duration-200 
+                                    ease-in-out shadow hover:shadow-lg w-40 h-12"
+                                >
+                                    <div className="relative flex items-center justify-center gap-2">
+                                        <span className="relative inline-block overflow-hidden">
+                                            <span className="block transition-transform duration-300 group-hover:-translate-y-full">
+                                                Get Started
+                                            </span>
+                                            <span className="absolute inset-0 transition-transform duration-300 translate-y-full group-hover:translate-y-0">
+                                                Right Now
+                                            </span>
+                                        </span>
+
+                                        <svg className="w-4 h-4 transition-transform duration-200 group-hover:rotate-45" viewBox="0 0 24 24">
+                                            <circle fill="currentColor" r="11" cy="12" cx="12"></circle>
+                                            <path
+                                                strokeLinejoin="round"
+                                                strokeLinecap="round"
+                                                strokeWidth="2"
+                                                stroke="white"
+                                                d="M7.5 16.5L16.5 7.5M16.5 7.5H10.5M16.5 7.5V13.5"
+                                            ></path>
+                                        </svg>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Mobile Navigation Menu */}
+                    <div className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${menuOpen ? 'max-h-80 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                        <div className="flex flex-col space-y-4 pt-2 pb-4">
                             {['Home', 'Courses', 'Job Portal', 'Request Callback'].map((item) => (
                                 <a 
                                     key={item}
                                     href="/login" 
-                                    className="text-black/80 hover:text-black transition-colors"
+                                    onClick={closeMenu}
+                                    className="text-black/80 hover:text-black px-2 py-2 rounded-md hover:bg-gray-100 transition-colors"
                                 >
                                     {item}
                                 </a>
                             ))}
-                        </div>
-                        
-                        {/* Get Started Button */}
-                        <div className="flex items-center gap-3 mt-4 md:mt-0">
-                            <button
-                                onClick={() => navigate('/login')}
-                                className="cursor-pointer group relative bg-white hover:bg-white text-black 
-                                font-semibold text-sm px-6 py-3 rounded-full transition-all duration-200 
-                                ease-in-out shadow hover:shadow-lg w-40 h-12"
-                            >
-                                <div className="relative flex items-center justify-center gap-2">
-                                    <span className="relative inline-block overflow-hidden">
-                                        <span className="block transition-transform duration-300 group-hover:-translate-y-full">
-                                            Get Started
-                                        </span>
-                                        <span className="absolute inset-0 transition-transform duration-300 translate-y-full group-hover:translate-y-0">
-                                            Right Now
-                                        </span>
-                                    </span>
-
-                                    <svg className="w-4 h-4 transition-transform duration-200 group-hover:rotate-45" viewBox="0 0 24 24">
-                                        <circle fill="currentColor" r="11" cy="12" cx="12"></circle>
-                                        <path
-                                            strokeLinejoin="round"
-                                            strokeLinecap="round"
-                                            strokeWidth="2"
-                                            stroke="white"
-                                            d="M7.5 16.5L16.5 7.5M16.5 7.5H10.5M16.5 7.5V13.5"
-                                        ></path>
-                                    </svg>
-                                </div>
-                            </button>
+                            
+                            {/* Mobile Get Started Button */}
+                            <div className="pt-2">
+                                <button
+                                    onClick={() => {
+                                        closeMenu();
+                                        navigate('/login');
+                                    }}
+                                    className="w-full bg-gray-900 text-white py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                                >
+                                    Get Started
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </nav>
