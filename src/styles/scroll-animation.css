@@ -4,12 +4,35 @@
   width: 100%;
 }
 
+/* Smooth, seamless marquee track */
 .animate-scroll {
   display: flex;
-  animation: scroll 20s linear infinite;
-  width: fit-content;
+  gap: 3rem;             /* consistent spacing */
+  width: max-content;    /* track size equals content size */
+  animation: scroll var(--marquee-duration, 25s) linear infinite;
+  will-change: transform;
 }
 
+/* Optional edge fade for nicer look on white background */
+.scrolling-wrapper::before,
+.scrolling-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 64px;
+  pointer-events: none;
+}
+.scrolling-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, white, transparent);
+}
+.scrolling-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, white, transparent);
+}
+
+/* Logo row */
 .logo-container {
   display: flex;
   align-items: center;
@@ -26,15 +49,24 @@
   opacity: 1;
 }
 
+/* Seamless loop: move by half (second copy) */
 @keyframes scroll {
   from {
     transform: translateX(0);
   }
   to {
-    transform: translateX(calc(-100% / 2));
+    transform: translateX(-50%);
   }
 }
 
+/* Pause on hover */
 .scrolling-wrapper:hover .animate-scroll {
   animation-play-state: paused;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll {
+    animation: none;
+  }
 }

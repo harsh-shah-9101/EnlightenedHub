@@ -1,102 +1,124 @@
-import { Spotlight } from "../components/ui/spotlight-new"
-import { CardSpotlight } from "../components/ui/card-spotlight";
-import { FeatureCard } from "../components/ui/feature-card";
-import { useState, useEffect } from "react";
-import CountUp from 'react-countup';
-import '../styles/scroll-animation.css';
+import { Spotlight } from "../components/ui/spotlight-new";
 import { AnimatedTooltip } from "../components/ui/animated-tooltip";
 import { TextGenerateEffect } from "../components/ui/text-generate-effect";
 import { BentoGrid, BentoGridItem } from "../components/ui/bento-grid";
 import { Meteors } from "../components/ui/meteors";
-import { motion } from "framer-motion";
+import CurvedLoop from "../components/ui/CurvedLoop";
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from "react";
+import '../styles/scroll-animation.css';
 
+// People data for testimonials
 const people = [
     {
         id: 1,
         name: "John Doe",
         designation: "Web Developer",
-        image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80"
+        image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=387&q=80"
     },
     {
         id: 2,
         name: "Sarah Smith",
         designation: "Data Scientist",
-        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80"
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=387&q=80"
     },
     {
         id: 3,
         name: "Michael Chen",
         designation: "Mobile Developer",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80"
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=387&q=80"
     },
     {
         id: 4,
         name: "Emily Johnson",
         designation: "UI/UX Designer",
-        image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=461&q=80"
+        image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=461&q=80"
     },
     {
         id: 5,
         name: "David Wilson",
         designation: "Cloud Expert",
-        image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=876&q=80"
+        image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?auto=format&fit=crop&w=876&q=80"
     }
 ];
 
+// Tech logos for the scrolling banner
+const techLogos = [
+    { src: "https://cdn.iconscout.com/icon/free/png-512/free-react-logo-icon-download-in-svg-png-gif-file-formats--technology-social-media-vol-5-pack-logos-icons-3032300.png?f=webp&w=512", alt: "React" },
+    { src: "https://cdn.iconscout.com/icon/free/png-512/free-python-logo-icon-download-in-svg-png-gif-file-formats--brand-development-tools-pack-logos-icons-226051.png?f=webp&w=512", alt: "Python" },
+    { src: "https://cdn.iconscout.com/icon/free/png-512/free-javascript-logo-icon-download-in-svg-png-gif-file-formats--brand-development-tools-pack-logos-icons-225993.png?f=webp&w=512", alt: "JavaScript" },
+    { src: "https://cdn.iconscout.com/icon/free/png-512/free-java-logo-icon-download-in-svg-png-gif-file-formats--wordmark-programming-language-pack-logos-icons-1174953.png?f=webp&w=512", alt: "Java" },
+    { src: "https://cdn.iconscout.com/icon/free/png-512/free-c-logo-icon-download-in-svg-png-gif-file-formats--brand-development-tools-pack-logos-icons-226082.png?f=webp&w=512", alt: "C++" }
+];
+
 function Home() {
-    const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [visible, setVisible] = useState(true);
     const navigate = useNavigate();
-
+    const prevScrollRef = useRef(0);
+    
+    // Optimized scroll handler with throttling
     useEffect(() => {
+        let ticking = false;
+        
         const handleScroll = () => {
-            const currentScrollPos = window.scrollY;
-            setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
-            setPrevScrollPos(currentScrollPos);
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const currentScrollPos = window.scrollY;
+                    setVisible(prevScrollRef.current > currentScrollPos || currentScrollPos < 10);
+                    prevScrollRef.current = currentScrollPos;
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [prevScrollPos]);
+        
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     return (
         <>
-            <div className="h-screen w-[100vw] flex flex-col bg-white relative overflow-hidden">
-                <nav className={`w-full px-4 md:px-6 py-2 flex flex-col md:flex-row items-center justify-between border-b border-white/10 fixed top-0 z-50 bg-white backdrop-blur-sm transition-transform duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'
-                    }`}>
+            <div className="h-screen w-full flex flex-col bg-white relative overflow-hidden">
+                {/* Navigation */}
+                <nav 
+                    className={`w-full px-4 md:px-6 py-2 flex flex-col md:flex-row items-center justify-between 
+                    border-b border-white/10 fixed top-0 z-50 bg-white backdrop-blur-sm transition-transform 
+                    duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}
+                >
                     <div className="text-black font-bold text-xl mb-4 md:mb-0">Enlightenedhub</div>
 
                     <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
                         <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-12 flex-1">
-                            <a href="/login" className="text-black/80 hover:text-black transition-colors">Home</a>
-                            <a href="/login" className="text-black/80 hover:text-black transition-colors">Courses</a>
-                            <a href="/login" className="text-black/80 hover:text-black transition-colors">Job Portal</a>
-                            <a href="/login" className="text-black/80 hover:text-black transition-colors">Request Callback</a>
+                            {['Home', 'Courses', 'Job Portal', 'Request Callback'].map((item) => (
+                                <a 
+                                    key={item}
+                                    href="/login" 
+                                    className="text-black/80 hover:text-black transition-colors"
+                                >
+                                    {item}
+                                </a>
+                            ))}
                         </div>
+                        
+                        {/* Get Started Button */}
                         <div className="flex items-center gap-3 mt-4 md:mt-0">
                             <button
                                 onClick={() => navigate('/login')}
-                                className="cursor-pointer group relative bg-white hover:bg-white text-black font-semibold text-sm px-6 py-3 rounded-full transition-all duration-200 ease-in-out shadow hover:shadow-lg w-40 h-12"
+                                className="cursor-pointer group relative bg-white hover:bg-white text-black 
+                                font-semibold text-sm px-6 py-3 rounded-full transition-all duration-200 
+                                ease-in-out shadow hover:shadow-lg w-40 h-12"
                             >
                                 <div className="relative flex items-center justify-center gap-2">
                                     <span className="relative inline-block overflow-hidden">
-                                        <span
-                                            className="block transition-transform duration-300 group-hover:-translate-y-full"
-                                        >
+                                        <span className="block transition-transform duration-300 group-hover:-translate-y-full">
                                             Get Started
                                         </span>
-                                        <span
-                                            className="absolute inset-0 transition-transform duration-300 translate-y-full group-hover:translate-y-0"
-                                        >
+                                        <span className="absolute inset-0 transition-transform duration-300 translate-y-full group-hover:translate-y-0">
                                             Right Now
                                         </span>
                                     </span>
 
-                                    <svg
-                                        className="w-4 h-4 transition-transform duration-200 group-hover:rotate-45"
-                                        viewBox="0 0 24 24"
-                                    >
+                                    <svg className="w-4 h-4 transition-transform duration-200 group-hover:rotate-45" viewBox="0 0 24 24">
                                         <circle fill="currentColor" r="11" cy="12" cx="12"></circle>
                                         <path
                                             strokeLinejoin="round"
@@ -108,18 +130,13 @@ function Home() {
                                     </svg>
                                 </div>
                             </button>
-
-
-
-
                         </div>
                     </div>
                 </nav>
 
-                {/* Add the scrolling banner */}
 
-
-                <div className="flex-1 flex-1 flex flex-col items-center justify-center px-4">
+                {/* Hero Section */}
+                <div className="flex-1 flex flex-col items-center justify-center px-4">
                     <Spotlight
                         className="absolute -top-40 left-0 md:left-60 md:-top-20"
                         fill="white"
@@ -134,14 +151,14 @@ function Home() {
                     <h1 className="text-5xl md:text-6xl font-bold text-center mb-6">
                         ✨ Empower Your Learning Journey,<br />
                         Unlock Success with Expert-Guided Courses!
-
                     </h1>
 
                     <p className="text-gray-600 text-center max-w-2xl mb-8">
-                        Explore top-quality study material and courses with StudySprint — your path to smarter learning and success.
+                        Explore top-quality study material and courses with EnlightenedHub — your path to smarter learning and success.
                     </p>
 
-                    <div className="relative inline-flex items-center justify-center gap-4 group">
+                    {/* CTA Button */}
+                    <div className="mt-15 relative inline-flex items-center justify-center gap-4 group">
                         <div className="absolute inset-0 duration-1000 opacity-60 transitiona-all bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-400 rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200"></div>
                         <button
                             onClick={() => navigate('/login')}
@@ -165,45 +182,34 @@ function Home() {
                     <div className="flex items-center gap-2 mt-4">
                         <span className="text-sm text-gray-600">🧠 Cancel or pause anytime. No stress, just progress.</span>
                     </div>
-                    <div className="absolute top-180 w-full overflow-hidden bg-white py-3">
-                        <div className="scrolling-wrapper">
-                            <div className="animate-scroll">
-                                <div className="logo-container">
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-react-logo-icon-download-in-svg-png-gif-file-formats--technology-social-media-vol-5-pack-logos-icons-3032300.png?f=webp&w=512" alt="React" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-python-logo-icon-download-in-svg-png-gif-file-formats--brand-development-tools-pack-logos-icons-226051.png?f=webp&w=512" alt="Python" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-javascript-logo-icon-download-in-svg-png-gif-file-formats--brand-development-tools-pack-logos-icons-225993.png?f=webp&w=512" alt="JavaScript" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-java-logo-icon-download-in-svg-png-gif-file-formats--wordmark-programming-language-pack-logos-icons-1174953.png?f=webp&w=512" alt="Java" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-c-logo-icon-download-in-svg-png-gif-file-formats--brand-development-tools-pack-logos-icons-226082.png?f=webp&w=512" alt="C++" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-c-logo-icon-download-in-svg-png-gif-file-formats--programming-coding-relate-pack-logos-icons-1982846.png?f=webp&w=512" alt="C#" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-ruby-logo-icon-download-in-svg-png-gif-file-formats--programming-langugae-freebies-pack-logos-icons-1175101.png?f=webp&w=512" alt="Ruby" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-swift-icon-download-in-svg-png-gif-file-formats--brand-company-logo-world-logos-vol-3-pack-icons-282412.png?f=webp&w=512" alt="Swift" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-kotlin-logo-icon-download-in-svg-png-gif-file-formats--company-brand-world-logos-vol-11-pack-icons-283155.png?f=webp&w=512" alt="Kotlin" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-go-logo-icon-download-in-svg-png-gif-file-formats--brand-company-business-brands-pack-logos-icons-2284995.png?f=webp&w=512" alt="Go" />
-                                </div>
-                                <div className="logo-container">
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-react-logo-icon-download-in-svg-png-gif-file-formats--technology-social-media-vol-5-pack-logos-icons-3032300.png?f=webp&w=512" alt="React" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-python-logo-icon-download-in-svg-png-gif-file-formats--brand-development-tools-pack-logos-icons-226051.png?f=webp&w=512" alt="Python" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-javascript-logo-icon-download-in-svg-png-gif-file-formats--brand-development-tools-pack-logos-icons-225993.png?f=webp&w=512" alt="JavaScript" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-java-logo-icon-download-in-svg-png-gif-file-formats--wordmark-programming-language-pack-logos-icons-1174953.png?f=webp&w=512" alt="Java" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-c-logo-icon-download-in-svg-png-gif-file-formats--brand-development-tools-pack-logos-icons-226082.png?f=webp&w=512" alt="C++" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-c-logo-icon-download-in-svg-png-gif-file-formats--programming-coding-relate-pack-logos-icons-1982846.png?f=webp&w=512" alt="C#" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-ruby-logo-icon-download-in-svg-png-gif-file-formats--programming-langugae-freebies-pack-logos-icons-1175101.png?f=webp&w=512" alt="Ruby" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-swift-icon-download-in-svg-png-gif-file-formats--brand-company-logo-world-logos-vol-3-pack-icons-282412.png?f=webp&w=512" alt="Swift" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-kotlin-logo-icon-download-in-svg-png-gif-file-formats--company-brand-world-logos-vol-11-pack-icons-283155.png?f=webp&w=512" alt="Kotlin" />
-                                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-go-logo-icon-download-in-svg-png-gif-file-formats--brand-company-business-brands-pack-logos-icons-2284995.png?f=webp&w=512" alt="Go" />
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+
+                {/* Technology logos using CurvedLoop */}
+                <section className="w-full bg-white py-8 mt-2 flex flex-col gap-10" aria-label="Technology logos">
+                    {/* Simple usage */}
+                    
+                    
+                    {/* With custom props - technology stack */}
+                    <div className="h-20 bg-white">
+                        <CurvedLoop 
+                            marqueeText=" React  ✦  Python  ✦  JavaScript  ✦  Java  ✦  C++  ✦  TypeScript  ✦  Node.js  ✦  MongoDB  ✦  AWS  ✦  Docker  ✦"
+                            speed={2}
+                            curveAmount={150}
+                            direction="right"
+                            interactive={true}
+                            className="text-xxl font-medium text-gray-800"
+                        />
+                    </div>
+                    
+      
+                </section>
             </div>
 
-            {/* Second Page */}
-            <div className="min-h-screen w-[100vw] mt-40 flex flex-col bg-white">
+            {/* Features Section */}
+            <div className="min-h-screen w-full mt-40 flex flex-col bg-white">
                 <div className="max-w-7xl mx-auto px-4 py-20 w-full">
                     <div className="flex flex-col md:flex-row gap-20">
-                        {/* Left Section */}
+                        {/* Left Section - Course Introduction */}
                         <div className="flex-1">
                             <TextGenerateEffect
                                 words="Together, let's make learning accessible! with free educational courses for everyone!"
@@ -215,7 +221,12 @@ function Home() {
                                 duration={0.8}
                             />
                             <div className="relative group">
-                                <button className="relative inline-block p-px font-semibold leading-6 text-white bg-gray-800  cursor-pointer rounded-xl shadow-zinc-900 transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95">
+                                <button 
+                                    className="relative inline-block p-px font-semibold leading-6 text-white bg-gray-800 
+                                    cursor-pointer rounded-xl shadow-zinc-900 transition-transform duration-300 ease-in-out 
+                                    hover:scale-105 active:scale-95"
+                                    onClick={() => navigate('/login')}
+                                >
                                     <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
 
                                     <span className="relative z-10 block px-6 py-3 rounded-xl bg-gray-950">
@@ -241,7 +252,7 @@ function Home() {
                             </div>
                         </div>
 
-                        {/* Right Section */}
+                        {/* Right Section - Course Preview */}
                         <div className="flex-1">
                             <div className="bg-[#e8f3ea] rounded-3xl p-8">
                                 <div className="flex items-center gap-2 mb-8">
@@ -251,127 +262,99 @@ function Home() {
                                     <span className="text-gray-600">_Join 5000+ learners</span>
                                 </div>
                                 <h3 className="text-2xl font-semibold mb-2">New courses added weekly</h3>
+                                
+                                {/* Course List */}
                                 <div className="space-y-4">
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <h4 className="text-3xl font-bold">Learn Web Development</h4>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                        </svg>
-                                    </div>
-
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <h4 className="text-2xl font-bold">Data Science & Analytics</h4>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="M3 3v18h18" />
-                                            <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
-                                        </svg>
-                                    </div>
-
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <h4 className="text-2xl font-bold">Mobile App Development</h4>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-                                            <path d="M12 18h.01" />
-                                        </svg>
-                                    </div>
-
-                                    <div className="flex items-center gap-2">
-                                        <h4 className="text-2xl font-bold">Cloud Computing</h4>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
-                                        </svg>
-                                    </div>
+                                    {[
+                                        { title: "Learn Web Development", icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z" },
+                                        { title: "Data Science & Analytics", icon: "M3 3v18h18 M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" },
+                                        { title: "Mobile App Development", icon: "M5 2 h14 v20 h-14 z M12 18h.01" },
+                                        { title: "Cloud Computing", icon: "M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" }
+                                    ].map((course, index) => (
+                                        <div key={index} className="flex items-center gap-2 mb-4">
+                                            <h4 className="text-2xl font-bold">{course.title}</h4>
+                                            <svg 
+                                                xmlns="http://www.w3.org/2000/svg" 
+                                                width="24" 
+                                                height="24" 
+                                                viewBox="0 0 24 24" 
+                                                fill="none" 
+                                                stroke="currentColor" 
+                                                strokeWidth="2" 
+                                                strokeLinecap="round" 
+                                                strokeLinejoin="round"
+                                            >
+                                                <path d={course.icon} />
+                                            </svg>
+                                        </div>
+                                    ))}
                                 </div>
                                 <p className="text-gray-600">with industry experts</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="min-h-screen w-[100vw] flex flex-col bg-white py-20">
+                {/* Testimonials Section */}
+                <div className="min-h-screen w-full flex flex-col bg-white py-20">
                     <div className="max-w-7xl mx-auto px-4 w-full">
-                        <div className="text-center  mt-20 mb-16">
+                        <div className="text-center mt-20 mb-16">
                             <h2 className="text-4xl md:text-5xl font-bold mb-4">What Our Students Say</h2>
-                            <p className="text-gray-600 max-w-2xl mx-auto">Hear from our successful students who have transformed their careers through our platform.</p>
+                            <p className="text-gray-600 max-w-2xl mx-auto">
+                                Hear from our successful students who have transformed their careers through our platform.
+                            </p>
                         </div>
 
                         <div className="grid mt-30 grid-cols-1 md:grid-cols-3 gap-8">
-                            {/* Testimonial 1 */}
-                            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
-                                <Meteors number={10} className="opacity-30" />
-                                <div className="flex items-center gap-4 mb-6">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80"
-                                        alt="Student"
-                                        className="w-16 h-16 rounded-full object-cover"
-                                    />
-                                    <div>
-                                        <h4 className="font-semibold">Jessica Chen</h4>
-                                        <p className="text-gray-600 text-sm">Web Development Graduate</p>
+                            {/* Testimonial Cards */}
+                            {[
+                                {
+                                    name: "Jessica Chen",
+                                    role: "Web Development Graduate",
+                                    image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=387&q=80",
+                                    quote: "The web development course was exactly what I needed to transition into tech. Within 3 months of completing the course, I landed my dream job as a frontend developer!"
+                                },
+                                {
+                                    name: "Marcus Thompson",
+                                    role: "Data Science Expert",
+                                    image: "https://images.unsplash.com/photo-1600486913747-55e5470d6f40?auto=format&fit=crop&w=387&q=80",
+                                    quote: "The practical projects and mentorship in the data science course were invaluable. I'm now working as a Data Analyst at a Fortune 500 company."
+                                },
+                                {
+                                    name: "Sofia Rodriguez",
+                                    role: "Mobile App Developer",
+                                    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=387&q=80",
+                                    quote: "The mobile development course gave me the confidence to start my own app development company. The instructors were incredibly supportive throughout my journey."
+                                }
+                            ].map((testimonial, index) => (
+                                <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
+                                    <Meteors number={10} className="opacity-30" />
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <img
+                                            src={testimonial.image}
+                                            alt={`${testimonial.name} portrait`}
+                                            loading="lazy"
+                                            decoding="async"
+                                            className="w-16 h-16 rounded-full object-cover"
+                                        />
+                                        <div>
+                                            <h4 className="font-semibold">{testimonial.name}</h4>
+                                            <p className="text-gray-600 text-sm">{testimonial.role}</p>
+                                        </div>
+                                    </div>
+                                    <p className="text-gray-700 mb-4">{testimonial.quote}</p>
+                                    <div className="flex items-center gap-1">
+                                        {Array(5).fill(0).map((_, i) => (
+                                            <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        ))}
                                     </div>
                                 </div>
-                                <p className="text-gray-700 mb-4">"The web development course was exactly what I needed to transition into tech. Within 3 months of completing the course, I landed my dream job as a frontend developer!"</p>
-                                <div className="flex items-center gap-1">
-                                    {[1, 2, 3, 4, 5].map((star) => (
-                                        <svg key={star} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                        </svg>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Testimonial 2 */}
-                            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
-                                <Meteors number={10} className="opacity-30" />
-                                <div className="flex items-center gap-4 mb-6">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80"
-                                        alt="Student"
-                                        className="w-16 h-16 rounded-full object-cover"
-                                    />
-                                    <div>
-                                        <h4 className="font-semibold">Marcus Thompson</h4>
-                                        <p className="text-gray-600 text-sm">Data Science Expert</p>
-                                    </div>
-                                </div>
-                                <p className="text-gray-700 mb-4">"The practical projects and mentorship in the data science course were invaluable. I'm now working as a Data Analyst at a Fortune 500 company."</p>
-                                <div className="flex items-center gap-1">
-                                    {[1, 2, 3, 4, 5].map((star) => (
-                                        <svg key={star} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                        </svg>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Testimonial 3 */}
-                            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
-                                <Meteors number={10} className="opacity-30" />
-                                <div className="flex items-center gap-4 mb-6">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80"
-                                        alt="Student"
-                                        className="w-16 h-16 rounded-full object-cover"
-                                    />
-                                    <div>
-                                        <h4 className="font-semibold">Sofia Rodriguez</h4>
-                                        <p className="text-gray-600 text-sm">Mobile App Developer</p>
-                                    </div>
-                                </div>
-                                <p className="text-gray-700 mb-4">"The mobile development course gave me the confidence to start my own app development company. The instructors were incredibly supportive throughout my journey."</p>
-                                <div className="flex items-center gap-1">
-                                    {[1, 2, 3, 4, 5].map((star) => (
-                                        <svg key={star} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                        </svg>
-                                    ))}
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </div>
             </div>
-
-            {/* Student Testimonials Section */}
 
 
             {/* AI Features Section */}
