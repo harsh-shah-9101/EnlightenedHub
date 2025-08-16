@@ -1,15 +1,15 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { IoCodeSlash, IoSend } from 'react-icons/io5';
+import { IoCodeSlash } from 'react-icons/io5';
 import { BiPlanet } from 'react-icons/bi';
 import { FaPython } from 'react-icons/fa';
 import { TbMessageChatbot } from 'react-icons/tb';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useNavigate } from 'react-router-dom';
-import { IoClose } from 'react-icons/io5';
 import NewChatButton from '../components/NewChatButton';
 import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import { IconHome, IconBook, IconBriefcase, IconPhone, IconSettings, IconLogout, IconRobot } from "@tabler/icons-react";
+import ChatBot from '../components/ChatBot';
 
 const AiChat = () => {
   const [message, setMessage] = useState("");
@@ -66,37 +66,7 @@ const AiChat = () => {
       }
     }
   ];
-
-  // Remove navigate constant and handleClose function
   
-  const hitRequest = () => {
-    if (message) {
-      generateResponse(message);
-    }
-    else {
-      alert("You must write something...!");
-    }
-  };
-
-  const generateResponse = async (msg) => {
-    if (!msg) return;
-    
-    const genAI = new GoogleGenerativeAI("AIzaSyCnW3-ACsuvQMRZkgZxEjIPOvKsS_kImZs");
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const result = await model.generateContent(msg);
-    
-    const newMessages = [
-      ...messages,
-      { type: "userMsg", text: msg },
-      { type: "responseMsg", text: result.response.text() },
-    ];
-    
-    setMessages(newMessages);
-    setisResponseScreen(true);
-    setMessage("");
-    console.log(result.response.text());
-  };
-
   const newChat = () => {
     setisResponseScreen(false);
     setMessages([]);
@@ -121,16 +91,9 @@ const AiChat = () => {
       setisResponseScreen(true);
     } catch (error) {
       console.error("Error:", error);
-      setMessages(prev => [...prev, { type: "error", content: "Sorry, I encountered an error. Please try again." }]);
+      setMessages(prev => [...prev, { type: "error", text: "Sorry, I encountered an error. Please try again." }]);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
     }
   };
 
@@ -140,7 +103,7 @@ const AiChat = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Add Sidebar */}
+      {/* Sidebar */}
       <Sidebar>
         <SidebarBody>
           {sidebarItems.map((item) => (
@@ -152,120 +115,106 @@ const AiChat = () => {
       {/* Main Content */}
       <div className="flex-1 relative">
         <div className="container h-screen overflow-x-hidden bg-white text-gray-800">
-          <div className="absolute inset-0 bg-white"></div>
+          
           <div className="relative z-10">
             {/* Header */}
-            <div className="fixed md:left-[300px] right-0 border-b border-gray-200 bg-white z-20">
+            <div className="fixed  w-full mx-auto  border-b border-gray-200 bg-white z-20">
               <div className="flex items-center justify-between px-6 py-3">
-                <h2 className="text-xl font-medium  text-center flex-1">AssistMe</h2>
+                <div className="flex mx-auto items-center">
+                  <h2 className="text-lg font-medium text-gray-800">
+                    AssistMe
+                  </h2>
+                </div>
                 
-                {isResponseScreen && (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => setMessages([])}
-                      className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-full transition-colors"
-                    >
-                      Clear chat
-                    </button>
-                    <NewChatButton onClick={newChat} />
-                  </div>
-                )}
+                
               </div>
             </div>
 
             {/* Main Content */}
-            <div className="pt-16 ml-[10%] pb-24 flex items-center justify-center">
-              {isResponseScreen ? (
-                <div className="max-w-3xl w-full mx-auto px-4">
+            <div className="pt-16 pb-32 w-full mx-auto flex flex-col items-center ">
+              <div className="w-full mx-auto px-4 flex-grow overflow-y-auto">
+                {isResponseScreen ? (
                   <div className="space-y-6 py-4">
                     {messages?.map((msg, index) => (
-                      <div key={index} className={`flex ${msg.type === 'userMsg' ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[85%] px-4 py-3 rounded-2xl ${
-                          msg.type === 'userMsg' 
-                            ? 'bg-blue-600 text-white' 
-                            : 'bg-gray-100 text-gray-800'
-                        }`}>
-                          <p className="whitespace-pre-wrap text-[15px]">{msg.text}</p>
+                      <div key={index} className={`group flex ${msg.type === 'userMsg' ? '' : 'bg-gray-50'} py-6`}>
+                        <div className="w-full mx-auto flex gap-4 px-4">
+                          <div className={`flex-shrink-0 ${msg.type === 'userMsg' ? 'bg-blue-600' : 'bg-gray-200'} text-white h-8 w-8 rounded-full flex items-center justify-center`}>
+                            <span className="text-xs font-medium">{msg.type === 'userMsg' ? 'You' : 'AI'}</span>
+                          </div>
+                          <div className="flex-grow">
+                            <div className="prose prose-sm max-w-none">
+                              <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-gray-800">{msg.text}</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     ))}
                     {isLoading && (
-                      <div className="flex justify-start">
-                        <div className="bg-gray-100 rounded-2xl px-4 py-3">
-                          <div className="animate-pulse flex space-x-2">
-                            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                      <div className="group flex bg-gray-50 py-6">
+                        <div className="w-full mx-auto flex gap-4 px-4">
+                          <div className="flex-shrink-0 bg-gray-200 text-white h-8 w-8 rounded-full flex items-center justify-center">
+                            <span className="text-xs font-medium">AI</span>
+                          </div>
+                          <div className="flex-grow">
+                            <div className="animate-pulse flex space-x-2">
+                              <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                              <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                              <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     )}
                   </div>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center h-[calc(100vh-8rem)] max-w-4xl mx-auto px-4">
-                  <h1 className="text-4xl font-medium text-gray-800 mb-8">AssistMe</h1>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
-                    {[
-                      { 
-                        icon: <IoCodeSlash />, 
-                        text: "How to get started\nwith software\ndevelopment?",
-                        category: "Programming"
-                      },
-                      { 
-                        icon: <BiPlanet />, 
-                        text: "Explain recent\nadvancements in\nspace technology",
-                        category: "Science"
-                      },
-                      { 
-                        icon: <FaPython />, 
-                        text: "Best practices for\nPython development\nin 2024",
-                        category: "Development"
-                      },
-                      { 
-                        icon: <TbMessageChatbot />, 
-                        text: "How to implement\nAI in business\noperations?",
-                        category: "AI & Business"
-                      }
-                    ].map((item, index) => (
-                      <div 
-                        key={index} 
-                        onClick={() => setMessage(item.text.replace(/\n/g, ' '))}
-                        className="p-6 rounded-xl border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors relative group flex flex-col h-full"
-                      >
-                        <div className="text-xs text-gray-500 mb-2">{item.category}</div>
-                        <p className="text-sm text-gray-800 whitespace-pre-line font-medium flex-grow">{item.text}</p>
-                        <div className="text-gray-600 text-lg group-hover:text-blue-600 transition-colors mt-4">
-                          {item.icon}
-                        </div>
-                      </div>
-                    ))}
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-[calc(100vh-14rem)] w-full ml-20  mx-auto text-center">
+                    <h1 className="text-3xl font-semibold text-gray-800 mb-4">AssistMe</h1>
+                    <p className="text-gray-600 mb-8">How can I help you today?</p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-xl">
+                      {[
+                        { 
+                          title: "Explain a concept",
+                          text: "How does quantum computing work?",
+                        },
+                        { 
+                          title: "Creative writing",
+                          text: "Write a short story about a time traveler",
+                        },
+                        { 
+                          title: "Coding help",
+                          text: "Help me write a function to find prime numbers in Python",
+                        },
+                        { 
+                          title: "Learning assistance",
+                          text: "Create a study plan for machine learning",
+                        }
+                      ].map((item, index) => (
+                        <button 
+                          key={index} 
+                          onClick={() => setMessage(item.text)}
+                          className="p-4 rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-gray-50 cursor-pointer transition-colors text-left"
+                        >
+                          <h3 className="font-medium text-sm text-gray-700 mb-1">{item.title}</h3>
+                          <p className="text-xs text-gray-500">{item.text}</p>
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
             {/* Input Area */}
-            <div className="fixed bottom-0 md:left-[300px] right-70 bg-white border-t border-gray-200">
-              <div className="max-w-3xl mx-auto px-4 py-4">
-                <div className="relative flex items-center">
-                  <input 
-                    value={message} 
-                    onChange={(e) => setMessage(e.target.value)} 
-                    onKeyDown={handleKeyPress}
-                    type="text" 
-                    className="w-full px-4 py-3 pr-12 rounded-2xl border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none bg-white text-gray-800" 
-                    placeholder="Message AssistMe..." 
-                  />
-                  <button
-                    onClick={handleSend}
-                    disabled={!message.trim() || isLoading}
-                    className={`absolute right-3 ${message.trim() ? 'text-blue-600 hover:text-blue-700' : 'text-gray-400'}`}
-                  >
-                    <IoSend className="w-5 h-5" />
-                  </button>
-                </div>
-                <p className="text-xs text-gray-500 mt-2 text-center">
+            <div className="fixed bottom-0 w-full mx-auto bg-white border-t border-gray-100 z-20 py-4">
+              <div className="w-full  px-115">
+                <ChatBot 
+                  onSend={handleSend} 
+                  message={message} 
+                  setMessage={setMessage} 
+                  isLoading={isLoading} 
+                />
+                <p className="text-xs text-gray-500 mt-3 text-center">
                   AssistMe is developed by EnlightenedHub using the Gemini API
                 </p>
               </div>
