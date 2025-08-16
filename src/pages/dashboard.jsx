@@ -271,7 +271,7 @@ function Dashboard() {
                             animation: 'gradient-move 10s ease infinite',
                             boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)'
                         }}>
-                            <div className="max-w-7xl mx-auto w-full flex items-center justify-between gap-4">
+                            <div className="w-full mx-auto  flex items-center justify-between gap-4">
                                 <h1 className="text-2xl font-semibold text-neutral-800">
                                     Dashboard
                                 </h1>
