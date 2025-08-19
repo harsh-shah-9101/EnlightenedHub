@@ -247,18 +247,28 @@ function Dashboard() {
 
 
 
-                {/* Replace entire Sidebar section with FloatingDock */}
-                <Sidebar>
-                    <SidebarBody>
-                        {dockItems.map((item) => (
-                            <SidebarLink key={item.title} link={item} />
-                        ))}
-                    </SidebarBody>
-                </Sidebar>
+                {/* Sidebar for desktop view */}
+                <div className="hidden md:block">
+                    <Sidebar>
+                        <SidebarBody>
+                            {dockItems.map((item) => (
+                                <SidebarLink key={item.title} link={item} />
+                            ))}
+                        </SidebarBody>
+                    </Sidebar>
+                </div>
+                
+                {/* FloatingDock for mobile view */}
+                <div className="block md:hidden">
+                    <FloatingDock 
+                        items={dockItems}
+                        mobileClassName="fixed bottom-6 right-6 z-50 shadow-lg"
+                    />
+                </div>
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto max-w-screen relative">
-                    <div className=" mx-auto ">
+                <main className="flex-1 overflow-y-auto max-w-screen relative pb-20 md:pb-0">
+                    <div className="mx-auto">
                         {/* Make the header sticky with blur effect and top margin */}
                         <div className="flex items-center justify-between rounded-md mb-8 sticky top-0 py-3 z-40 w-full" style={{
                             backgroundColor: 'rgba(255, 255, 255, 0.8)',
