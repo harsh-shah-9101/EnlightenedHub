@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Paper, Typography, Box, TextField, Button, Avatar, Divider } from '@mui/material';
-import { PieChart, Pie, Cell } from 'recharts';
+import { Container, Paper, Typography, Box, TextField, Button, Avatar, Divider, useMediaQuery, useTheme } from '@mui/material';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { auth, storage } from '../firebase/config';
 import { onAuthStateChanged, updateProfile } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
@@ -8,12 +8,15 @@ import LightAnimatedBackground from '../components/LightAnimatedBackground';
 import { useNavigate } from 'react-router-dom';
 import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import { IconHome, IconBook, IconBriefcase, IconPhone, IconSettings, IconLogout, IconRobot } from "@tabler/icons-react";
+import { FloatingDock } from "../components/ui/floating-dock";
 
 const Settings = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   
-  // Add sidebar items
-  const sidebarItems = [
+  // Add sidebar and floating dock items
+  const navigationItems = [
     {
       href: "/dashboard",
       title: "Dashboard",
@@ -121,35 +124,53 @@ const Settings = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Sidebar */}
-      <Sidebar>
-        <SidebarBody>
-          {sidebarItems.map((item) => (
-            <SidebarLink key={item.title} link={item} />
-          ))}
-        </SidebarBody>
-      </Sidebar>
+      {/* Sidebar - Hidden on mobile */}
+      {!isMobile && (
+        <Sidebar>
+          <SidebarBody>
+            {navigationItems.map((item) => (
+              <SidebarLink key={item.title} link={item} />
+            ))}
+          </SidebarBody>
+        </Sidebar>
+      )}
 
       {/* Main Content */}
-      <LightAnimatedBackground>
-        <Container sx={{ py: 4 }}>
+      <LightAnimatedBackground className="flex-1 w-full overflow-y-auto">
+        <Container sx={{ 
+          py: 4, 
+          px: { xs: 2, sm: 3, md: 4 },
+          pb: { xs: 10, md: 4 } // Add extra padding at bottom on mobile for floating dock
+        }} maxWidth="lg">
           <Paper sx={{ 
-            p: 4, 
+            p: { xs: 2, sm: 3, md: 4 },
             backgroundColor: 'rgba(255, 255, 255, 0.9)', 
             backdropFilter: 'blur(10px)',
             color: '#333333',
             border: '1px solid rgba(0, 0, 0, 0.1)',
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-            borderRadius: 2
+            borderRadius: 2,
+            overflowX: 'hidden'
           }}>
             <Box sx={{ mb: 4 }}>
-              <Typography variant="h4" gutterBottom color="primary">
+              <Typography variant="h4" gutterBottom color="primary" sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' } }}>
                 Profile Settings
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+              <Box sx={{ 
+                display: 'flex', 
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: { xs: 'flex-start', sm: 'center' }, 
+                gap: 2, 
+                mb: 3 
+              }}>
                 <Avatar
                   src={photoURL}
-                  sx={{ width: 100, height: 100, bgcolor: 'primary.main' }}
+                  sx={{ 
+                    width: { xs: 80, sm: 100 }, 
+                    height: { xs: 80, sm: 100 }, 
+                    bgcolor: 'primary.main',
+                    mb: { xs: 2, sm: 0 }
+                  }}
                 >
                   {username ? username[0].toUpperCase() : '?'}
                 </Avatar>
@@ -189,8 +210,14 @@ const Settings = () => {
                     <Button
                       variant="outlined"
                       component="span"
-                      sx={{ mr: 1, color: 'primary.main', borderColor: 'primary.main' }}
+                      sx={{ 
+                        mr: 1, 
+                        color: 'primary.main', 
+                        borderColor: 'primary.main',
+                        mb: { xs: 1, sm: 0 }
+                      }}
                       disabled={loading}
+                      size={isMobile ? "small" : "medium"}
                     >
                       Upload Photo
                     </Button>
@@ -212,25 +239,39 @@ const Settings = () => {
                         setLoading(false);
                       }}
                       disabled={loading}
+                      size={isMobile ? "small" : "medium"}
                     >
                       Remove Photo
                     </Button>
                   )}
                 </Box>
               </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4, width: '100%' }}>
+              <Box sx={{ 
+                display: 'flex', 
+                flexDirection: { xs: 'column', md: 'row' },
+                alignItems: { xs: 'stretch', md: 'center' }, 
+                gap: 2, 
+                mb: 4, 
+                width: '100%' 
+              }}>
                 {isEditing ? (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    alignItems: { xs: 'stretch', sm: 'center' }, 
+                    gap: 2, 
+                    width: '100%' 
+                  }}>
                     <TextField
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       variant="outlined"
-                      size="large"
+                      size={isMobile ? "small" : "medium"}
                       fullWidth
                       sx={{
                         '& .MuiOutlinedInput-root': {
                           color: '#333',
-                          fontSize: '1.1rem',
+                          fontSize: { xs: '0.9rem', sm: '1.1rem' },
                           '& fieldset': {
                             borderColor: 'rgba(0, 0, 0, 0.23)',
                             borderRadius: 2
@@ -244,63 +285,84 @@ const Settings = () => {
                         }
                       }}
                     />
-                    <Button
-                      variant="contained"
-                      size="large"
-                      sx={{ 
-                        borderRadius: 2,
-                        px: 4,
-                        minWidth: '100px'
-                      }}
-                      onClick={async () => {
-                        setLoading(true);
-                        try {
-                          await updateProfile(auth.currentUser, { displayName: username });
+                    <Box sx={{ 
+                      display: 'flex', 
+                      flexDirection: { xs: 'row', sm: 'row' },
+                      gap: 1
+                    }}>
+                      <Button
+                        variant="contained"
+                        size={isMobile ? "small" : "medium"}
+                        sx={{ 
+                          borderRadius: 2,
+                          px: { xs: 2, sm: 4 },
+                          flex: { xs: 1, sm: 'none' }
+                        }}
+                        onClick={async () => {
+                          setLoading(true);
+                          try {
+                            await updateProfile(auth.currentUser, { displayName: username });
+                            setIsEditing(false);
+                          } catch (error) {
+                            console.error('Error updating username:', error);
+                          }
+                          setLoading(false);
+                        }}
+                        disabled={loading}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size={isMobile ? "small" : "medium"}
+                        onClick={() => {
+                          setUsername(auth.currentUser.displayName || '');
                           setIsEditing(false);
-                        } catch (error) {
-                          console.error('Error updating username:', error);
-                        }
-                        setLoading(false);
-                      }}
-                      disabled={loading}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      size="large"
-                      onClick={() => {
-                        setUsername(auth.currentUser.displayName || '');
-                        setIsEditing(false);
-                      }}
-                      sx={{ 
-                        color: 'primary.main', 
-                        borderColor: 'primary.main',
-                        borderRadius: 2,
-                        px: 3,
-                        '&:hover': {
-                          borderColor: 'primary.dark'
-                        }
-                      }}
-                      disabled={loading}
-                    >
-                      Cancel
-                    </Button>
+                        }}
+                        sx={{ 
+                          color: 'primary.main', 
+                          borderColor: 'primary.main',
+                          borderRadius: 2,
+                          px: { xs: 2, sm: 3 },
+                          flex: { xs: 1, sm: 'none' },
+                          '&:hover': {
+                            borderColor: 'primary.dark'
+                          }
+                        }}
+                        disabled={loading}
+                      >
+                        Cancel
+                      </Button>
+                    </Box>
                   </Box>
                 ) : (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
-                    <Typography variant="h6" sx={{ flex: 1, fontSize: '1.2rem', color: '#333' }}>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    alignItems: { xs: 'flex-start', sm: 'center' }, 
+                    gap: 2, 
+                    width: '100%' 
+                  }}>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        flex: 1, 
+                        fontSize: { xs: '1rem', sm: '1.2rem' }, 
+                        color: '#333' 
+                      }}
+                    >
                       Username: {username || 'Not set'}
                     </Typography>
                     <Button
                       variant="outlined"
-                      size="large"
+                      size={isMobile ? "small" : "medium"}
                       onClick={() => setIsEditing(true)}
                       sx={{ 
                         color: 'primary.main', 
                         borderColor: 'primary.main',
                         borderRadius: 2,
-                        px: 4,
+                        px: { xs: 2, sm: 4 },
+                        alignSelf: { xs: 'stretch', sm: 'auto' },
                         '&:hover': {
                           borderColor: 'primary.dark'
                         }
@@ -313,35 +375,61 @@ const Settings = () => {
               </Box>
               <Divider sx={{ my: 4, bgcolor: 'rgba(0, 0, 0, 0.1)' }} />
             </Box>
-            <Typography variant="h4" gutterBottom color="primary">
+            <Typography 
+              variant="h4" 
+              gutterBottom 
+              color="primary"
+              sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' } }}
+            >
               Time Spent Statistics
             </Typography>
             <Box sx={{ 
               display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'space-between', 
-              flexWrap: 'wrap',
+              flexDirection: { xs: 'column', md: 'row' },
+              alignItems: { xs: 'center', md: 'flex-start' },
+              justifyContent: { xs: 'center', md: 'space-between' }, 
               gap: 4
             }}>
-              <Box sx={{ flex: '1 1 auto', minWidth: '300px' }}>
-                <PieChart width={300} height={300}>
-                  <Pie
-                    data={getTimeData(timeSpent)}
-                    cx={150}
-                    cy={150}
-                    innerRadius={80}
-                    outerRadius={120}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {getTimeData(timeSpent).map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                </PieChart>
+              <Box sx={{ 
+                flex: '1 1 auto', 
+                minWidth: { xs: '100%', md: '300px' },
+                display: 'flex',
+                justifyContent: 'center',
+                height: { xs: 250, md: 300 },
+                width: '100%'
+              }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={getTimeData(timeSpent)}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={isMobile ? '40%' : '50%'}
+                      outerRadius={isMobile ? '70%' : '80%'}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {getTimeData(timeSpent).map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
               </Box>
-              <Box sx={{ flex: '1 1 auto', minWidth: '300px' }}>
-                <Typography variant="h5" gutterBottom sx={{ mb: 3, color: '#333' }}>
+              <Box sx={{ 
+                flex: '1 1 auto', 
+                minWidth: { xs: '100%', md: '300px' }
+              }}>
+                <Typography 
+                  variant="h5" 
+                  gutterBottom 
+                  sx={{ 
+                    mb: 3, 
+                    color: '#333',
+                    fontSize: { xs: '1.2rem', sm: '1.5rem' },
+                    textAlign: { xs: 'center', md: 'left' }
+                  }}
+                >
                   Total Time: {formatTime(timeSpent)}
                 </Typography>
                 {getTimeData(timeSpent).map((entry, index) => (
@@ -367,10 +455,18 @@ const Settings = () => {
                         borderRadius: '50%'
                       }}
                     />
-                    <Typography sx={{ flex: 1, fontSize: '1.1rem', color: '#333' }}>
+                    <Typography sx={{ 
+                      flex: 1, 
+                      fontSize: { xs: '0.9rem', sm: '1.1rem' }, 
+                      color: '#333' 
+                    }}>
                       {entry.name}
                     </Typography>
-                    <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem', color: '#333' }}>
+                    <Typography sx={{ 
+                      fontWeight: 'bold', 
+                      fontSize: { xs: '0.9rem', sm: '1.1rem' }, 
+                      color: '#333' 
+                    }}>
                       {entry.value}
                     </Typography>
                   </Box>
@@ -380,6 +476,15 @@ const Settings = () => {
           </Paper>
         </Container>
       </LightAnimatedBackground>
+
+      {/* Floating Dock - Only visible on mobile */}
+      {isMobile && (
+        <FloatingDock
+          items={navigationItems}
+          mobileClassName="fixed bottom-4 right-4 z-50"
+          desktopClassName="hidden" // Hide on desktop
+        />
+      )}
     </div>
   );
 };
