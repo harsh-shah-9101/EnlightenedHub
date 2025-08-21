@@ -7,9 +7,12 @@ import { IconMapPin, IconClock, IconCurrency } from "@tabler/icons-react";
 import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import { AiIcon } from "../components/ui/ai-icon";
 import CustomNotification from '../components/ui/custom-notification';
+import { FloatingDock } from "../components/ui/floating-dock";
+import { useMediaQuery } from '@mui/material';
 
 const Job = () => {
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width:768px)');
   // Add notification state
   const [notification, setNotification] = useState(null);
   
@@ -183,44 +186,50 @@ const Job = () => {
       }
     ]);
 
-  // Create sidebar links matching dashboard format
-  const sidebarLinks = [
+  // Create navigation items for sidebar and floating dock
+  const navigationItems = [
     {
       href: "/dashboard",
       title: "Dashboard",
-      icon: <IconHome className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+      icon: <IconHome className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+      onClick: () => navigate('/dashboard')
     },
     {
       href: "/dashboard/courses",
       title: "My Courses",
-      icon: <IconBook className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+      icon: <IconBook className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+      onClick: () => navigate('/dashboard/courses')
     },
     {
       href: "/job",
       title: "Job Portal",
-      icon: <IconBriefcase className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+      icon: <IconBriefcase className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+      onClick: () => navigate('/job')
     },
     {
       href: "/dashboard/support",
       title: "Support",
-      icon: <IconPhone className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />
+      icon: <IconPhone className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+      onClick: () => navigate('/dashboard/support')
     },
     {
       href: "/dashboard/setting",
       title: "Settings",
-      icon: <IconSettings className="w-5 h-5" />
+      icon: <IconSettings className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+      onClick: () => navigate('/dashboard/setting')
     },
     {
       href: "/dashboard/ai-chat",
       title: "AI Chat",
-      icon: <AiIcon className="w-5 h-5 text-emerald-500" />
+      icon: <IconRobot className="w-5 h-5 text-emerald-500" />,
+      onClick: () => navigate('/dashboard/ai-chat')
     },
     {
       href: "/",
       title: "Logout",
       icon: <IconLogout className="w-5 h-5 text-red-500" />,
       onClick: () => {
-        localStorage.removeItem('token');
+        localStorage.clear();
         navigate('/');
       }
     }
@@ -290,17 +299,19 @@ const Job = () => {
         />
       )}
 
-      {/* Sidebar - Using the same structure as dashboard */}
-      <Sidebar>
-        <SidebarBody>
-          {sidebarLinks.map((link) => (
-            <SidebarLink 
-              key={link.title} 
-              link={link} 
-            />
-          ))}
-        </SidebarBody>
-      </Sidebar>
+      {/* Sidebar - Only visible on desktop */}
+      {!isMobile && (
+        <Sidebar>
+          <SidebarBody>
+            {navigationItems.map((link) => (
+              <SidebarLink 
+                key={link.title} 
+                link={link} 
+              />
+            ))}
+          </SidebarBody>
+        </Sidebar>
+      )}
 
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto relative">
@@ -343,20 +354,20 @@ const Job = () => {
 
           <div className="relative z-10">
             {/* Main Content */}
-            <div className="p-6">
-              <div className="max-w-7xl mx-auto space-y-8">
+            <div className="p-3 md:p-6">
+              <div className="max-w-7xl mx-auto space-y-4 md:space-y-8">
                 {/* Header */}
                 <div className="text-center">
-                  <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-sky-600 mb-4">
+                  <h1 className="text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-sky-600 mb-2 md:mb-4">
                     Find Your Dream Job
                   </h1>
-                  <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+                  <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto mb-4 md:mb-8">
                     Discover opportunities that match your skills and aspirations
                   </p>
                 </div>
 
                 {/* Search Section */}
-                <div className="max-w-3xl mx-auto px-4">
+                <div className="max-w-3xl mx-auto px-2 md:px-4">
                   <PlaceholdersAndVanishInput
                     placeholders={searchPlaceholders}
                     onChange={handleSearchChange}
@@ -365,42 +376,42 @@ const Job = () => {
                 </div>
 
                 {/* Job Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 pb-20 md:pb-6">
                   {filteredJobs.map((job) => (
                     <motion.div
                       key={job.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-lg p-4 hover:border-blue-500/50 transition-all shadow-sm"
+                      className="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-lg p-3 md:p-4 hover:border-blue-500/50 transition-all shadow-sm"
                     >
-                      <div className="space-y-3">
+                      <div className="space-y-2 md:space-y-3">
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-800 mb-0.5">{job.title}</h3>
-                          <p className="text-blue-600 text-sm">{job.company}</p>
+                          <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-0.5">{job.title}</h3>
+                          <p className="text-blue-600 text-xs md:text-sm">{job.company}</p>
                         </div>
                         
                         <div className="space-y-1">
-                          <div className="flex items-center text-gray-600 text-sm">
+                          <div className="flex items-center text-gray-600 text-xs md:text-sm">
                             <IconMapPin size={16} className="mr-1.5" />
                             {job.location}
                           </div>
-                          <div className="flex items-center text-gray-600 text-sm">
+                          <div className="flex items-center text-gray-600 text-xs md:text-sm">
                             <IconClock size={16} className="mr-1.5" />
                             {job.type}
                           </div>
-                          <div className="flex items-center text-gray-600 text-sm">
+                          <div className="flex items-center text-gray-600 text-xs md:text-sm">
                             <IconCurrency size={16} className="mr-1.5" />
                             {job.salary}
                           </div>
                         </div>
 
-                        <p className="text-gray-600 text-sm line-clamp-2">{job.description}</p>
+                        <p className="text-gray-600 text-xs md:text-sm line-clamp-2">{job.description}</p>
 
-                        <div className="flex flex-wrap gap-1.5">
+                        <div className="flex flex-wrap gap-1 md:gap-1.5">
                           {job.tags.map((tag, index) => (
                             <span
                               key={index}
-                              className="px-2 py-0.5 bg-blue-100 text-blue-600 rounded-full text-xs"
+                              className="px-1.5 md:px-2 py-0.5 bg-blue-100 text-blue-600 rounded-full text-[10px] md:text-xs"
                             >
                               {tag}
                             </span>
@@ -409,7 +420,7 @@ const Job = () => {
 
                         <button
                           onClick={() => handleApply(job)}
-                          className="w-full py-1.5 px-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm"
+                          className="w-full py-1 md:py-1.5 px-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-xs md:text-sm"
                         >
                           Apply Now
                         </button>
@@ -422,6 +433,15 @@ const Job = () => {
           </div>
         </div>
       </div>
+
+      {/* Floating Dock - Only visible on mobile */}
+      {isMobile && (
+        <FloatingDock
+          items={navigationItems}
+          mobileClassName="fixed bottom-4 right-4 z-50"
+          desktopClassName="hidden" // Hide on desktop
+        />
+      )}
     </div>
   );
 };
