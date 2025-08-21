@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Typography, Paper, TextField, Button, Box, Slider, IconButton, Stack, LinearProgress, List, ListItem, ListItemIcon, ListItemText, Divider, Tooltip } from '@mui/material';
+import { Container, Typography, Paper, TextField, Button, Box, Slider, IconButton, Stack, LinearProgress, List, ListItem, ListItemIcon, ListItemText, Divider, Tooltip, useMediaQuery } from '@mui/material';
 import { PlayArrow, Pause, VolumeUp, VolumeOff, Fullscreen, ArrowBack, PlayCircleOutline, Download, Share, ThumbUp, ThumbUpOutlined, NoteAdd, Description } from '@mui/icons-material';
 // Replace DarkAnimatedBackground with LightAnimatedBackground
 import LightAnimatedBackground from '../components/LightAnimatedBackground';
 // Import Sidebar components
 import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import { IconHome, IconBook, IconBriefcase, IconPhone, IconSettings, IconLogout, IconRobot } from "@tabler/icons-react";
+import { FloatingDock } from "../components/ui/floating-dock";
 
 const CourseDetail = () => {
   const { courseId } = useParams();
@@ -17,6 +18,7 @@ const CourseDetail = () => {
   const [notes, setNotes] = useState([]);
   const [noteText, setNoteText] = useState('');
   const [liked, setLiked] = useState(false);
+  const isMobile = useMediaQuery('(max-width:768px)');
 
   const [materials, setMaterials] = useState([
     { id: 1, name: 'Course Slides', type: 'PDF', url: '#' },
@@ -34,7 +36,7 @@ const CourseDetail = () => {
   const navigate = useNavigate();
 
   // Add sidebar items
-  const sidebarItems = [
+  const navigationItems = [
     {
       href: "/dashboard",
       title: "Dashboard",
@@ -214,34 +216,54 @@ const CourseDetail = () => {
 
   if (!course) {
     return (
-      <LightAnimatedBackground>  {/* Changed from DarkAnimatedBackground */}
-        <Container>
-          <Typography variant="h4" sx={{ color: 'white', textAlign: 'center', mt: 4 }}>
-            Course not found
-          </Typography>
-        </Container>
-      </LightAnimatedBackground>
+      <div className="flex h-screen overflow-hidden">
+        {!isMobile && (
+          <Sidebar>
+            <SidebarBody>
+              {navigationItems.map((item) => (
+                <SidebarLink key={item.title} link={item} />
+              ))}
+            </SidebarBody>
+          </Sidebar>
+        )}
+        <LightAnimatedBackground>  {/* Changed from DarkAnimatedBackground */}
+          <Container>
+            <Typography variant="h4" sx={{ color: 'white', textAlign: 'center', mt: 4 }}>
+              Course not found
+            </Typography>
+          </Container>
+        </LightAnimatedBackground>
+        {isMobile && (
+          <FloatingDock
+            items={navigationItems}
+            mobileClassName="fixed bottom-4 right-4 z-50"
+            desktopClassName="hidden" // Hide on desktop
+          />
+        )}
+      </div>
     );
   }
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Sidebar */}
-      <Sidebar>
-        <SidebarBody>
-          {sidebarItems.map((item) => (
-            <SidebarLink key={item.title} link={item} />
-          ))}
-        </SidebarBody>
-      </Sidebar>
+      {/* Sidebar - Only visible on desktop */}
+      {!isMobile && (
+        <Sidebar>
+          <SidebarBody>
+            {navigationItems.map((item) => (
+              <SidebarLink key={item.title} link={item} />
+            ))}
+          </SidebarBody>
+        </Sidebar>
+      )}
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
         <LightAnimatedBackground>
-          <Container maxWidth="lg" sx={{ py: 6 }}>
+          <Container maxWidth="lg" sx={{ py: { xs: 3, md: 6 } }}>
             {/* Remove the entire back button section and keep just the title */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-              <Typography variant="h4" component="h1" sx={{ color: '#1e293b', fontSize: { xs: '1.75rem', md: '2.25rem' } }}>
+              <Typography variant="h4" component="h1" sx={{ color: '#1e293b', fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2.25rem' } }}>
                 {course.title}
               </Typography>
             </Box>
@@ -280,7 +302,7 @@ const CourseDetail = () => {
             {/* Course Progress and Social Features */}
             <Box sx={{ mb: 4 }}>
               <Paper sx={{
-                p: 3,
+                p: { xs: 2, sm: 3 },
                 backgroundColor: 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(0, 0, 0, 0.1)',
@@ -328,7 +350,7 @@ const CourseDetail = () => {
             {/* Course Materials */}
             <Box sx={{ mb: 4 }}>
               <Paper sx={{
-                p: 3,
+                p: { xs: 2, sm: 3 },
                 backgroundColor: 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(0, 0, 0, 0.1)',
@@ -370,7 +392,7 @@ const CourseDetail = () => {
             {/* Notes Section */}
             <Box sx={{ mb: 4 }}>
               <Paper sx={{
-                p: 3,
+                p: { xs: 2, sm: 3 },
                 backgroundColor: 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(0, 0, 0, 0.1)',
@@ -532,9 +554,9 @@ const CourseDetail = () => {
                   sx={{
                     backgroundColor: '#2196f3',
                     borderRadius: '12px',
-                    padding: '12px 24px',
+                    padding: { xs: '8px 16px', sm: '12px 24px' },
                     textTransform: 'none',
-                    fontSize: '1rem',
+                    fontSize: { xs: '0.875rem', sm: '1rem' },
                     fontWeight: 500,
                     transition: 'all 0.3s ease',
                     '&:hover': {
@@ -616,6 +638,15 @@ const CourseDetail = () => {
           </Container>
         </LightAnimatedBackground>
       </div>
+
+      {/* Floating Dock - Only visible on mobile */}
+      {isMobile && (
+        <FloatingDock
+          items={navigationItems}
+          mobileClassName="fixed bottom-4 right-4 z-50"
+          desktopClassName="hidden" // Hide on desktop
+        />
+      )}
     </div>
   );
 };
