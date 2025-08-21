@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IconBriefcase, IconBook, IconPhone, IconSettings, IconHome, IconRobot, IconLogout } from "@tabler/icons-react";
 import { PlaceholdersAndVanishInput } from "../components/ui/placeholders-and-vanish-input";
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { IconMapPin, IconClock, IconCurrency } from "@tabler/icons-react";
 import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
@@ -353,35 +353,90 @@ const Job = () => {
           />
 
           <div className="relative z-10">
-            {/* Main Content */}
-            <div className="p-3 md:p-6">
-              <div className="max-w-7xl mx-auto space-y-4 md:space-y-8">
+            {/* Header with fixed search bar */}
+            <div className="sticky top-0 bg-white/95 backdrop-blur-md z-20 pt-3 md:pt-6 pb-2 md:pb-4 px-3 md:px-6 border-b border-gray-100 shadow-sm">
+              <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="text-center">
+                <div className="text-center mb-3 md:mb-6">
                   <h1 className="text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-sky-600 mb-2 md:mb-4">
                     Find Your Dream Job
                   </h1>
-                  <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto mb-4 md:mb-8">
+                  <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
                     Discover opportunities that match your skills and aspirations
                   </p>
                 </div>
 
-                {/* Search Section */}
+                {/* Search Section - Fixed with enhanced styling */}
                 <div className="max-w-3xl mx-auto px-2 md:px-4">
-                  <PlaceholdersAndVanishInput
-                    placeholders={searchPlaceholders}
-                    onChange={handleSearchChange}
-                    onSubmit={handleSearchSubmit}
-                  />
+                  <div className="bg-white rounded-xl p-2 shadow-md border border-gray-100">
+                    <PlaceholdersAndVanishInput
+                      placeholders={searchPlaceholders}
+                      onChange={handleSearchChange}
+                      onSubmit={handleSearchSubmit}
+                    />
+                    <div className="flex flex-wrap gap-2 mt-2 justify-center">
+                      <button 
+                        onClick={() => setSearchQuery("remote")}
+                        className="px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full text-xs transition-colors"
+                      >
+                        Remote
+                      </button>
+                      <button 
+                        onClick={() => setSearchQuery("full-time")}
+                        className="px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full text-xs transition-colors"
+                      >
+                        Full-time
+                      </button>
+                      <button 
+                        onClick={() => setSearchQuery("developer")}
+                        className="px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full text-xs transition-colors"
+                      >
+                        Developer
+                      </button>
+                      <button 
+                        onClick={() => setSearchQuery("")}
+                        className="px-2 py-1 bg-gray-50 hover:bg-gray-100 text-gray-600 rounded-full text-xs transition-colors"
+                      >
+                        All Jobs
+                      </button>
+                    </div>
+                  </div>
                 </div>
-
+              </div>
+            </div>
+            
+            {/* Job Listings */}
+            <div className="p-3 md:p-6 pt-4">
+              <div className="max-w-7xl mx-auto">
+                {/* Results count */}
+                <div className="mb-4 flex justify-between items-center">
+                  <p className="text-sm text-gray-500">
+                    Showing <span className="font-medium text-gray-700">{filteredJobs.length}</span> job{filteredJobs.length !== 1 ? 's' : ''}
+                    {searchQuery && <span> for "<span className="text-blue-600">{searchQuery}</span>"</span>}
+                  </p>
+                  {searchQuery && (
+                    <button 
+                      onClick={() => setSearchQuery("")}
+                      className="text-xs text-gray-500 hover:text-gray-800 underline"
+                    >
+                      Clear search
+                    </button>
+                  )}
+                </div>
+                
                 {/* Job Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 pb-20 md:pb-6">
+                <motion.div 
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 pb-20 md:pb-6"
+                  layout
+                >
                   {filteredJobs.map((job) => (
                     <motion.div
                       key={job.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      layout
                       className="bg-white/90 backdrop-blur-xl border border-gray-200 rounded-lg p-3 md:p-4 hover:border-blue-500/50 transition-all shadow-sm"
                     >
                       <div className="space-y-2 md:space-y-3">
@@ -427,7 +482,7 @@ const Job = () => {
                       </div>
                     </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
