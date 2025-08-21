@@ -16,10 +16,15 @@ const StyledWrapper = styled.div`
     width: 100%;
     background-color: #ffffff;
     border: 1px solid #e5e7eb;
-    border-radius: 1rem;
+    border-radius: 0.75rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.75rem;
     position: relative;
+    
+    @media (min-width: 768px) {
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+    }
   }
 
   .chatbox textarea {
@@ -28,7 +33,7 @@ const StyledWrapper = styled.div`
     border: none;
     color: #374151;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     line-height: 1.5;
     min-height: 1.5rem;
     max-height: 15rem;
@@ -36,6 +41,10 @@ const StyledWrapper = styled.div`
     padding: 0.5rem 0;
     resize: none;
     outline: none;
+    
+    @media (min-width: 768px) {
+      font-size: 0.875rem;
+    }
     
     &::-webkit-scrollbar {
       width: 6px;
@@ -62,8 +71,12 @@ const StyledWrapper = styled.div`
 
   .chatbox-actions {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.375rem;
     align-items: center;
+    
+    @media (min-width: 768px) {
+      gap: 0.5rem;
+    }
   }
 
   .action-button {
@@ -75,9 +88,14 @@ const StyledWrapper = styled.div`
     border-radius: 0.25rem;
     color: #6b7280;
     cursor: pointer;
-    height: 2rem;
-    width: 2rem;
+    height: 1.75rem;
+    width: 1.75rem;
     transition: background-color 0.2s, color 0.2s;
+    
+    @media (min-width: 768px) {
+      height: 2rem;
+      width: 2rem;
+    }
 
     &:hover {
       background-color: #f3f4f6;
@@ -98,14 +116,19 @@ const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
+    width: 1.75rem;
+    height: 1.75rem;
     color: #ffffff;
     background-color: #2563eb;
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
+    
+    @media (min-width: 768px) {
+      width: 2rem;
+      height: 2rem;
+    }
 
     &:hover {
       background-color: #1d4ed8;
@@ -121,26 +144,41 @@ const StyledWrapper = styled.div`
     }
 
     svg {
-      width: 1.25rem;
-      height: 1.25rem;
+      width: 1.125rem;
+      height: 1.125rem;
+      
+      @media (min-width: 768px) {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
     }
   }
 
   .suggestion-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
+    gap: 0.375rem;
+    margin-top: 0.5rem;
+    
+    @media (min-width: 768px) {
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
 
     .suggestion-chip {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: #4b5563;
       background-color: #f9fafb;
       border: 1px solid #e5e7eb;
       border-radius: 1rem;
-      padding: 0.5rem 0.75rem;
+      padding: 0.375rem 0.625rem;
       cursor: pointer;
       transition: background-color 0.2s, border-color 0.2s;
+      
+      @media (min-width: 768px) {
+        font-size: 0.75rem;
+        padding: 0.5rem 0.75rem;
+      }
 
       &:hover {
         background-color: #f3f4f6;

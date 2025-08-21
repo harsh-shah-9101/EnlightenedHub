@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoCodeSlash } from 'react-icons/io5';
 import { BiPlanet } from 'react-icons/bi';
 import { FaPython } from 'react-icons/fa';
@@ -10,6 +10,8 @@ import NewChatButton from '../components/NewChatButton';
 import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import { IconHome, IconBook, IconBriefcase, IconPhone, IconSettings, IconLogout, IconRobot } from "@tabler/icons-react";
 import ChatBot from '../components/ChatBot';
+import { FloatingDock } from "../components/ui/floating-dock";
+import { useMediaQuery } from '@mui/material';
 
 const AiChat = () => {
   const [message, setMessage] = useState("");
@@ -17,9 +19,10 @@ const AiChat = () => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width:768px)');
 
-  // Add sidebar items
-  const sidebarItems = [
+  // Add navigation items
+  const navigationItems = [
     {
       href: "/dashboard",
       title: "Dashboard",
@@ -103,14 +106,16 @@ const AiChat = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Sidebar */}
-      <Sidebar>
-        <SidebarBody>
-          {sidebarItems.map((item) => (
-            <SidebarLink key={item.title} link={item} />
-          ))}
-        </SidebarBody>
-      </Sidebar>
+      {/* Sidebar - Hidden on mobile */}
+      {!isMobile && (
+        <Sidebar>
+          <SidebarBody>
+            {navigationItems.map((item) => (
+              <SidebarLink key={item.title} link={item} />
+            ))}
+          </SidebarBody>
+        </Sidebar>
+      )}
 
       {/* Main Content */}
       <div className="flex-1 relative">
@@ -118,32 +123,30 @@ const AiChat = () => {
           
           <div className="relative z-10">
             {/* Header */}
-            <div className="fixed  w-full mx-auto  border-b border-gray-200 bg-white z-20">
-              <div className="flex items-center justify-between px-6 py-3">
+            <div className="fixed w-full mx-auto border-b border-gray-200 bg-white z-20">
+              <div className="flex items-center justify-between px-3 md:px-6 py-3">
                 <div className="flex mx-auto items-center">
                   <h2 className="text-lg font-medium text-gray-800">
                     AssistMe
                   </h2>
                 </div>
-                
-                
               </div>
             </div>
 
             {/* Main Content */}
-            <div className="pt-16 pb-32 w-full mx-auto flex flex-col items-center ">
-              <div className="w-full mx-auto px-4 flex-grow overflow-y-auto">
+            <div className="pt-16 pb-32 w-full mx-auto flex flex-col items-center">
+              <div className="w-full mx-auto px-2 md:px-4 flex-grow overflow-y-auto">
                 {isResponseScreen ? (
                   <div className="space-y-6 py-4">
                     {messages?.map((msg, index) => (
                       <div key={index} className={`group flex ${msg.type === 'userMsg' ? '' : 'bg-gray-50'} py-6`}>
-                        <div className="w-full mx-auto flex gap-4 px-4">
+                        <div className="w-full mx-auto flex gap-2 md:gap-4 px-2 md:px-4">
                           <div className={`flex-shrink-0 ${msg.type === 'userMsg' ? 'bg-blue-600' : 'bg-gray-200'} text-white h-8 w-8 rounded-full flex items-center justify-center`}>
                             <span className="text-xs font-medium">{msg.type === 'userMsg' ? 'You' : 'AI'}</span>
                           </div>
                           <div className="flex-grow">
                             <div className="prose prose-sm max-w-none">
-                              <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-gray-800">{msg.text}</p>
+                              <p className="whitespace-pre-wrap text-[14px] md:text-[15px] leading-relaxed text-gray-800">{msg.text}</p>
                             </div>
                           </div>
                         </div>
@@ -151,7 +154,7 @@ const AiChat = () => {
                     ))}
                     {isLoading && (
                       <div className="group flex bg-gray-50 py-6">
-                        <div className="w-full mx-auto flex gap-4 px-4">
+                        <div className="w-full mx-auto flex gap-2 md:gap-4 px-2 md:px-4">
                           <div className="flex-shrink-0 bg-gray-200 text-white h-8 w-8 rounded-full flex items-center justify-center">
                             <span className="text-xs font-medium">AI</span>
                           </div>
@@ -167,11 +170,11 @@ const AiChat = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-[calc(100vh-14rem)] w-full ml-20  mx-auto text-center">
-                    <h1 className="text-3xl font-semibold text-gray-800 mb-4">AssistMe</h1>
+                  <div className="flex flex-col items-center justify-center h-[calc(100vh-14rem)] w-full mx-auto text-center px-4">
+                    <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">AssistMe</h1>
                     <p className="text-gray-600 mb-8">How can I help you today?</p>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-xl">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 w-full max-w-xl">
                       {[
                         { 
                           title: "Explain a concept",
@@ -193,9 +196,9 @@ const AiChat = () => {
                         <button 
                           key={index} 
                           onClick={() => setMessage(item.text)}
-                          className="p-4 rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-gray-50 cursor-pointer transition-colors text-left"
+                          className="p-3 md:p-4 rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-gray-50 cursor-pointer transition-colors text-left"
                         >
-                          <h3 className="font-medium text-sm text-gray-700 mb-1">{item.title}</h3>
+                          <h3 className="font-medium text-xs md:text-sm text-gray-700 mb-1">{item.title}</h3>
                           <p className="text-xs text-gray-500">{item.text}</p>
                         </button>
                       ))}
@@ -206,15 +209,15 @@ const AiChat = () => {
             </div>
 
             {/* Input Area */}
-            <div className="fixed bottom-0 w-full mx-auto bg-white border-t border-gray-100 z-20 py-4">
-              <div className="w-full  px-115">
+            <div className="fixed bottom-0 w-full mx-auto bg-white border-t border-gray-100 z-20 py-2 md:py-4 px-2 md:px-4 pb-4 md:pb-4">
+              <div className="w-full max-w-4xl mx-auto">
                 <ChatBot 
                   onSend={handleSend} 
                   message={message} 
                   setMessage={setMessage} 
                   isLoading={isLoading} 
                 />
-                <p className="text-xs text-gray-500 mt-3 text-center">
+                <p className="text-[10px] md:text-xs text-gray-500 mt-2 md:mt-3 text-center">
                   AssistMe is developed by EnlightenedHub using the Gemini API
                 </p>
               </div>
@@ -222,6 +225,15 @@ const AiChat = () => {
           </div>
         </div>
       </div>
+
+      {/* Floating Dock - Only visible on mobile */}
+      {isMobile && (
+        <FloatingDock
+          items={navigationItems}
+          mobileClassName="fixed bottom-4 right-4 z-50"
+          desktopClassName="hidden" // Hide on desktop
+        />
+      )}
     </div>
   );
 };
