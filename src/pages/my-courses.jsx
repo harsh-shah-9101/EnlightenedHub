@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Typography, Card, CardContent, CardMedia, Button } from '@mui/material';
+import { Container, Grid, Typography, Card, CardContent, CardMedia, Button, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../components/DeleteButton.css';
 import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import { IconHome, IconBook, IconBriefcase, IconPhone, IconSettings, IconLogout, IconRobot } from "@tabler/icons-react";
+import { FloatingDock } from "../components/ui/floating-dock";
 
 const MyCourses = () => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width:768px)');
 
   // Add sidebar items
-  const sidebarItems = [
+  const navigationItems = [
     {
       href: "/dashboard",
       title: "Dashboard",
@@ -83,18 +85,21 @@ const MyCourses = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar>
-        <SidebarBody>
-          {sidebarItems.map((item) => (
-            <SidebarLink key={item.title} link={item} />
-          ))}
-        </SidebarBody>
-      </Sidebar>
+      {/* Sidebar - Only visible on desktop */}
+      {!isMobile && (
+        <Sidebar>
+          <SidebarBody>
+            {navigationItems.map((item) => (
+              <SidebarLink key={item.title} link={item} />
+            ))}
+          </SidebarBody>
+        </Sidebar>
+      )}
 
       <main className="flex-1 overflow-y-auto">
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 pb-20 md:pb-4">
           <Container maxWidth="lg" sx={{ py: 4 }}>
-            <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'text.primary' }}>
+            <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'text.primary', fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
               My Courses
             </Typography>
             
@@ -105,11 +110,10 @@ const MyCourses = () => {
             ) : (
               <Grid container spacing={2}>
                 {courses.map((course) => (
-                  <Grid item xs={12} sm={6} md={3} key={course.id}>
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={course.id}>
                     <Card sx={{ 
-                      maxWidth: 280, 
                       height: '100%', 
-                      margin: '15px 0px',
+                      margin: { xs: '10px 0', sm: '15px 0' },
                       backgroundColor: '#ffffff',
                       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
                       border: '1px solid rgba(0, 0, 0, 0.08)',
@@ -131,16 +135,25 @@ const MyCourses = () => {
                         }}
                       />
                       <CardContent sx={{ 
-                        p: 2,
-                        '&:last-child': { pb: 2 }
+                        p: { xs: 1.5, sm: 2 },
+                        '&:last-child': { pb: { xs: 1.5, sm: 2 } }
                       }}>
-                        <Typography gutterBottom variant="subtitle1" component="div" sx={{ color: 'text.primary' }}>
+                        <Typography gutterBottom variant="subtitle1" component="div" sx={{ 
+                          color: 'text.primary',
+                          fontSize: { xs: '0.95rem', sm: '1rem' }
+                        }}>
                           {course.title}
                         </Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>
+                        <Typography variant="body2" sx={{ 
+                          color: 'text.secondary', 
+                          fontSize: { xs: '0.8rem', sm: '0.875rem' } 
+                        }}>
                           {course.category}
                         </Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>
+                        <Typography variant="body2" sx={{ 
+                          color: 'text.secondary', 
+                          fontSize: { xs: '0.8rem', sm: '0.875rem' } 
+                        }}>
                           Instructor: {course.instructor}
                         </Typography>
                         <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
@@ -152,6 +165,8 @@ const MyCourses = () => {
                               backgroundColor: '#2196f3',
                               borderRadius: '20px',
                               flexGrow: 1,
+                              fontSize: { xs: '0.7rem', sm: '0.8rem' },
+                              padding: { xs: '4px 8px', sm: '6px 16px' },
                               '&:hover': {
                                 backgroundColor: '#1976d2'
                               }
@@ -202,6 +217,15 @@ const MyCourses = () => {
           </Container>
         </div>
       </main>
+
+      {/* Floating Dock - Only visible on mobile */}
+      {isMobile && (
+        <FloatingDock
+          items={navigationItems}
+          mobileClassName="fixed bottom-4 right-4 z-50"
+          desktopClassName="hidden" // Hide on desktop
+        />
+      )}
     </div>
   );
 };
